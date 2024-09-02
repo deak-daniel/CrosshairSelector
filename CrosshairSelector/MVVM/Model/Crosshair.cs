@@ -16,9 +16,17 @@ using System.IO;
 
 namespace CrosshairSelector
 {
-    [DataContract]
-    public class Crosshair
+    public enum CrosshairShape
     {
+        Cross,
+        Circle,
+        Triangle
+    }
+
+    [DataContract]
+    public class Crosshair : ICrosshair
+    {
+        #region Properties
         [DataMember]
         public int Thickness { get; set; }
 
@@ -36,47 +44,13 @@ namespace CrosshairSelector
 
         [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
+        public ICrosshairView View { get; set; }
+        #endregion // Properties
 
-        public CrosshairView View { get; set; }
-        public class CrosshairView
-        {
-            private const int Scalar = 1;
-            public System.Windows.Shapes.Rectangle Up { get; set; }
-            public System.Windows.Shapes.Rectangle Down { get; set; }
-            public System.Windows.Shapes.Rectangle Left { get; set; }
-            public System.Windows.Shapes.Rectangle Right { get; set; }
-            public Tuple<int, int> MiddlePoint { get; set; }
-            public CrosshairView(int thickness = 10, int size = 30)
-            {
-                MiddlePoint = PcInformations.GetMiddlePoint();
-                int ScreenWidth = MiddlePoint.Item1;
-                int ScreenHeight = MiddlePoint.Item2;
-
-                Up = new System.Windows.Shapes.Rectangle();
-                Up.Width = thickness;
-                Up.Height = size;
-                Down = new System.Windows.Shapes.Rectangle();
-                Down.Width = thickness;
-                Down.Height = size;
-                Left = new System.Windows.Shapes.Rectangle();
-                Left.Width = size;
-                Left.Height = thickness;
-                Right = new System.Windows.Shapes.Rectangle();
-                Right.Width = size;
-                Right.Height = thickness;
-            }
-            public void Modify(Crosshair crosshair)
-            {
-                Up.Width = crosshair.Thickness * Scalar;
-                Up.Height = crosshair.Size * Scalar;
-                Down.Width = crosshair.Thickness * Scalar;
-                Down.Height = crosshair.Size * Scalar;
-                Left.Width = crosshair.Size * Scalar;
-                Left.Height = crosshair.Thickness * Scalar;
-                Right.Width = crosshair.Size * Scalar;
-                Right.Height = crosshair.Thickness * Scalar;
-            }
-        }
+        #region Constructor
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Crosshair()
         {
             View = new CrosshairView();
@@ -85,6 +59,9 @@ namespace CrosshairSelector
             Gap = 1;
             Size = 1;
         }
+        #endregion // Default Constructor
+
+        #region ICrosshair interface implementation
         public void ModifyCrosshairView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
         {
             Size = size == 0 ? 1 : size;
@@ -95,7 +72,7 @@ namespace CrosshairSelector
             Outline = outline;
             View.Modify(this);
         }
-        public void ModifyCrosshairView(Crosshair crosshair)
+        public void ModifyCrosshairView(ICrosshair crosshair)
         {
             Size = crosshair.Size == 0 ? 1 : crosshair.Size;
             Opacity = crosshair.Opacity == 0 ? 255 : crosshair.Opacity;
@@ -105,6 +82,8 @@ namespace CrosshairSelector
             Outline = crosshair.Outline;
             View.Modify(this);
         }
+        #endregion // ICrosshair interface implementation
+
         public static Crosshair Load(string xmlPath)
         {
             DataContractSerializer DataContract = new DataContractSerializer(typeof(Crosshair));
