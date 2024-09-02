@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrosshairSelector
 {
-    public class CrosshairView : ICrosshairView
+    public class CrossView : ICrossView
     {
         private const int Scalar = 1;
         public System.Windows.Shapes.Rectangle Up { get; set; }
@@ -14,7 +14,7 @@ namespace CrosshairSelector
         public System.Windows.Shapes.Rectangle Left { get; set; }
         public System.Windows.Shapes.Rectangle Right { get; set; }
         public Tuple<int, int> MiddlePoint { get; set; }
-        public CrosshairView(int thickness = 10, int size = 30)
+        public CrossView(int thickness = 10, int size = 30)
         {
             MiddlePoint = PcInformations.GetMiddlePoint();
             int ScreenWidth = MiddlePoint.Item1;

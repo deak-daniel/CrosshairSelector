@@ -44,7 +44,7 @@ namespace CrosshairSelector
 
         [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
-        public ICrosshairView View { get; set; }
+        public ICrossView View { get; set; }
         #endregion // Properties
 
         #region Constructor
@@ -53,7 +53,7 @@ namespace CrosshairSelector
         /// </summary>
         public Crosshair()
         {
-            View = new CrosshairView();
+            View = new CrossView();
             Thickness = 1;
             Opacity = 1;
             Gap = 1;
@@ -62,7 +62,7 @@ namespace CrosshairSelector
         #endregion // Default Constructor
 
         #region ICrosshair interface implementation
-        public void ModifyCrosshairView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
+        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
         {
             Size = size == 0 ? 1 : size;
             Opacity = opacity == 0 ? 255 : opacity;
@@ -72,7 +72,7 @@ namespace CrosshairSelector
             Outline = outline;
             View.Modify(this);
         }
-        public void ModifyCrosshairView(ICrosshair crosshair)
+        public void ModifyCrossView(ICrosshair crosshair)
         {
             Size = crosshair.Size == 0 ? 1 : crosshair.Size;
             Opacity = crosshair.Opacity == 0 ? 255 : crosshair.Opacity;
@@ -90,7 +90,7 @@ namespace CrosshairSelector
             Crosshair readIn;
             Stream reader = File.OpenRead(xmlPath);
             readIn = (Crosshair)DataContract.ReadObject(reader);
-            readIn.View = new CrosshairView();
+            readIn.View = new CrossView();
             return readIn;
         }
         public void Save(string xmlPath)

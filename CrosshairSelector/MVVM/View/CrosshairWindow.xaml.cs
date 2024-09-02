@@ -39,45 +39,45 @@ namespace CrosshairSelector.Windows
             #region Up
             if (crosshair.Outline)
             {
-                (crosshair.View as CrosshairView).Up.Stroke = new SolidColorBrush(Colors.Black);
-                (crosshair.View as CrosshairView).Down.Stroke = new SolidColorBrush(Colors.Black);
-                (crosshair.View as CrosshairView).Left.Stroke = new SolidColorBrush(Colors.Black);
-                (crosshair.View as CrosshairView).Right.Stroke = new SolidColorBrush(Colors.Black);
+                (crosshair.View as CrossView).Up.Stroke = new SolidColorBrush(Colors.Black);
+                (crosshair.View as CrossView).Down.Stroke = new SolidColorBrush(Colors.Black);
+                (crosshair.View as CrossView).Left.Stroke = new SolidColorBrush(Colors.Black);
+                (crosshair.View as CrossView).Right.Stroke = new SolidColorBrush(Colors.Black);
             }
             else
             {
-                 (crosshair.View as CrosshairView).Up.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
-                 (crosshair.View as CrosshairView).Down.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
-                 (crosshair.View as CrosshairView).Left.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
-                 (crosshair.View as CrosshairView).Right.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
+                 (crosshair.View as CrossView).Up.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
+                 (crosshair.View as CrossView).Down.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
+                 (crosshair.View as CrossView).Left.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
+                 (crosshair.View as CrossView).Right.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
             }
-             (crosshair.View as CrosshairView).Up.Fill = new SolidColorBrush(crosshair.CrosshairColor);
-            this.Left = width - ( (crosshair.View as CrosshairView).Up.Width / 2) - (this.Width / 2);
-            Canvas.SetLeft( (crosshair.View as CrosshairView).Up, this.ActualWidth / 2);
-            Canvas.SetTop( (crosshair.View as CrosshairView).Up, this.ActualHeight / 2 -  (crosshair.View as CrosshairView).Up.Height);
-            canvas.Children.Add( (crosshair.View as CrosshairView).Up);
+             (crosshair.View as CrossView).Up.Fill = new SolidColorBrush(crosshair.CrosshairColor);
+            this.Left = width - ( (crosshair.View as CrossView).Up.Width / 2) - (this.Width / 2);
+            Canvas.SetLeft( (crosshair.View as CrossView).Up, this.ActualWidth / 2);
+            Canvas.SetTop( (crosshair.View as CrossView).Up, this.ActualHeight / 2 -  (crosshair.View as CrossView).Up.Height);
+            canvas.Children.Add( (crosshair.View as CrossView).Up);
             #endregion
 
             #region Down
-             (crosshair.View as CrosshairView).Down.Fill = new SolidColorBrush(crosshair.CrosshairColor);
-            Canvas.SetLeft( (crosshair.View as CrosshairView).Down, this.ActualWidth / 2);
-            Canvas.SetTop( (crosshair.View as CrosshairView).Down, this.ActualHeight / 2 +  (crosshair.View as CrosshairView).Left.Height);
-            canvas.Children.Add( (crosshair.View as CrosshairView).Down);
+             (crosshair.View as CrossView).Down.Fill = new SolidColorBrush(crosshair.CrosshairColor);
+            Canvas.SetLeft( (crosshair.View as CrossView).Down, this.ActualWidth / 2);
+            Canvas.SetTop( (crosshair.View as CrossView).Down, this.ActualHeight / 2 +  (crosshair.View as CrossView).Left.Height);
+            canvas.Children.Add( (crosshair.View as CrossView).Down);
             #endregion
 
             #region Left
-             (crosshair.View as CrosshairView).Left.Fill = new SolidColorBrush(crosshair.CrosshairColor);
-            this.Top = height - ( (crosshair.View as CrosshairView).Left.Height / 2) - (this.Height / 2);
-            Canvas.SetLeft( (crosshair.View as CrosshairView).Left, this.ActualWidth / 2 -  (crosshair.View as CrosshairView).Left.Width);
-            Canvas.SetTop( (crosshair.View as CrosshairView).Left, this.ActualHeight / 2);
-            canvas.Children.Add( (crosshair.View as CrosshairView).Left);
+             (crosshair.View as CrossView).Left.Fill = new SolidColorBrush(crosshair.CrosshairColor);
+            this.Top = height - ( (crosshair.View as CrossView).Left.Height / 2) - (this.Height / 2);
+            Canvas.SetLeft( (crosshair.View as CrossView).Left, this.ActualWidth / 2 -  (crosshair.View as CrossView).Left.Width);
+            Canvas.SetTop( (crosshair.View as CrossView).Left, this.ActualHeight / 2);
+            canvas.Children.Add( (crosshair.View as CrossView).Left);
             #endregion
 
             #region Right
-             (crosshair.View as CrosshairView).Right.Fill = new SolidColorBrush(crosshair.CrosshairColor);
-            Canvas.SetLeft( (crosshair.View as CrosshairView).Right, this.ActualWidth / 2 +  (crosshair.View as CrosshairView).Right.Height);
-            Canvas.SetTop( (crosshair.View as CrosshairView).Right, this.ActualHeight / 2);
-            canvas.Children.Add( (crosshair.View as CrosshairView).Right);
+             (crosshair.View as CrossView).Right.Fill = new SolidColorBrush(crosshair.CrosshairColor);
+            Canvas.SetLeft( (crosshair.View as CrossView).Right, this.ActualWidth / 2 +  (crosshair.View as CrossView).Right.Height);
+            Canvas.SetTop( (crosshair.View as CrossView).Right, this.ActualHeight / 2);
+            canvas.Children.Add( (crosshair.View as CrossView).Right);
             #endregion
 
             this.Show();

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CrosshairSelector
 {
-    public interface ICrosshairView
+    public interface ICrossView
     {
         void Modify(ICrosshair crosshair);
     }

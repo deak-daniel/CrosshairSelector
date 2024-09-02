@@ -19,12 +19,12 @@ namespace CrosshairSelector
         public void ModifyCrosshair(Crosshair crosshair)
         {
             this.Crosshair = crosshair;
-            Crosshair.ModifyCrosshairView(crosshair);
+            Crosshair.ModifyCrossView(crosshair);
             MainWindow.ChangeCrosshair(crosshair);
         }
         public void ModifyCrosshair(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
         {
-            Crosshair.ModifyCrosshairView(size, thickness, gap, opacity, red, green, blue, outline);
+            Crosshair.ModifyCrossView(size, thickness, gap, opacity, red, green, blue, outline);
             MainWindow.ChangeCrosshair(Crosshair);
         }
         public static Crosshair LoadCrosshair()
