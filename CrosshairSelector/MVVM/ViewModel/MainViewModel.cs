@@ -120,6 +120,18 @@ namespace CrosshairSelector
                 Modify();
             }
         }
+
+        private CrosshairShape _shape;
+
+        public CrosshairShape Shape
+        {
+            get { return _shape; }
+            set { _shape = value; 
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+
         public MainViewModel()
         {
             try

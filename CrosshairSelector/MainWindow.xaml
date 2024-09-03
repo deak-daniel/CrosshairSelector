@@ -4,12 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosshairSelector"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Crosshair" Height="450" Width="800"
         Background="#1E201E"
         Loaded="Window_Loaded">
 
     <Window.Resources>
+        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:CrosshairShape"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
         <Style TargetType="Slider" x:Key="slider">
             <Setter Property="Width" Value="100"/>
             <Setter Property="Height" Value="30"/>
@@ -94,7 +102,7 @@
                     Value="{Binding Gap, UpdateSourceTrigger=PropertyChanged}"/>
 
             -->
-
+            
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2">
@@ -141,6 +149,12 @@
 
             </DockPanel>
 
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2">
+            <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}"
+                      SelectedItem="{Binding Shape, UpdateSourceTrigger=PropertyChanged}">
+                
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

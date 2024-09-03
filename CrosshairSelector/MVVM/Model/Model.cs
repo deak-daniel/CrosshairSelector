@@ -36,6 +36,9 @@ namespace CrosshairSelector
         {
             this.Crosshair.Save(xmlPath);
         }
-
+        public void ChangeShape(CrosshairShape shape)
+        {
+            Crosshair.OnCrosshairChangeShape(shape);
+        }
     }
 }

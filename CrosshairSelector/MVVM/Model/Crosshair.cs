@@ -27,6 +27,7 @@ namespace CrosshairSelector
     public class Crosshair : ICrosshair
     {
         #region Properties
+
         [DataMember]
         public int Thickness { get; set; }
 
@@ -44,7 +45,8 @@ namespace CrosshairSelector
 
         [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
-        public ICrossView View { get; set; }
+        public ICrosshairView View { get; set; }
+        public Action<CrosshairShape> OnCrosshairChangeShape { get; set; } = (CrosshairShape shape) => { };
         #endregion // Properties
 
         #region Constructor
@@ -58,6 +60,7 @@ namespace CrosshairSelector
             Opacity = 1;
             Gap = 1;
             Size = 1;
+            OnCrosshairChangeShape = ChangeCrosshairShape;
         }
         #endregion // Default Constructor
 
@@ -81,6 +84,21 @@ namespace CrosshairSelector
             CrosshairColor = crosshair.CrosshairColor;
             Outline = crosshair.Outline;
             View.Modify(this);
+        }
+        private void ChangeCrosshairShape(CrosshairShape newShape)
+        {
+            switch (newShape)
+            {
+                case CrosshairShape.Cross:
+                    View = new CrossView();
+                    break;
+                case CrosshairShape.Circle:
+                    break;
+                case CrosshairShape.Triangle:
+                    break;
+                default:
+                    break;
+            }
         }
         #endregion // ICrosshair interface implementation
 
