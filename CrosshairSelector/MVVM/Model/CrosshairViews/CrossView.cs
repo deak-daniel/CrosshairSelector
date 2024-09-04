@@ -14,8 +14,8 @@ namespace CrosshairSelector
     public class CrossView : ICrosshairView
     {
         private const int Scalar = 1;
-        public int Height { get; set; }
-        public int Width { get; set; }
+        public double Height { get; set; }
+        public double Width { get; set; }
         public System.Windows.Shapes.Rectangle Up { get; set; }
         public System.Windows.Shapes.Rectangle Down { get; set; }
         public System.Windows.Shapes.Rectangle Left { get; set; }
@@ -53,9 +53,6 @@ namespace CrosshairSelector
             Right.Height = crosshair.Thickness * Scalar;
             Outline = crosshair.Outline;
             CrosshairColor = crosshair.CrosshairColor;
-        }
-        public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
-        {
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(Colors.Black);
@@ -72,23 +69,27 @@ namespace CrosshairSelector
             }
 
             Up.Fill = new SolidColorBrush(CrosshairColor);
+            Down.Fill = new SolidColorBrush(CrosshairColor);
+            Left.Fill = new SolidColorBrush(CrosshairColor);
+            Right.Fill = new SolidColorBrush(CrosshairColor);
+        }
+        public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
+        {
             Canvas.SetLeft(Up, ActualWidth / 2);
             Canvas.SetTop(Up, ActualHeight / 2 - Up.Height);
             canvas.Children.Add(Up);
-            Down.Fill = new SolidColorBrush(CrosshairColor);
+
             Canvas.SetLeft(Down, ActualWidth / 2);
             Canvas.SetTop(Down, ActualHeight / 2 + Left.Height);
             canvas.Children.Add(Down);
 
-            Left.Fill = new SolidColorBrush(CrosshairColor);
             Canvas.SetLeft(Left, ActualWidth / 2 - Left.Width);
             Canvas.SetTop(Left, ActualHeight / 2);
             canvas.Children.Add(Left);
-            Right.Fill = new SolidColorBrush(CrosshairColor);
+
             Canvas.SetLeft(Right, ActualWidth / 2 + Right.Height);
             Canvas.SetTop(Right, ActualHeight / 2);
             canvas.Children.Add(Right);
-
         }
     }
 }

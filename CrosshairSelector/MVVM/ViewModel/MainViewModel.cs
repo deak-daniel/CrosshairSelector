@@ -128,6 +128,7 @@ namespace CrosshairSelector
             get { return _shape; }
             set { _shape = value; 
                 RaisePropertyChanged();
+                ChangeShape();
                 Modify();
             }
         }
@@ -168,6 +169,10 @@ namespace CrosshairSelector
         public void Modify()
         {
             Model.ModifyCrosshair(Size, Thickness, Gap, Opacity, Red, Green, Blue, Outline);
+        }
+        public void ChangeShape()
+        {
+            Model.ChangeShape(Shape);
         }
         public void SaveCrosshair()
         {

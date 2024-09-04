@@ -18,6 +18,5 @@ namespace CrosshairSelector
         public ICrosshairView View { get; set; }
         void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline);
         void ModifyCrossView(ICrosshair crosshair);
-        Action<CrosshairShape> OnCrosshairChangeShape {get; set;}
     }
 }

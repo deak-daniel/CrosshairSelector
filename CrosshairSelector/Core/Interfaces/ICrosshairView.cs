@@ -10,8 +10,8 @@ namespace CrosshairSelector
 {
     public interface ICrosshairView
     {
-        public int Width{ get; set; }
-        public int Height{ get; set; }
+        public double Width{ get; set; }
+        public double Height{ get; set; }
         void Modify(ICrosshair crosshair);
         void PutCrosshairOnCanvas(double ActualWidth,  double ActualHeight, ref Canvas canvas);
     }

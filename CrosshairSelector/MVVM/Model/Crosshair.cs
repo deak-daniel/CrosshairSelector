@@ -19,8 +19,8 @@ namespace CrosshairSelector
     public enum CrosshairShape
     {
         Cross,
-        Circle,
-        Triangle
+        Cross2
+        //Circle
     }
 
     [DataContract]
@@ -46,7 +46,6 @@ namespace CrosshairSelector
         [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
         public ICrosshairView View { get; set; }
-        public Action<CrosshairShape> OnCrosshairChangeShape { get; set; } = (CrosshairShape shape) => { };
         #endregion // Properties
 
         #region Constructor
@@ -60,7 +59,6 @@ namespace CrosshairSelector
             Opacity = 1;
             Gap = 1;
             Size = 1;
-            OnCrosshairChangeShape = ChangeCrosshairShape;
         }
         #endregion // Default Constructor
 
@@ -85,17 +83,19 @@ namespace CrosshairSelector
             Outline = crosshair.Outline;
             View.Modify(this);
         }
-        private void ChangeCrosshairShape(CrosshairShape newShape)
+        public void ChangeCrosshairShape(CrosshairShape newShape)
         {
             switch (newShape)
             {
                 case CrosshairShape.Cross:
                     View = new CrossView();
                     break;
-                case CrosshairShape.Circle:
+                case CrosshairShape.Cross2:
+                    View = new Cross2View();
                     break;
-                case CrosshairShape.Triangle:
-                    break;
+                //case CrosshairShape.Circle:
+                //    View = new CircleView();
+                //    break;
                 default:
                     break;
             }

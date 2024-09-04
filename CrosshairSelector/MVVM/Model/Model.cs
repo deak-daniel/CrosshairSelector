@@ -38,7 +38,7 @@ namespace CrosshairSelector
         }
         public void ChangeShape(CrosshairShape shape)
         {
-            Crosshair.OnCrosshairChangeShape(shape);
+            Crosshair.ChangeCrosshairShape(shape);
         }
     }
 }
