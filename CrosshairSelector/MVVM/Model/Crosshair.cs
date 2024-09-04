@@ -44,6 +44,9 @@ namespace CrosshairSelector
         public bool Outline { get; set; }
 
         [DataMember]
+        public CrosshairShape Shape { get; set; }
+
+        [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
         public ICrosshairView View { get; set; }
         #endregion // Properties
@@ -55,6 +58,7 @@ namespace CrosshairSelector
         public Crosshair()
         {
             View = new CrossView();
+            Shape = CrosshairShape.Cross;
             Thickness = 1;
             Opacity = 1;
             Gap = 1;
@@ -88,9 +92,11 @@ namespace CrosshairSelector
             switch (newShape)
             {
                 case CrosshairShape.Cross:
+                    Shape = CrosshairShape.Cross;
                     View = new CrossView();
                     break;
                 case CrosshairShape.Cross2:
+                    Shape = CrosshairShape.Cross2;
                     View = new Cross2View();
                     break;
                 //case CrosshairShape.Circle:
@@ -108,7 +114,18 @@ namespace CrosshairSelector
             Crosshair readIn;
             Stream reader = File.OpenRead(xmlPath);
             readIn = (Crosshair)DataContract.ReadObject(reader);
-            readIn.View = new CrossView();
+            switch(readIn.Shape)
+            {
+                case CrosshairShape.Cross:
+                    readIn.View = new CrossView();
+                    break; 
+                case CrosshairShape.Cross2:
+                    readIn.View = new Cross2View();
+                    break;
+                default:
+                    readIn.View = new CrossView();
+                    break;
+            }
             return readIn;
         }
         public void Save(string xmlPath)
