@@ -1,6 +1,7 @@
 ﻿using CrosshairSelector.Windows;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -39,7 +40,7 @@ namespace CrosshairSelector
             Right.Height = thickness;
             Width = thickness;
             Height = size;
-            CrosshairColor = new Color();
+            CrosshairColor = new System.Windows.Media.Color();
         }
         public void Modify(ICrosshair crosshair)
         {
@@ -53,6 +54,7 @@ namespace CrosshairSelector
             Right.Height = crosshair.Thickness * Scalar;
             Outline = crosshair.Outline;
             CrosshairColor = crosshair.CrosshairColor;
+            Width = crosshair.Thickness * Scalar;
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(Colors.Black);

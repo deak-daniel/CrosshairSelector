@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosshairSelector.MVVM.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,12 +21,12 @@ namespace CrosshairSelector
         {
             this.Crosshair = crosshair;
             Crosshair.ModifyCrossView(crosshair);
-            MainWindow.ChangeCrosshair(crosshair);
+            CrosshairConfigPage.ChangeCrosshair(crosshair);
         }
         public void ModifyCrosshair(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
         {
             Crosshair.ModifyCrossView(size, thickness, gap, opacity, red, green, blue, outline);
-            MainWindow.ChangeCrosshair(Crosshair);
+            CrosshairConfigPage.ChangeCrosshair(Crosshair);
         }
         public static Crosshair LoadCrosshair()
         {

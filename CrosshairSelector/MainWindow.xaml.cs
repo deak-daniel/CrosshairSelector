@@ -1,4 +1,5 @@
-﻿using CrosshairSelector.Windows;
+﻿using CrosshairSelector.MVVM.View;
+using CrosshairSelector.Windows;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -18,26 +19,17 @@ namespace CrosshairSelector
     /// </summary>
     public partial class MainWindow : Window
     {
-        CrosshairWindow crosshairWindow = new CrosshairWindow();
-        MainViewModel viewModel = new MainViewModel();
-        public static Action<Crosshair> ChangeCrosshair;
+        public static Action AddTab;
+        MainViewModel viewModel = new MainViewModel(new CrosshairConfigPage());
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = viewModel;
-            crosshairWindow.Topmost = true;
-            ChangeCrosshair = CrosshairWindow.DisplayCrosshair;
-        }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            viewModel.LoadCrosshair();
-            viewModel.Modify();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            viewModel.SaveCrosshair();
-            MessageBox.Show("Crosshair saved!");
+            viewModel.AddTab(new CrosshairConfigPage());
+            AddTab = () => 
+            {
+                viewModel.AddTab(new CrosshairConfigPage());
+            };
         }
     }
 }

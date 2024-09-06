@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,11 +38,13 @@ namespace CrosshairSelector.Windows
             double width = (screenRes.Item1 / 2);
             double height = (screenRes.Item2 / 2);
 
-            this.Left = width - (crosshair.View.Width / 2) - (this.Width / 2);
-            this.Top = height - (crosshair.View.Height / 2) - (this.Height / 2);
             crosshair.View.PutCrosshairOnCanvas(this.ActualWidth, this.ActualHeight ,ref canvas);
 
+            this.Left = width - (crosshair.View.Width / 2) - (this.Width / 2);
+            this.Top = height - (crosshair.View.Height / 2) - (this.Height / 2);
             this.Show();
         }
+
+
     }
 }
