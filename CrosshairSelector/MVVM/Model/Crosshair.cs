@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Runtime.Serialization;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Xml.Serialization;
+using System.Windows.Input;
 
 
 namespace CrosshairSelector
@@ -27,6 +29,8 @@ namespace CrosshairSelector
     public class Crosshair : ICrosshair
     {
         #region Properties
+        [DataMember]
+        public Key AssignedKey { get; set; }
 
         [DataMember]
         public int Thickness { get; set; }
@@ -67,7 +71,7 @@ namespace CrosshairSelector
         #endregion // Default Constructor
 
         #region ICrosshair interface implementation
-        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline)
+        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, Key assignedKey)
         {
             Size = size == 0 ? 1 : size;
             Opacity = opacity == 0 ? 255 : opacity;
@@ -75,6 +79,7 @@ namespace CrosshairSelector
             Gap = gap == 0 ? 1 : gap;
             CrosshairColor = System.Windows.Media.Color.FromArgb((byte)opacity, (byte)red, (byte)green, (byte)blue);
             Outline = outline;
+            AssignedKey = assignedKey;
             View.Modify(this);
         }
         public void ModifyCrossView(ICrosshair crosshair)
@@ -108,33 +113,6 @@ namespace CrosshairSelector
         }
         #endregion // ICrosshair interface implementation
 
-        public static Crosshair Load(string xmlPath)
-        {
-            DataContractSerializer DataContract = new DataContractSerializer(typeof(Crosshair));
-            Crosshair readIn;
-            Stream reader = File.OpenRead(xmlPath);
-            readIn = (Crosshair)DataContract.ReadObject(reader);
-            switch(readIn.Shape)
-            {
-                case CrosshairShape.Cross:
-                    readIn.View = new CrossView();
-                    break; 
-                case CrosshairShape.Cross2:
-                    readIn.View = new Cross2View();
-                    break;
-                default:
-                    readIn.View = new CrossView();
-                    break;
-            }
-            return readIn;
-        }
-        public void Save(string xmlPath)
-        {
-            DataContractSerializer DataContract = new DataContractSerializer(typeof(Crosshair));
-            Stream stream = File.Create(xmlPath);
-            DataContract.WriteObject(stream, this);
-            stream.Close();
-        }
     }
 
 }

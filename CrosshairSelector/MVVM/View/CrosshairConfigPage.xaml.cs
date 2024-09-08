@@ -21,28 +21,19 @@ namespace CrosshairSelector.MVVM.View
     /// </summary>
     public partial class CrosshairConfigPage : Page
     {
-        CrosshairWindow crosshairWindow = new CrosshairWindow();
-        CrosshairConfigViewModel viewModel = new CrosshairConfigViewModel();
+        public CrosshairConfigViewModel viewModel = new CrosshairConfigViewModel();
         public static Action<Crosshair> ChangeCrosshair;
         public CrosshairConfigPage()
         {
             InitializeComponent();
             this.DataContext = viewModel;
-            crosshairWindow.Topmost = true;
             ChangeCrosshair = CrosshairWindow.DisplayCrosshair;
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            viewModel.LoadCrosshair();
-            viewModel.Modify();
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             viewModel.SaveCrosshair();
             MessageBox.Show("Crosshair saved!");
         }
-
         private void Add_config_click(object sender, RoutedEventArgs e)
         {
             viewModel.AddConfig();

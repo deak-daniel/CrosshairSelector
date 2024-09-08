@@ -19,17 +19,48 @@ namespace CrosshairSelector
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Action AddTab;
+        private GlobalKeyboardHook _globalKeyboardHook;
+        public static Action<Crosshair> AddTab;
+        public static Action<Key> HandleKeyboard;
+        public static Action<Crosshair?> SaveCrosshairConfig;
+        CrosshairWindow crosshairWindow = new CrosshairWindow();
         MainViewModel viewModel = new MainViewModel(new CrosshairConfigPage());
         public MainWindow()
         {
             InitializeComponent();
             this.DataContext = viewModel;
-            viewModel.AddTab(new CrosshairConfigPage());
-            AddTab = () => 
+            crosshairWindow.Topmost = true;
+            AddTab = (crosshair) => 
             {
-                viewModel.AddTab(new CrosshairConfigPage());
+                viewModel.AddTab(new CrosshairConfigPage(), crosshair);
             };
+            HandleKeyboard = HandleKeys;
+            SaveCrosshairConfig = viewModel.SaveCrosshairConfig;
+            _globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.SetHook();
+            viewModel.LoadCrosshairConfig(new CrosshairConfigPage());
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _globalKeyboardHook.Unhook();
+            base.OnClosed(e);
+        }
+        private void HandleKeys(Key key)
+        {
+            viewModel.ChangeCrosshair(key);
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                viewModel.UpdateCrosshairConfig();
+            }
+            catch (Exception)
+            {
+                viewModel.AddTab(new CrosshairConfigPage(), new Crosshair());
+                MessageBox.Show("Could not load crosshair config");
+            }
         }
     }
 }

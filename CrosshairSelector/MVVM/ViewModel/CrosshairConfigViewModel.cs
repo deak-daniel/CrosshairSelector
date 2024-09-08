@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,16 @@ namespace CrosshairSelector
 {
     public class CrosshairConfigViewModel : NotifyPropertyChanged
     {
-        private Model Model;
         private Crosshair _crosshair;
-        private List<Crosshair> _crosshairConfig;
+        public Crosshair Crosshair
+        {
+            get { return _crosshair; }
+            set 
+            { 
+                _crosshair = value;
+                LoadCrosshair();
+            }
+        }
         private string _assignedKey;
 
         public string AssignedKey
@@ -19,6 +27,7 @@ namespace CrosshairSelector
             get { return _assignedKey; }
             set { _assignedKey = value;
                 RaisePropertyChanged();
+                Modify();
             }
         }
 
@@ -125,7 +134,6 @@ namespace CrosshairSelector
         }
 
         private bool _outline;
-
         public bool Outline
         {
             get
@@ -139,9 +147,7 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-
         private CrosshairShape _shape;
-
         public CrosshairShape Shape
         {
             get { return _shape; }
@@ -153,20 +159,9 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-
         public CrosshairConfigViewModel()
         {
-            _crosshairConfig = new List<Crosshair>();
-            try
-            {
-                _crosshair = Model.LoadCrosshair();
-            }
-            catch (FileNotFoundException e)
-            {
-                _crosshair = new Crosshair();
-            }
-            Model = new Model(ref _crosshair);
-            _crosshairConfig.Add(_crosshair);
+            _crosshair = new Crosshair();
         }
         public void LoadCrosshair()
         {
@@ -191,20 +186,31 @@ namespace CrosshairSelector
         }
         public void Modify()
         {
-            Model.ModifyCrosshair(Size, Thickness, Gap, Opacity, Red, Green, Blue, Outline);
+            _crosshair.Shape = Shape;
+            _crosshair.Size = Size;
+            _crosshair.Thickness = Thickness;
+            _crosshair.Outline = Outline;
+            _crosshair.Opacity = Opacity;
+            _crosshair.CrosshairColor = System.Windows.Media.Color.FromArgb((byte)Opacity, (byte)Red, (byte)Green, (byte)Blue);
+            _crosshair.AssignedKey = AssignedKey.ToKey();
+
+            MainViewModel.ModifyCrosshairHandler(_crosshair);
         }
         public void ChangeShape()
         {
-            Model.ChangeShape(Shape);
+            MainViewModel.ChangeShapeHandler(Shape);
         }
         public void SaveCrosshair()
         {
-            string xmlPath = "crosshair.xml";
-            Model.SaveCrosshair(xmlPath);
+            MainWindow.SaveCrosshairConfig(_crosshair);
         }
         public void AddConfig()
         {
-            MainWindow.AddTab();
+            if (AssignedKey != "")
+            {
+                MainWindow.AddTab(_crosshair);
+            }
+
         }
     }
 }
