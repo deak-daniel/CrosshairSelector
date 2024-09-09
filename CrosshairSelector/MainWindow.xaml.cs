@@ -38,9 +38,8 @@ namespace CrosshairSelector
             SaveCrosshairConfig = viewModel.SaveCrosshairConfig;
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
-            viewModel.LoadCrosshairConfig(new CrosshairConfigPage());
+            viewModel.LoadCrosshairConfig();
         }
-
         protected override void OnClosed(EventArgs e)
         {
             _globalKeyboardHook.Unhook();

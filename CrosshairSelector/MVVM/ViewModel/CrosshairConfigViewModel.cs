@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CrosshairSelector
 {
-    public class CrosshairConfigViewModel : NotifyPropertyChanged
+    public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
         private Crosshair _crosshair;
         public Crosshair Crosshair
@@ -21,7 +22,6 @@ namespace CrosshairSelector
             }
         }
         private string _assignedKey;
-
         public string AssignedKey
         {
             get { return _assignedKey; }
@@ -173,6 +173,8 @@ namespace CrosshairSelector
             _red = (int)_crosshair.CrosshairColor.R;
             _green = (int)_crosshair.CrosshairColor.G;
             _blue = (int)_crosshair.CrosshairColor.B;
+            _assignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
+            _shape = _crosshair.Shape;
             Modify();
             Shape = _crosshair.Shape;
             Size = _crosshair.Size;
@@ -183,6 +185,7 @@ namespace CrosshairSelector
             Red = _crosshair.CrosshairColor.R;
             Green = (int)_crosshair.CrosshairColor.G;
             Blue = (int)_crosshair.CrosshairColor.B;
+            AssignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
         }
         public void Modify()
         {
@@ -211,6 +214,10 @@ namespace CrosshairSelector
                 MainWindow.AddTab(_crosshair);
             }
 
+        }
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

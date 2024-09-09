@@ -42,9 +42,24 @@ namespace CrosshairSelector
                 Stream reader = File.OpenRead(xmlPath);
                 readIn = (CrosshairList)serializer.ReadObject(reader);
             }
-            catch (Exception)
+            catch (FileNotFoundException e)
             {
                 Debug.WriteLine("Could not read crosshair config");
+            }
+            for (int i = 0; i < readIn.Count; i++)
+            {
+                switch (readIn.list[i].Shape)
+                {
+                    case CrosshairShape.Cross:
+                        readIn.list[i].View = new CrossView();
+                        break;
+                    case CrosshairShape.Cross2:
+                        readIn.list[i].View = new Cross2View();
+                        break;
+                    default:
+                        readIn.list[i].View = new CrossView();
+                        break;
+                }
             }
             return readIn;
         }

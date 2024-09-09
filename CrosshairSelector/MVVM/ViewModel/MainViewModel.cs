@@ -84,7 +84,7 @@ namespace CrosshairSelector
             }
             Model.SaveCrosshair(xmlPath, _crosshairConfig);
         }
-        public void LoadCrosshairConfig(Page usercontrol)
+        public void LoadCrosshairConfig()
         {
             Tabs = new ObservableCollection<TabItem>();
             _crosshairConfig = Model.LoadCrosshair("crosshair.xml");
@@ -92,7 +92,7 @@ namespace CrosshairSelector
             {
                 TabItem tabItem = new TabItem();
                 Frame frame = new Frame();
-                frame.Content = usercontrol;
+                frame.Content = new CrosshairConfigPage();
                 tabItem.Header = "Crosshair" + (Tabs.Count + 1);
                 tabItem.Content = frame;
                 Tabs.Add(tabItem);
@@ -104,7 +104,7 @@ namespace CrosshairSelector
             {
                 for (int i = 0; i < _crosshairConfig.Count; i++)
                 {
-                    GetViewModel(i).Modify();
+                    GetViewModel(i).Crosshair = _crosshairConfig.list[i];
                 }
             }
             else
