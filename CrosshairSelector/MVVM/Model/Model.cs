@@ -81,11 +81,6 @@ namespace CrosshairSelector
             {
                 serializer.WriteObject(w, crosshairs);
             }
-            Process notepad = new Process();
-            notepad.StartInfo.FileName = xmlPath;
-            notepad.StartInfo.Arguments = xmlPath;
-            notepad.StartInfo.UseShellExecute = true;
-            notepad.Start();
         }
         public void ChangeShape(CrosshairShape shape)
         {

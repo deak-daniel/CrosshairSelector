@@ -55,10 +55,10 @@ namespace CrosshairSelector
             {
                 viewModel.UpdateCrosshairConfig();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 viewModel.AddTab(new CrosshairConfigPage(), new Crosshair());
-                MessageBox.Show("Could not load crosshair config");
+                Debug.WriteLine(ex.Message);
             }
         }
     }
