@@ -11,6 +11,11 @@ namespace CrosshairSelector
 {
     public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
+        public static event EventHandler<CrosshairModifiedEventArgs?> OnCrosshairModifed;
+        public static event EventHandler<CrosshairModifiedEventArgs?> OnChangeShape;
+        public static event EventHandler<CrosshairModifiedEventArgs?> OnTabRequested;
+        public static event EventHandler<CrosshairModifiedEventArgs?> OnSaveConfig;
+
         private Crosshair _crosshair;
         public Crosshair Crosshair
         {
@@ -197,23 +202,23 @@ namespace CrosshairSelector
             _crosshair.CrosshairColor = System.Windows.Media.Color.FromArgb((byte)Opacity, (byte)Red, (byte)Green, (byte)Blue);
             _crosshair.AssignedKey = AssignedKey.ToKey();
 
-            MainViewModel.ModifyCrosshairHandler(_crosshair);
+            OnCrosshairModifed?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
         public void ChangeShape()
         {
-            MainViewModel.ChangeShapeHandler(Shape);
+            _crosshair.Shape = Shape;
+            OnChangeShape?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
         public void SaveCrosshair()
         {
-            MainWindow.SaveCrosshairConfig(_crosshair);
+            OnSaveConfig?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
         public void AddConfig()
         {
             if (AssignedKey != "")
             {
-                MainWindow.AddTab(_crosshair);
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
             }
-
         }
         public object Clone()
         {

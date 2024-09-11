@@ -51,7 +51,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="Black">
+    <Grid Background="#1E201E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>

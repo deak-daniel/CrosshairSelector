@@ -12,12 +12,14 @@ namespace CrosshairSelector
     {
         int Thickness { get; set; }
         int Opacity { get; set; }
-        public int Gap { get; set; }
-        public int Size { get; set; }
-        public bool Outline { get; set; }
-        public System.Windows.Media.Color CrosshairColor { get; set; }
-        public ICrosshairView View { get; set; }
+        int Gap { get; set; }
+        int Size { get; set; }
+        bool Outline { get; set; }
+        CrosshairShape Shape { get; set; }
+        System.Windows.Media.Color CrosshairColor { get; set; }
+        ICrosshairView View { get; set; }
         void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, Key assignedKey);
         void ModifyCrossView(ICrosshair crosshair);
+        void ChangeCrosshairShape(CrosshairShape shape);
     }
 }

@@ -22,7 +22,7 @@ namespace CrosshairSelector.MVVM.View
     public partial class CrosshairConfigPage : Page
     {
         public CrosshairConfigViewModel viewModel = new CrosshairConfigViewModel();
-        public static Action<Crosshair> ChangeCrosshair;
+        public static Action<ICrosshair> ChangeCrosshair;
         public CrosshairConfigPage()
         {
             InitializeComponent();

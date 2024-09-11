@@ -16,8 +16,6 @@ namespace CrosshairSelector
 {
     public class MainViewModel : NotifyPropertyChanged
     {
-        public static Action<Crosshair> ModifyCrosshairHandler;
-        public static Action<CrosshairShape> ChangeShapeHandler;
         private ObservableCollection<TabItem> _tabs;
         private Model model;
         private CrosshairList _crosshairConfig;
@@ -38,29 +36,51 @@ namespace CrosshairSelector
             }
         }
 
-        public MainViewModel(Page userControl)
+        #region Constructor
+        public MainViewModel()
         {
             _crosshairConfig = new CrosshairList();
             Tabs = new ObservableCollection<TabItem>();
-            model = new Model();
-            ModifyCrosshairHandler = OnModifyCrosshair;
-            ChangeShapeHandler = OnChangeShape;
+            model = new Model(new Crosshair());
+            CrosshairConfigViewModel.OnCrosshairModifed += CrosshairModifedHandler;
+            CrosshairConfigViewModel.OnChangeShape += ChangeShapeHandler;
+            CrosshairConfigViewModel.OnTabRequested += AddTab;
+            CrosshairConfigViewModel.OnSaveConfig += SaveCrosshairConfig;
         }
-        public void OnModifyCrosshair(Crosshair crosshair)
+        #endregion // Constructor
+
+        #region Destructor
+        ~MainViewModel()
         {
-            model.ModifyCrosshair(crosshair);
+            CrosshairConfigViewModel.OnCrosshairModifed -= CrosshairModifedHandler;
+            CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler;
+            CrosshairConfigViewModel.OnTabRequested -= AddTab;
+            CrosshairConfigViewModel.OnSaveConfig -= SaveCrosshairConfig;
         }
-        public void OnChangeShape(CrosshairShape shape)
+        #endregion // Destructor
+
+        public void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
         {
-            model.ChangeShape(shape);
+            model.ModifyCrosshair(e.Crosshair);
         }
-        public void AddTab(Page usercontrol, Crosshair crosshair, string header = "Crosshair")
+        public void ChangeShapeHandler(object sender, CrosshairModifiedEventArgs e)
+        {
+            model.ChangeShape(e.Crosshair.Shape);
+        }
+        public void AddEmptyPage()
         {
             TabItem tabItem = new TabItem();
-            tabItem.Header = header + (Tabs.Count+1);
-            tabItem.Content = new Frame() { Content = usercontrol };
+            tabItem.Header = "Crosshair" + (Tabs.Count + 1);
+            tabItem.Content = new Frame() { Content = new CrosshairConfigPage() };
             Tabs.Add(tabItem);
-            _crosshairConfig.Add(crosshair);
+        }
+        public void AddTab(object sender, CrosshairModifiedEventArgs e)
+        {
+            TabItem tabItem = new TabItem();
+            tabItem.Header = "Crosshair" + (Tabs.Count+1);
+            tabItem.Content = new Frame() { Content = new CrosshairConfigPage() };
+            Tabs.Add(tabItem);
+            _crosshairConfig.Add((Crosshair)e.Crosshair);
         }
         public void ChangeCrosshair(Key key)
         {
@@ -75,12 +95,12 @@ namespace CrosshairSelector
             }
         }
         public CrosshairConfigViewModel GetViewModel(int index) => (((Tabs[index] as TabItem).Content as Frame).Content as CrosshairConfigPage).viewModel;
-        public void SaveCrosshairConfig(Crosshair? crosshair)
+        public void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
             string xmlPath = "crosshair.xml";
-            if (crosshair != null)
+            if (e.Crosshair != null)
             {
-                _crosshairConfig.Add(crosshair);
+                _crosshairConfig.Add((Crosshair)e.Crosshair);
             }
             Model.SaveCrosshair(xmlPath, _crosshairConfig);
         }

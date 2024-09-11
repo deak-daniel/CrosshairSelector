@@ -19,19 +19,18 @@ namespace CrosshairSelector
 {
     public class Model
     {
-        Crosshair Crosshair { get; set; }
+        ICrosshair Crosshair { get; set; }
         public Model()
         { }
-        public void ModifyCrosshair(Crosshair crosshair)
+        public Model(ICrosshair crosshair)
+        {
+            this.Crosshair = crosshair;
+        }
+        public void ModifyCrosshair(ICrosshair crosshair)
         {
             this.Crosshair = crosshair;
             Crosshair.ModifyCrossView(crosshair);
             CrosshairConfigPage.ChangeCrosshair(crosshair);
-        }
-        public void ModifyCrosshair(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, Key assignedKey)
-        {
-            Crosshair.ModifyCrossView(size, thickness, gap, opacity, red, green, blue, outline, assignedKey);
-            CrosshairConfigPage.ChangeCrosshair(Crosshair);
         }
         public static CrosshairList LoadCrosshair(string xmlPath)
         {
@@ -41,26 +40,27 @@ namespace CrosshairSelector
             {
                 Stream reader = File.OpenRead(xmlPath);
                 readIn = (CrosshairList)serializer.ReadObject(reader);
+                for (int i = 0; i < readIn.Count; i++)
+                {
+                    switch (readIn.list[i].Shape)
+                    {
+                        case CrosshairShape.Cross:
+                            readIn.list[i].View = new CrossView();
+                            break;
+                        case CrosshairShape.Cross2:
+                            readIn.list[i].View = new Cross2View();
+                            break;
+                        default:
+                            readIn.list[i].View = new CrossView();
+                            break;
+                    }
+                }
             }
             catch (FileNotFoundException e)
             {
                 Debug.WriteLine("Could not read crosshair config");
             }
-            for (int i = 0; i < readIn.Count; i++)
-            {
-                switch (readIn.list[i].Shape)
-                {
-                    case CrosshairShape.Cross:
-                        readIn.list[i].View = new CrossView();
-                        break;
-                    case CrosshairShape.Cross2:
-                        readIn.list[i].View = new Cross2View();
-                        break;
-                    default:
-                        readIn.list[i].View = new CrossView();
-                        break;
-                }
-            }
+            
             return readIn;
         }
         public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
