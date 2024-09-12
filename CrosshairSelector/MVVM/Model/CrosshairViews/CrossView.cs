@@ -14,6 +14,7 @@ namespace CrosshairSelector
 {
     public class CrossView : ICrosshairView
     {
+        private int gap;
         private const int Scalar = 1;
         public double Height { get; set; }
         public double Width { get; set; }
@@ -26,6 +27,7 @@ namespace CrosshairSelector
         public CrossView(int thickness = 1, int size = 1)
         {
             Outline = false;
+            gap = 0;
             Up = new System.Windows.Shapes.Rectangle();
             Up.Width = thickness;
             Up.Height = size;
@@ -55,6 +57,8 @@ namespace CrosshairSelector
             Outline = crosshair.Outline;
             CrosshairColor = crosshair.CrosshairColor;
             Width = crosshair.Thickness * Scalar;
+            Height = crosshair.Thickness * Scalar;
+            gap = crosshair.Gap * Scalar;
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(Colors.Black);
@@ -78,18 +82,18 @@ namespace CrosshairSelector
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2);
-            Canvas.SetTop(Up, ActualHeight / 2 - Up.Height);
+            Canvas.SetTop(Up, ActualHeight / 2 - Up.Height + gap / 4);
             canvas.Children.Add(Up);
 
             Canvas.SetLeft(Down, ActualWidth / 2);
-            Canvas.SetTop(Down, ActualHeight / 2 + Left.Height);
+            Canvas.SetTop(Down, ActualHeight / 2 + Left.Height - gap / 4);
             canvas.Children.Add(Down);
 
-            Canvas.SetLeft(Left, ActualWidth / 2 - Left.Width);
+            Canvas.SetLeft(Left, ActualWidth / 2 - Left.Width + gap / 4);
             Canvas.SetTop(Left, ActualHeight / 2);
             canvas.Children.Add(Left);
 
-            Canvas.SetLeft(Right, ActualWidth / 2 + Right.Height);
+            Canvas.SetLeft(Right, ActualWidth / 2 + Right.Height - gap / 4);
             Canvas.SetTop(Right, ActualHeight / 2);
             canvas.Children.Add(Right);
         }

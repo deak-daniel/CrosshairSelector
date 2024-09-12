@@ -44,7 +44,5 @@ namespace CrosshairSelector.Windows
             this.Top = height - (crosshair.View.Height / 2) - (this.Height / 2);
             this.Show();
         }
-
-
     }
 }

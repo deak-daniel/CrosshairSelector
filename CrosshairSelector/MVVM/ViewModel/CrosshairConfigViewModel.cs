@@ -194,6 +194,7 @@ namespace CrosshairSelector
         }
         public void Modify()
         {
+            _crosshair.Gap = Gap;
             _crosshair.Shape = Shape;
             _crosshair.Size = Size;
             _crosshair.Thickness = Thickness;
