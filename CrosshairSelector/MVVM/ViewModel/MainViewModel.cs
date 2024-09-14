@@ -85,20 +85,22 @@ namespace CrosshairSelector
         public void ChangeCrosshair(Key key)
         {
             int index = 0;
-            while (index < Tabs.Count && GetViewModel(index).AssignedKey.ToKey() != key)
+            for (int i = 0; i < Tabs.Count; i++)
             {
-                index++;
-            }
-            if (index < Tabs.Count)
-            {
-                GetViewModel(index).Modify();
+                if (GetViewModel(i).AssignedKey != "None")
+                {
+                    if (GetViewModel(i).Crosshair.AssignedKey == key)
+                    {
+                        GetViewModel(i).Modify();
+                    }
+                }
             }
         }
         public CrosshairConfigViewModel GetViewModel(int index) => (((Tabs[index] as TabItem).Content as Frame).Content as CrosshairConfigPage).viewModel;
         public void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
             string xmlPath = "crosshair.xml";
-            if (e.Crosshair != null)
+            if (e.Crosshair != null && !_crosshairConfig.list.Contains(e.Crosshair))
             {
                 _crosshairConfig.Add((Crosshair)e.Crosshair);
             }

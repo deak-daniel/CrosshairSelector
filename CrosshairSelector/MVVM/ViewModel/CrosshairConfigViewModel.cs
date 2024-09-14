@@ -179,7 +179,7 @@ namespace CrosshairSelector
             _red = (int)_crosshair.CrosshairColor.R;
             _green = (int)_crosshair.CrosshairColor.G;
             _blue = (int)_crosshair.CrosshairColor.B;
-            if (_assignedKey == null || _assignedKey == "None")
+            if (_crosshair.AssignedKey == null || _crosshair.AssignedKey == Key.None)
             {
                 _assignedKey = "";
             }
@@ -237,7 +237,7 @@ namespace CrosshairSelector
             }
             if (AssignedKey == null)
             {
-                _crosshair.AssignedKey = System.Windows.Input.Key.None;
+                _crosshair.AssignedKey = Key.None;
                 OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
             }
         }
