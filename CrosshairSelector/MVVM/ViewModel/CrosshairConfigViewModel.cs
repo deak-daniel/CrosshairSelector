@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CrosshairSelector
 {
@@ -178,7 +179,14 @@ namespace CrosshairSelector
             _red = (int)_crosshair.CrosshairColor.R;
             _green = (int)_crosshair.CrosshairColor.G;
             _blue = (int)_crosshair.CrosshairColor.B;
-            _assignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
+            if (_assignedKey == null || _assignedKey == "None")
+            {
+                _assignedKey = "";
+            }
+            else
+            {
+                _assignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
+            }
             _shape = _crosshair.Shape;
             Modify();
             Shape = _crosshair.Shape;
@@ -190,7 +198,14 @@ namespace CrosshairSelector
             Red = _crosshair.CrosshairColor.R;
             Green = (int)_crosshair.CrosshairColor.G;
             Blue = (int)_crosshair.CrosshairColor.B;
-            AssignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
+            if (_crosshair.AssignedKey == Key.None)
+            {
+                AssignedKey = "None";
+            }
+            else
+            {
+                AssignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
+            }
         }
         public void Modify()
         {
@@ -201,7 +216,7 @@ namespace CrosshairSelector
             _crosshair.Outline = Outline;
             _crosshair.Opacity = Opacity;
             _crosshair.CrosshairColor = System.Windows.Media.Color.FromArgb((byte)Opacity, (byte)Red, (byte)Green, (byte)Blue);
-            _crosshair.AssignedKey = AssignedKey.ToKey();
+            _crosshair.AssignedKey = AssignedKey == "" || _assignedKey == "None" ? Key.None : AssignedKey.ToKey();
 
             OnCrosshairModifed?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
@@ -216,8 +231,13 @@ namespace CrosshairSelector
         }
         public void AddConfig()
         {
-            if (AssignedKey != "")
+            if (AssignedKey != null)
             {
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+            }
+            if (AssignedKey == null)
+            {
+                _crosshair.AssignedKey = System.Windows.Input.Key.None;
                 OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
             }
         }

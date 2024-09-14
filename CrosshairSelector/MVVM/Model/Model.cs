@@ -65,16 +65,14 @@ namespace CrosshairSelector
         }
         public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
         {
-            if (crosshairs.list.Any(x => x.AssignedKey == Key.None))
-            {
-                for (int i = 0; i < crosshairs.Count; i++)
-                {
-                    if (crosshairs.list[i].AssignedKey == Key.None)
-                    {
-                        crosshairs.list.RemoveAt(i);
-                    }
-                }
-            }
+            //for (int i = 0; i < crosshairs.Count; i++)
+            //{
+            //    if (crosshairs.list[i].AssignedKey == Key.None)
+            //    {
+            //        crosshairs.list.RemoveAt(i);
+            //    }
+            //}
+            
             DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
             XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
             using (XmlWriter w = XmlWriter.Create(xmlPath, settings))

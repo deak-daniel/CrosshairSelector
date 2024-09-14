@@ -15,7 +15,7 @@ namespace CrosshairSelector
     {
         #region Fields
         private Point helperPoint;
-        private const double Scalar = 1;
+        private const double Scalar = 0.5;
 
         Point p1 = new Point(1, 1);
         Point p2 = new Point(2, 1);

@@ -13,7 +13,7 @@ namespace CrosshairSelector
         {
 
             Key res = Key.None;
-            if (value != null)
+            if (value != null && value != "")
             {
                 if (value.Length > 0 && char.IsDigit(value[0]))
                 {
