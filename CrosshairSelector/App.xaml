@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:CrosshairSelector"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ButtonTheme.xaml"/>
+                <ResourceDictionary Source="Themes/CheckBoxTheme.xaml"/>
+                <ResourceDictionary Source="Themes/LabelTheme.xaml"/>
+                <ResourceDictionary Source="Themes/SliderTheme.xaml"/>
+                <ResourceDictionary Source="Themes/TextBoxTheme.xaml"/>
+                <ResourceDictionary Source="Themes/SideButtonTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

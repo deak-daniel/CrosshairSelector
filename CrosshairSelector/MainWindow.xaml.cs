@@ -19,6 +19,7 @@ namespace CrosshairSelector
     /// </summary>
     public partial class MainWindow : Window
     {
+        int index = 1;
         private GlobalKeyboardHook _globalKeyboardHook;
         public static Action<Key> HandleKeyboard;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
@@ -32,6 +33,7 @@ namespace CrosshairSelector
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             viewModel.LoadCrosshairConfig();
+            MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler;
         }
         protected override void OnClosed(EventArgs e)
         {
@@ -51,9 +53,33 @@ namespace CrosshairSelector
             }
             catch (Exception ex)
             {
-                viewModel.AddEmptyPage();
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        private void Settings_click(object sender, RoutedEventArgs e)
+        {
+            Page page = new SettingsPage();
+            viewModel.ChangePage(page);
+        }
+
+        private void HomePage_click(object sender, RoutedEventArgs e)
+        {
+            viewModel.ChangePage(new HomePage());
+        }
+
+        private void Crosshair_click(object sender, RoutedEventArgs e)
+        {
+            viewModel.ChangePage((sender as RadioButton).Content.ToString());
+        }
+        private void OnCrosshairAddedHandler(object sender, EventArgs e)
+        {
+            RadioButton radioButton = new RadioButton();
+            radioButton.Click += Crosshair_click;
+            radioButton.Style = (Style)FindResource("SideButton");
+            radioButton.Content = "Crosshair" + index;
+            SidePanel.Children.Add(radioButton);
+            index++;
         }
     }
 }

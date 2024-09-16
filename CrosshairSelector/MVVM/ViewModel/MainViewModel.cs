@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -16,18 +17,20 @@ namespace CrosshairSelector
 {
     public class MainViewModel : NotifyPropertyChanged
     {
-        private ObservableCollection<TabItem> _tabs;
-        private Model model;
-        private CrosshairList _crosshairConfig;
-        public ObservableCollection<TabItem> Tabs
+        public static event EventHandler OnCrosshairAdded;
+
+        private Frame _currentPage;
+
+        public Frame CurrentPage
         {
-            get { return _tabs; }
-            set { _tabs = value;
+            get { return _currentPage; }
+            set { _currentPage = value;
                 RaisePropertyChanged();
             }
         }
+        private Model model;
+        private CrosshairList _crosshairConfig;
         private int _last_index;
-
         public int lastIndex
         {
             get { return _last_index; }
@@ -36,11 +39,15 @@ namespace CrosshairSelector
             }
         }
 
+        private List<Frame> _pages;
+
         #region Constructor
         public MainViewModel()
         {
             _crosshairConfig = new CrosshairList();
-            Tabs = new ObservableCollection<TabItem>();
+            _pages = new List<Frame>();
+            _pages.Add(WrapPage(new HomePage()));
+            CurrentPage = _pages.First();
             model = new Model(new Crosshair());
             CrosshairConfigViewModel.OnCrosshairModifed += CrosshairModifedHandler;
             CrosshairConfigViewModel.OnChangeShape += ChangeShapeHandler;
@@ -59,6 +66,12 @@ namespace CrosshairSelector
         }
         #endregion // Destructor
 
+        private Frame WrapPage(Page page)
+        {
+            Frame frame = new Frame();
+            frame.Content = page;
+            return frame;
+        }
         public void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
         {
             model.ModifyCrosshair(e.Crosshair);
@@ -67,25 +80,17 @@ namespace CrosshairSelector
         {
             model.ChangeShape(e.Crosshair.Shape);
         }
-        public void AddEmptyPage()
-        {
-            TabItem tabItem = new TabItem();
-            tabItem.Header = "Crosshair" + (Tabs.Count + 1);
-            tabItem.Content = new Frame() { Content = new CrosshairConfigPage() };
-            Tabs.Add(tabItem);
-        }
         public void AddTab(object sender, CrosshairModifiedEventArgs e)
         {
-            TabItem tabItem = new TabItem();
-            tabItem.Header = "Crosshair" + (Tabs.Count+1);
-            tabItem.Content = new Frame() { Content = new CrosshairConfigPage() };
-            Tabs.Add(tabItem);
+            Frame frame = new Frame();
+            frame.Content = new Frame() { Content = new CrosshairConfigPage() };
+            _pages.Add(frame);
             _crosshairConfig.Add((Crosshair)e.Crosshair);
         }
         public void ChangeCrosshair(Key key)
         {
             int index = 0;
-            for (int i = 0; i < Tabs.Count; i++)
+            for (int i = 0; i < _pages.Count; i++)
             {
                 if (GetViewModel(i).AssignedKey != "None")
                 {
@@ -96,7 +101,7 @@ namespace CrosshairSelector
                 }
             }
         }
-        public CrosshairConfigViewModel GetViewModel(int index) => (((Tabs[index] as TabItem).Content as Frame).Content as CrosshairConfigPage).viewModel;
+        public CrosshairConfigViewModel GetViewModel(int index) => (_pages[index].Content as CrosshairConfigPage).viewModel;
         public void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
             string xmlPath = "crosshair.xml";
@@ -108,16 +113,12 @@ namespace CrosshairSelector
         }
         public void LoadCrosshairConfig()
         {
-            Tabs = new ObservableCollection<TabItem>();
             _crosshairConfig = Model.LoadCrosshair("crosshair.xml");
             for (int i = 0; i < _crosshairConfig.Count; i++)
             {
-                TabItem tabItem = new TabItem();
                 Frame frame = new Frame();
                 frame.Content = new CrosshairConfigPage();
-                tabItem.Header = "Crosshair" + (Tabs.Count + 1);
-                tabItem.Content = frame;
-                Tabs.Add(tabItem);
+                _pages.Add(frame);
             }
         }
         public void UpdateCrosshairConfig()
@@ -126,12 +127,51 @@ namespace CrosshairSelector
             {
                 for (int i = 0; i < _crosshairConfig.Count; i++)
                 {
-                    GetViewModel(i).Crosshair = _crosshairConfig.list[i];
+                    if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
+                    {
+                        GetViewModel(i).Crosshair = _crosshairConfig.list[i];
+                        (_pages[i].Content as CrosshairConfigPage).Name = "Crosshair" + i;
+                        OnCrosshairAdded?.Invoke(this, EventArgs.Empty);
+                    }
                 }
             }
             else
             {
                 throw new Exception("No crosshairconfig file");
+            }
+        }
+        public void ChangePage(Page page)
+        {
+            Type type = page.GetType();
+            Frame frame = new Frame();
+            frame.Content = page;
+            for (int i = 0; i < _pages.Count; i++)
+            {
+                if (_pages[i].Content != null)
+                {
+                    if (_pages[i].Content.GetType().Name == type.Name)
+                    {
+                        CurrentPage = _pages[i];
+                    }
+                    else
+                    {
+                        _pages.Add(frame);
+                        CurrentPage = frame;
+                    }
+                }
+            }
+        }
+        public void ChangePage(string pageName)
+        {
+            for (int i = 0; i < _pages.Count; i++)
+            {
+                if (_pages[i].Content != null && _pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
+                {
+                    if ((_pages[i].Content as CrosshairConfigPage).Name == pageName)
+                    {
+                        CurrentPage = _pages[i];
+                    }
+                }
             }
         }
     }

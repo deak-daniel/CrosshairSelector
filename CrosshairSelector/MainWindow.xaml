@@ -10,45 +10,9 @@
         Background="#1E201E"
         Loaded="Window_Loaded">
 
-    <Window.Resources>
-        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:CrosshairShape"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        
-        <Style TargetType="Slider" x:Key="slider">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-            <Setter Property="TickPlacement" Value="BottomRight"/>
-            <Setter Property="TickFrequency" Value="1"/>
-            <Setter Property="Minimum" Value="1"/>
-            <Setter Property="Maximum" Value="30"/>
-            <Setter Property="IsSnapToTickEnabled" Value="True"/>
-        </Style>
-        <Style TargetType="CheckBox" x:Key="checkbox">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-        </Style>
-        <Style TargetType="Label" x:Key="label">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Foreground" Value="white"/>
-            <Setter Property="Height" Value="30"/>
-        </Style>
-
-        <Style TargetType="Button" x:Key="button">
-            <Setter Property="Width" Value="100"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="0,0,0,10"/>
-        </Style>
-    </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -56,9 +20,12 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <TabControl ItemsSource="{Binding Tabs, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedIndex="{Binding lastIndex, UpdateSourceTrigger=PropertyChanged}">
-            
-        </TabControl>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
+        
+        <StackPanel x:Name="SidePanel">
+            <RadioButton Style="{StaticResource SideButton}" Content="Home page" Click="HomePage_click"/>
+            <!--<RadioButton Style="{StaticResource SideButton}" Content="Crosshair Config"/>-->
+            <RadioButton Style="{StaticResource SideButton}" Content="Settings" Click="Settings_click"/>
+        </StackPanel>
     </Grid>
 </Window>
