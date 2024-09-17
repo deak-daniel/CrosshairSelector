@@ -11,8 +11,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Ribbon;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 
 namespace CrosshairSelector
@@ -75,8 +77,10 @@ namespace CrosshairSelector
         #endregion // Destructor
 
         private void AddHomePage()
-        {
-            _pages.Add(WrapPage(new HomePage()));
+        { 
+            Frame frame = new Frame();
+            frame.Content = new HomePage();
+            _pages.Add(frame);
             CurrentPage = _pages.First();
         }
         public void SaveCurrentCrosshair(string pageName)
@@ -92,10 +96,16 @@ namespace CrosshairSelector
                 }
             }
         }
-        private Frame WrapPage(Page page)
+        private Frame WrapCrosshairConfigPage(CrosshairConfigPage page)
         {
             Frame frame = new Frame();
-            frame.Content = page;  // Do not use Navigate unless you need navigation history.
+            frame.Content = page;
+            frame.NavigationService.Navigated += (sender, e) =>
+            {
+                Debug.WriteLine(e.Content.GetType());
+                CurrentPage = _pages.Last();
+                OnCrosshairAdded?.Invoke(this, new PageChangedEventArgs(e.Content as CrosshairConfigPage));
+            };
             return frame;
         }
         public void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
@@ -109,11 +119,9 @@ namespace CrosshairSelector
         public void AddTab(object sender, CrosshairModifiedEventArgs e)
         {
             CrosshairConfigPage c = new CrosshairConfigPage();
-
-            _pages.Add(WrapPage(c));
+            Frame frame = WrapCrosshairConfigPage(c);
+            _pages.Add(frame);
             _crosshairConfig.Add((Crosshair)e.Crosshair);
-            CurrentPage = _pages.Last();
-            OnCrosshairAdded?.Invoke(this, new PageChangedEventArgs(CurrentPage.Content as CrosshairConfigPage));
         }
         private bool ShowActivatedCrosshair(Key key, int index)
         {
@@ -153,7 +161,7 @@ namespace CrosshairSelector
             _crosshairConfig = Model.LoadCrosshair("crosshair.xml");
             for (int i = 0; i < _crosshairConfig.Count; i++)
             {
-                _pages.Add(WrapPage(new CrosshairConfigPage()));
+                _pages.Add(WrapCrosshairConfigPage(new CrosshairConfigPage()));
             }
         }
         public void UpdateCrosshairConfig()
@@ -161,13 +169,11 @@ namespace CrosshairSelector
             int index = 0;
             if (_crosshairConfig.Count > 0)
             {
-                for (int i = 0; i < _crosshairConfig.Count + _pages.Count; i++)
+                for (int i = 0; i < _pages.Count; i++)
                 {
                     if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
                     {
                         GetViewModel(i).Crosshair = _crosshairConfig[index];
-                        (_pages[i].Content as CrosshairConfigPage).Name = "Crosshair" + i;
-                        OnCrosshairAdded?.Invoke(this, new PageChangedEventArgs(_pages[i].Content as CrosshairConfigPage));
                         index++;
                     }
                 }

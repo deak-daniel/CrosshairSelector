@@ -35,6 +35,10 @@ namespace CrosshairSelector
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler;
         }
+        ~MainWindow()
+        {
+            MainViewModel.OnCrosshairAdded -= OnCrosshairAddedHandler;
+        }
         protected override void OnClosed(EventArgs e)
         {
             _globalKeyboardHook.Unhook();
@@ -88,7 +92,7 @@ namespace CrosshairSelector
             radioButton.Style = (Style)FindResource("SideButton");
             radioButton.Content = "Crosshair" + index;
             SidePanel.Children.Add(radioButton);
-            (SidePanel.Children[viewModel.IndexOfCurrentPage] as RadioButton).IsChecked = true;
+            //(SidePanel.Children[viewModel.IndexOfCurrentPage] as RadioButton).IsChecked = true;
             index++;
         }
     }
