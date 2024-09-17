@@ -67,18 +67,28 @@ namespace CrosshairSelector
         {
             viewModel.ChangePage(new HomePage());
         }
-
         private void Crosshair_click(object sender, RoutedEventArgs e)
         {
             viewModel.ChangePage((sender as RadioButton).Content.ToString());
         }
-        private void OnCrosshairAddedHandler(object sender, EventArgs e)
+        private void Crosshair_lostfocus(object sender, RoutedEventArgs e)
         {
+            viewModel.SaveCurrentCrosshair((sender as RadioButton).Content.ToString());
+        }
+        private void OnCrosshairAddedHandler(object sender, PageChangedEventArgs e)
+        {
+            for (int i = 0; i < SidePanel.Children.Count; i++)
+            {
+                (SidePanel.Children[i] as RadioButton).IsChecked = false;
+            }
             RadioButton radioButton = new RadioButton();
+            e.Source.Name = "Crosshair" + index;
+            radioButton.LostFocus += Crosshair_lostfocus;
             radioButton.Click += Crosshair_click;
             radioButton.Style = (Style)FindResource("SideButton");
             radioButton.Content = "Crosshair" + index;
             SidePanel.Children.Add(radioButton);
+            (SidePanel.Children[viewModel.IndexOfCurrentPage] as RadioButton).IsChecked = true;
             index++;
         }
     }

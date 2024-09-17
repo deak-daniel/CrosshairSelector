@@ -24,7 +24,19 @@ namespace CrosshairSelector
 
         public void Add(Crosshair item)
         {
-            list.Add(item);
+            if (!list.Contains(item))
+            {
+                list.Add(item);
+            }
+        }
+        public Crosshair this[int index]
+        {
+            get { return list[index]; }
+            set { list[index] = value ?? default(Crosshair)!; }
+        }
+        public bool Contains(ICrosshair item)
+        {
+            return list.Contains(item);
         }
     }
 }

@@ -42,16 +42,16 @@ namespace CrosshairSelector
                 readIn = (CrosshairList)serializer.ReadObject(reader);
                 for (int i = 0; i < readIn.Count; i++)
                 {
-                    switch (readIn.list[i].Shape)
+                    switch (readIn[i].Shape)
                     {
                         case CrosshairShape.Cross:
-                            readIn.list[i].View = new CrossView();
+                            readIn[i].View = new CrossView();
                             break;
                         case CrosshairShape.Cross2:
-                            readIn.list[i].View = new Cross2View();
+                            readIn[i].View = new Cross2View();
                             break;
                         default:
-                            readIn.list[i].View = new CrossView();
+                            readIn[i].View = new CrossView();
                             break;
                     }
                 }
@@ -64,15 +64,7 @@ namespace CrosshairSelector
             return readIn;
         }
         public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
-        {
-            //for (int i = 0; i < crosshairs.Count; i++)
-            //{
-            //    if (crosshairs.list[i].AssignedKey == Key.None)
-            //    {
-            //        crosshairs.list.RemoveAt(i);
-            //    }
-            //}
-            
+        {           
             DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
             XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
             using (XmlWriter w = XmlWriter.Create(xmlPath, settings))

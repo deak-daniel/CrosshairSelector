@@ -20,8 +20,9 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
-        
+        <!--<ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>-->
+        <ContentPresenter Grid.Column="1" Content="{Binding CurrentPage}"/>
+
         <StackPanel x:Name="SidePanel">
             <RadioButton Style="{StaticResource SideButton}" Content="Home page" Click="HomePage_click"/>
             <!--<RadioButton Style="{StaticResource SideButton}" Content="Crosshair Config"/>-->
