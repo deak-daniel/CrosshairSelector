@@ -38,5 +38,6 @@ namespace CrosshairSelector.MVVM.View
         {
             viewModel.AddConfig();
         }
+
     }
 }

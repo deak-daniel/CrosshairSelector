@@ -20,9 +20,22 @@ namespace CrosshairSelector.MVVM.View
     /// </summary>
     public partial class HomePage : Page
     {
+        HomePageViewModel viewModel = new HomePageViewModel();
         public HomePage()
         {
             InitializeComponent();
+            this.DataContext = viewModel;
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedItem = CrosshairListbox.SelectedItem.ToString();
+            viewModel.DeleteCrosshair(selectedItem);
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

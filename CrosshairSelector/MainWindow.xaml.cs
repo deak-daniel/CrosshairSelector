@@ -1,16 +1,9 @@
 ﻿using CrosshairSelector.MVVM.View;
 using CrosshairSelector.Windows;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
@@ -23,6 +16,8 @@ namespace CrosshairSelector
         private GlobalKeyboardHook _globalKeyboardHook;
         public static Action<Key> HandleKeyboard;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
+        HomePage homepage = new HomePage();
+        SettingsPage settingspage = new SettingsPage();
         MainViewModel viewModel = new MainViewModel();
         public MainWindow()
         {
@@ -33,7 +28,8 @@ namespace CrosshairSelector
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             viewModel.LoadCrosshairConfig();
-            MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler;
+            MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
+            MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
         }
         ~MainWindow()
         {
@@ -50,26 +46,24 @@ namespace CrosshairSelector
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 viewModel.UpdateCrosshairConfig();
+                viewModel.SendCrosshairs();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
-        }
 
+        }
         private void Settings_click(object sender, RoutedEventArgs e)
         {
-            Page page = new SettingsPage();
-            viewModel.ChangePage(page);
+            viewModel.ChangePage(settingspage);
         }
-
         private void HomePage_click(object sender, RoutedEventArgs e)
         {
-            viewModel.ChangePage(new HomePage());
+            viewModel.ChangePage(homepage);
         }
         private void Crosshair_click(object sender, RoutedEventArgs e)
         {
@@ -92,8 +86,17 @@ namespace CrosshairSelector
             radioButton.Style = (Style)FindResource("SideButton");
             radioButton.Content = "Crosshair" + index;
             SidePanel.Children.Add(radioButton);
-            //(SidePanel.Children[viewModel.IndexOfCurrentPage] as RadioButton).IsChecked = true;
             index++;
+        }
+        private void OnCrosshairDeletedHandler(object sender, PageChangedEventArgs e)
+        {
+            for (int i = 0; i < SidePanel.Children.Count; i++)
+            {
+                if (e.Source.Name == (SidePanel.Children[i] as RadioButton).Content.ToString())
+                {
+                    SidePanel.Children.RemoveAt(i);
+                }
+            }
         }
     }
 }
