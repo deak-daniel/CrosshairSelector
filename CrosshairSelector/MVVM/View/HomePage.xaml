@@ -46,10 +46,35 @@
             </DockPanel>
 
             <Button Style="{StaticResource button}"
-                    Width="200">
+                    Width="200"
+                    Click="Save_click">
                 Save Current Config
             </Button>
+            <Button Style="{StaticResource button}"
+                    Width="200"
+                    Click="Add_click">
+                Add crosshair Config
+            </Button>
         </StackPanel>
+
+        <Grid Grid.Row="2" Grid.Column="2" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Style="{StaticResource Tile}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+                <Canvas x:Name="TopLeft">
+                    
+                </Canvas>
+            </Border>
+            
+        </Grid>
         
     </Grid>
 </Page>

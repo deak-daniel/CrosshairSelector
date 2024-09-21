@@ -47,6 +47,16 @@ namespace CrosshairSelector
         public void DeleteCrosshair(string selectedItem)
         {
             CrosshairDeleted?.Invoke(this, new CrosshairModifiedEventArgs(dict[selectedItem]));
+            dict.Remove(selectedItem);
+            Crosshairs.Remove(selectedItem);
+        }
+        public void SaveConfig()
+        {
+            ConfigSaved?.Invoke(this, new CrosshairModifiedEventArgs());
+        }
+        public void AddEmptyCrosshair()
+        {
+            CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs());
         }
         #endregion // Public methods
 
@@ -66,6 +76,8 @@ namespace CrosshairSelector
 
         #region Events
         public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairDeleted;
+        public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
+        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
         #endregion // Events
 
     }

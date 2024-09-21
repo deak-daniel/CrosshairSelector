@@ -86,6 +86,7 @@ namespace CrosshairSelector
             radioButton.Style = (Style)FindResource("SideButton");
             radioButton.Content = "Crosshair" + index;
             SidePanel.Children.Add(radioButton);
+            (SidePanel.Children[viewModel.IndexOfCurrentPage] as RadioButton).IsChecked = true;
             index++;
         }
         private void OnCrosshairDeletedHandler(object sender, PageChangedEventArgs e)

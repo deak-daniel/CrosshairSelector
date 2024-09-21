@@ -8,7 +8,10 @@ namespace CrosshairSelector
 {
     public class CrosshairModifiedEventArgs : EventArgs
     {
-        public ICrosshair Crosshair { get; private set; }
+        public ICrosshair? Crosshair { get; private set; }
+        public CrosshairModifiedEventArgs() 
+            : base()
+        { }
         public CrosshairModifiedEventArgs(Crosshair crosshair)
             : base()
         {

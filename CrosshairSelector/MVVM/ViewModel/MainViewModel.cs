@@ -66,37 +66,42 @@ namespace CrosshairSelector
             CrosshairConfigViewModel.OnTabRequested += AddTab!;
             CrosshairConfigViewModel.OnSaveConfig += SaveCrosshairConfig!;
             HomePageViewModel.CrosshairDeleted += CrosshairDeletedHandler!;
+            HomePageViewModel.ConfigSaved += SaveCrosshairConfig!;
+            HomePageViewModel.CrosshairAdded += AddTab!;
         }
         #endregion // Constructor
 
         #region Destructor
         ~MainViewModel()
         {
-            CrosshairConfigViewModel.OnCrosshairModifed -= CrosshairModifedHandler;
-            CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler;
-            CrosshairConfigViewModel.OnTabRequested -= AddTab;
-            CrosshairConfigViewModel.OnSaveConfig -= SaveCrosshairConfig;
+            CrosshairConfigViewModel.OnCrosshairModifed -= CrosshairModifedHandler!;
+            CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler!;
+            CrosshairConfigViewModel.OnTabRequested -= AddTab!;
+            CrosshairConfigViewModel.OnSaveConfig -= SaveCrosshairConfig!;
+            HomePageViewModel.CrosshairDeleted -= CrosshairDeletedHandler!;
+            HomePageViewModel.ConfigSaved -= SaveCrosshairConfig!;
+            HomePageViewModel.CrosshairAdded -= AddTab!;
         }
         #endregion // Destructor
 
         #region Eventhandlers
 
-        public void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
+        private void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
         {
             model.ModifyCrosshair(e.Crosshair);
         }
-        public void ChangeShapeHandler(object sender, CrosshairModifiedEventArgs e)
+        private void ChangeShapeHandler(object sender, CrosshairModifiedEventArgs e)
         {
             model.ChangeShape(e.Crosshair.Shape);
         }
-        public void AddTab(object sender, CrosshairModifiedEventArgs e)
+        private void AddTab(object sender, CrosshairModifiedEventArgs e)
         {
             CrosshairConfigPage c = new CrosshairConfigPage();
             Frame frame = WrapCrosshairConfigPage(c);
             _pages.Add(frame);
-            _crosshairConfig.Add((Crosshair)e.Crosshair);
+            _crosshairConfig.Add((Crosshair)e.Crosshair ?? new Crosshair());
         }
-        public void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
+        private void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
             string xmlPath = "crosshair.xml";
             if (e.Crosshair != null)
@@ -116,7 +121,6 @@ namespace CrosshairSelector
                         OnCrosshairDeleted?.Invoke(this, new PageChangedEventArgs(_pages[i].Content as CrosshairConfigPage));
                         _pages.RemoveAt(i);
                         _crosshairConfig.list.Remove((Crosshair)e.Crosshair);
-                        OnCrosshairRequested?.Invoke(this, new CrosshairsRequestedEventArgs(_crosshairConfig.list));
                     }
                 }
             }

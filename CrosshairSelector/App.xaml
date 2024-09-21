@@ -12,6 +12,9 @@
                 <ResourceDictionary Source="Themes/SliderTheme.xaml"/>
                 <ResourceDictionary Source="Themes/TextBoxTheme.xaml"/>
                 <ResourceDictionary Source="Themes/SideButtonTheme.xaml"/>
+                <ResourceDictionary Source="Themes/DockPanelTheme.xaml"/>
+                <ResourceDictionary Source="Themes/ValueBoxTheme.xaml"/>
+                <ResourceDictionary Source="Themes/TileTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
