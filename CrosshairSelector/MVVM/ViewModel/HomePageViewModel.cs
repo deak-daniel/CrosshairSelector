@@ -58,6 +58,10 @@ namespace CrosshairSelector
         {
             CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs());
         }
+        public void EditCrosshair(string selectedItem)
+        {
+            CrosshairEdited?.Invoke(this, new CrosshairEditedEventArgs(selectedItem));
+        }
         #endregion // Public methods
 
         #region Eventhandlers
@@ -77,6 +81,7 @@ namespace CrosshairSelector
         #region Events
         public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairDeleted;
         public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
+        public static event EventHandler<CrosshairEditedEventArgs>? CrosshairEdited;
         public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
         #endregion // Events
 

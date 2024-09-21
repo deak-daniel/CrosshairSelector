@@ -4,6 +4,12 @@
     <Style TargetType="Border" x:Key="Tile">
         <Setter Property="Background" Value="#0F4C75"/>
         <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Margin" Value="10"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#092f48"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
 </ResourceDictionary>

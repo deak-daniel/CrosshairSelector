@@ -35,7 +35,8 @@ namespace CrosshairSelector.MVVM.View
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-
+            string selectedItem = CrosshairListbox.SelectedItem.ToString();
+            viewModel.EditCrosshair(selectedItem!);
         }
 
         private void Save_click(object sender, RoutedEventArgs e)

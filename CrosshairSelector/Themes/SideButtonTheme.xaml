@@ -19,14 +19,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Background" Value="LightBlue" />
+                            <Setter Property="Background" Value="#092f48" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="LightGray" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" Value="LightGray" />
-                            <Setter Property="Foreground" Value="DarkGray" />
+                            <Setter Property="Background" Value="#092f48" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

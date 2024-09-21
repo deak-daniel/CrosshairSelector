@@ -68,6 +68,7 @@ namespace CrosshairSelector
             HomePageViewModel.CrosshairDeleted += CrosshairDeletedHandler!;
             HomePageViewModel.ConfigSaved += SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded += AddTab!;
+            HomePageViewModel.CrosshairEdited += EditCrosshair!;
         }
         #endregion // Constructor
 
@@ -81,11 +82,11 @@ namespace CrosshairSelector
             HomePageViewModel.CrosshairDeleted -= CrosshairDeletedHandler!;
             HomePageViewModel.ConfigSaved -= SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded -= AddTab!;
+            HomePageViewModel.CrosshairEdited -= EditCrosshair!;
         }
         #endregion // Destructor
 
         #region Eventhandlers
-
         private void CrosshairModifedHandler(object sender, CrosshairModifiedEventArgs e)
         {
             model.ModifyCrosshair(e.Crosshair);
@@ -124,6 +125,10 @@ namespace CrosshairSelector
                     }
                 }
             }
+        }
+        private void EditCrosshair(object sender, CrosshairEditedEventArgs e)
+        {
+            ChangePage(e.CrosshairName ?? "");
         }
         #endregion // Eventhandlers
         private void AddHomePage()
