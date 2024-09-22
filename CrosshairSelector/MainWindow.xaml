@@ -24,7 +24,6 @@
 
         <StackPanel x:Name="SidePanel">
             <RadioButton Style="{StaticResource SideButton}" Content="Home page" Click="HomePage_click"/>
-            <RadioButton Style="{StaticResource SideButton}" Content="Settings" Click="Settings_click"/>
         </StackPanel>
     </Grid>
 </Window>

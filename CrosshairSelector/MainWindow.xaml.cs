@@ -17,7 +17,6 @@ namespace CrosshairSelector
         public static Action<Key> HandleKeyboard;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
         HomePage homepage = new HomePage();
-        SettingsPage settingspage = new SettingsPage();
         MainViewModel viewModel = new MainViewModel();
         public MainWindow()
         {
@@ -55,11 +54,6 @@ namespace CrosshairSelector
             {
                 Debug.WriteLine(ex.Message);
             }
-
-        }
-        private void Settings_click(object sender, RoutedEventArgs e)
-        {
-            viewModel.ChangePage(settingspage);
         }
         private void HomePage_click(object sender, RoutedEventArgs e)
         {

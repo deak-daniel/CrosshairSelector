@@ -47,18 +47,18 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(ICrosshair crosshair)
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor)
         {
-            Up.Points[0] = new Point(p1.X - crosshair.Thickness * Scalar,p1.Y - crosshair.Size * Scalar);
-            Up.Points[1] = new Point(p2.X + crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Down.Points[0] = new Point(p1.X - crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Down.Points[1] = new Point(p2.X + crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Left.Points[0] = new Point(p1.X - crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Left.Points[1] = new Point(p2.X + crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Right.Points[0] = new Point(p1.X - crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Right.Points[1] = new Point(p2.X + crosshair.Thickness * Scalar, p1.Y - crosshair.Size * Scalar);
-            Outline = crosshair.Outline;
-            CrosshairColor = crosshair.CrosshairColor;
+            Up.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
+            Up.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Down.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
+            Down.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Left.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
+            Left.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Right.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
+            Right.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Outline = outline;
+            CrosshairColor = crosshairColor;
 
             if (Outline)
             {
@@ -79,6 +79,10 @@ namespace CrosshairSelector
             Down.Fill = new SolidColorBrush(CrosshairColor);
             Left.Fill = new SolidColorBrush(CrosshairColor);
             Right.Fill = new SolidColorBrush(CrosshairColor);
+        }
+        public void Modify(ICrosshair crosshair)
+        {
+            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor);
         }
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
@@ -104,13 +108,13 @@ namespace CrosshairSelector
         }
         #endregion // ICrosshairView interface implementation
 
-        #region private methods
+        #region Private methods
         private double Distance(Point point1, Point point2)
         {
             double first = (int)Math.Pow(point2.X - point1.X, 2);
             double second = (int)Math.Pow(point2.Y - point1.Y, 2);
             return Math.Sqrt(first + second);
         }
-        #endregion // private methods
+        #endregion // Private methods
     }
 }

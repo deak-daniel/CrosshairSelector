@@ -6,7 +6,8 @@
       xmlns:local="clr-namespace:CrosshairSelector.MVVM.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="HomePage">
+      Title="HomePage"
+      Loaded="Page_Loaded">
 
     <Grid Background="#1E201E">
         <Grid.ColumnDefinitions>

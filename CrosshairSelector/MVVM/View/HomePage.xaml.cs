@@ -54,5 +54,26 @@ namespace CrosshairSelector.MVVM.View
         {
 
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Cross2View bottomLeft = new Cross2View();
+            Cross2View topLeft = new Cross2View();
+            CrossView bottomRight = new CrossView();
+            Cross2View topRight = new Cross2View();
+
+            bottomLeft.Modify(10, 30, true, Colors.Red);
+            bottomLeft.PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
+
+            topLeft.Modify(3, 30, true, Colors.Yellow);
+            topLeft.PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
+
+            bottomRight.Modify(7, 9, 8, true, Colors.White);
+            bottomRight.PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
+
+            topRight.Modify(4, 30, true, Colors.SteelBlue);
+            topRight.PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
+
+        }
     }
 }

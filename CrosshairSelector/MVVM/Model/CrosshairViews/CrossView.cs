@@ -1,7 +1,6 @@
 ﻿using CrosshairSelector.Windows;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -16,6 +15,8 @@ namespace CrosshairSelector
     {
         private int gap;
         private const int Scalar = 1;
+
+        #region Properties
         public double Height { get; set; }
         public double Width { get; set; }
         public System.Windows.Shapes.Rectangle Up { get; set; }
@@ -24,6 +25,9 @@ namespace CrosshairSelector
         public System.Windows.Shapes.Rectangle Right { get; set; }
         public bool Outline { get; set; }
         private System.Windows.Media.Color CrosshairColor;
+        #endregion // Properties
+
+        #region Constructor
         public CrossView(int thickness = 1, int size = 1)
         {
             Outline = false;
@@ -44,21 +48,24 @@ namespace CrosshairSelector
             Height = size;
             CrosshairColor = new System.Windows.Media.Color();
         }
-        public void Modify(ICrosshair crosshair)
+        #endregion // constructor
+
+        #region Public methods
+        public void Modify(int thickness, int size, int gap, bool outline, Color crosshairColor)
         {
-            Up.Width = crosshair.Thickness * Scalar;
-            Up.Height = crosshair.Size * Scalar;
-            Down.Width = crosshair.Thickness * Scalar;
-            Down.Height = crosshair.Size * Scalar;
-            Left.Width = crosshair.Size * Scalar;
-            Left.Height = crosshair.Thickness * Scalar;
-            Right.Width = crosshair.Size * Scalar;
-            Right.Height = crosshair.Thickness * Scalar;
-            Outline = crosshair.Outline;
-            CrosshairColor = crosshair.CrosshairColor;
-            Width = crosshair.Thickness * Scalar;
-            Height = crosshair.Thickness * Scalar;
-            gap = crosshair.Gap * Scalar;
+            Up.Width = thickness * Scalar;
+            Up.Height = size * Scalar;
+            Down.Width = thickness * Scalar;
+            Down.Height = size * Scalar;
+            Left.Width = size * Scalar;
+            Left.Height = thickness * Scalar;
+            Right.Width = size * Scalar;
+            Right.Height = thickness * Scalar;
+            Outline = outline;
+            CrosshairColor = crosshairColor;
+            Width = thickness * Scalar;
+            Height = thickness * Scalar;
+            this.gap = gap * Scalar;
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(Colors.Black);
@@ -79,6 +86,10 @@ namespace CrosshairSelector
             Left.Fill = new SolidColorBrush(CrosshairColor);
             Right.Fill = new SolidColorBrush(CrosshairColor);
         }
+        public void Modify(ICrosshair crosshair)
+        {
+            Modify(crosshair.Thickness, crosshair.Size, crosshair.Gap, crosshair.Outline, crosshair.CrosshairColor);
+        }
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2);
@@ -97,5 +108,6 @@ namespace CrosshairSelector
             Canvas.SetTop(Right, ActualHeight / 2);
             canvas.Children.Add(Right);
         }
+        #endregion // Public methods
     }
 }
