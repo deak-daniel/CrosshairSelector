@@ -65,7 +65,7 @@ namespace CrosshairSelector
         }
         private void Crosshair_lostfocus(object sender, RoutedEventArgs e)
         {
-            viewModel.SaveCurrentCrosshair((sender as RadioButton).Content.ToString());
+            //viewModel.SaveCurrentCrosshair((sender as RadioButton).Content.ToString());
         }
         private void OnCrosshairAddedHandler(object sender, PageChangedEventArgs e)
         {

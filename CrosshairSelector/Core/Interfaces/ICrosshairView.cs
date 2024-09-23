@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CrosshairSelector
 {
@@ -12,7 +13,9 @@ namespace CrosshairSelector
     {
         public double Width{ get; set; }
         public double Height{ get; set; }
+        void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0);
         void Modify(ICrosshair crosshair);
         void PutCrosshairOnCanvas(double ActualWidth,  double ActualHeight, ref Canvas canvas);
+        void RemoveCrosshairFromCanvas(ref Canvas canvas);
     }
 }

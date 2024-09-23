@@ -31,6 +31,10 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0)
+        {
+
+        }
         public void Modify(ICrosshair crosshair)
         {
             Height = crosshair.Size * Scalar;
@@ -54,6 +58,10 @@ namespace CrosshairSelector
             Canvas.SetLeft(Ellipse, ActualWidth / 2 - Ellipse.Width);
             Canvas.SetTop(Ellipse, ActualHeight / 2 - Ellipse.Height);
             canvas.Children.Add(Ellipse);
+        }
+        public void RemoveCrosshairFromCanvas(ref Canvas canvas)
+        {
+            canvas.Children.Remove(Ellipse);
         }
         #endregion // ICrosshairView interface implementation
     }

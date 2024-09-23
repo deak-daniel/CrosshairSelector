@@ -47,6 +47,7 @@ namespace CrosshairSelector
         public void DeleteCrosshair(string selectedItem)
         {
             CrosshairDeleted?.Invoke(this, new CrosshairModifiedEventArgs(dict[selectedItem]));
+            _crosshairList.Remove(dict[selectedItem]);
             dict.Remove(selectedItem);
             Crosshairs.Remove(selectedItem);
         }
@@ -57,6 +58,22 @@ namespace CrosshairSelector
         public void AddEmptyCrosshair()
         {
             CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs());
+        }
+        public void AddCrosshair(Crosshair crosshair)
+        {
+            CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs(crosshair));
+            if (!_crosshairList.Contains(crosshair))
+            {
+                int number = 1;
+                _crosshairList.Add(crosshair);
+                if (Crosshairs.Count > 0)
+                {
+                    string subs = Crosshairs.Last().Remove(0, "Crosshair".Length);
+                    number = int.Parse(subs) + 1;
+                }
+                Crosshairs.Add($"Crosshair{number}");
+                dict.Add($"Crosshair{number}", crosshair);
+            }
         }
         public void EditCrosshair(string selectedItem)
         {

@@ -20,7 +20,6 @@ namespace CrosshairSelector
         Point p1 = new Point(1, 1);
         Point p2 = new Point(2, 1);
         Point p3 = new Point(1.5, 2);
-        private System.Windows.Media.Color CrosshairColor;
         #endregion // Fields
 
         #region Properties
@@ -31,6 +30,10 @@ namespace CrosshairSelector
         public Polygon Left { get; set; }
         public Polygon Right { get; set; }
         public bool Outline { get; set; }
+        public int Thickness { get; set; }
+        public int Size { get; set; }
+        public Color CrosshairColor { get; set; }
+
         #endregion // Properties
 
         #region Constructor
@@ -47,8 +50,13 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, bool outline, Color crosshairColor)
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0)
         {
+            Thickness = thickness;
+            Size = size;
+            CrosshairColor = crosshairColor;
+            Outline = outline;
+
             Up.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Up.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
             Down.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
@@ -105,6 +113,13 @@ namespace CrosshairSelector
             Canvas.SetTop(Right, ActualHeight / 2 + Height / 4);
             canvas.Children.Add(Right);
 
+        }
+        public void RemoveCrosshairFromCanvas(ref Canvas canvas)
+        {
+            canvas.Children.Remove(Up); 
+            canvas.Children.Remove(Down);
+            canvas.Children.Remove(Left);
+            canvas.Children.Remove(Right);
         }
         #endregion // ICrosshairView interface implementation
 

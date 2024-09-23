@@ -100,7 +100,14 @@ namespace CrosshairSelector
             CrosshairConfigPage c = new CrosshairConfigPage();
             Frame frame = WrapCrosshairConfigPage(c);
             _pages.Add(frame);
-            _crosshairConfig.Add((Crosshair)e.Crosshair ?? new Crosshair());
+            if ((Crosshair)e.Crosshair != null)
+            {
+                _crosshairConfig.Add((Crosshair)e.Crosshair);
+            }
+            else
+            {
+                _crosshairConfig.Add(new Crosshair());
+            }
         }
         private void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
@@ -159,6 +166,10 @@ namespace CrosshairSelector
             {
                 Debug.WriteLine(e.Content.GetType());
                 CurrentPage = _pages.Last();
+                if (CurrentPage.Content != null)
+                {
+                    (CurrentPage.Content as CrosshairConfigPage).viewModel.Crosshair = _crosshairConfig.list.Last();
+                }
                 OnCrosshairAdded?.Invoke(this, new PageChangedEventArgs(e.Content as CrosshairConfigPage));
             };
             return frame;
