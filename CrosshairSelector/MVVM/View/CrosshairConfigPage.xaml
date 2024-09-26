@@ -89,7 +89,7 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="1">
 
             <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
                 <TextBox Text="{Binding ElementName=RedSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
@@ -125,6 +125,42 @@
 
             </DockPanel>
 
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=RedOutlineSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                         DockPanel.Dock="Left" 
+                         Style="{StaticResource SideBox}"/>
+                <Label Style="{StaticResource label}" Content="Outline Red:"/>
+                <Slider Style="{StaticResource slider}"
+                        Maximum="255"
+                        Name="RedOutlineSlider"
+                        Value="{Binding Red, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+
+            <DockPanel Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=GreenOutlineSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                         DockPanel.Dock="Left" 
+                         Style="{StaticResource SideBox}"/>
+                <Label Style="{StaticResource label}" Content="Outline Green:"/>
+                <Slider Style="{StaticResource slider}"
+                        Maximum="255"
+                        Name="GreenOutlineSlider"
+                        Value="{Binding Green, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
+
+            <DockPanel Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=BlueOutlineSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                         DockPanel.Dock="Left" 
+                         Style="{StaticResource SideBox}" />
+                <Label Style="{StaticResource label}" Content="Blue:"/>
+                <Slider Style="{StaticResource slider}"
+                        Maximum="255"
+                        Name="BlueOutlineSlider"
+                        Value="{Binding Blue, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
         </StackPanel>
         
         <StackPanel Grid.Column="0" Grid.Row="2">

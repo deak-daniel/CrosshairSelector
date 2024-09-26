@@ -50,6 +50,9 @@ namespace CrosshairSelector
                         case CrosshairShape.Cross2:
                             readIn[i].View = new Cross2View();
                             break;
+                        case CrosshairShape.Triangle:
+                            readIn[i].View = new TriangularCrossView();
+                            break;
                         default:
                             readIn[i].View = new CrossView();
                             break;

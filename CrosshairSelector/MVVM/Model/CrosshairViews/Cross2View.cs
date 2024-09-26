@@ -59,12 +59,19 @@ namespace CrosshairSelector
 
             Up.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Up.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Up.Points[2] = new Point(p3.X, p3.X + gap * Scalar / 2);
+
             Down.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Down.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Down.Points[2] = new Point(p3.X, p3.Y + gap * Scalar / 2);
+
             Left.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Left.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Left.Points[2] = new Point(p3.X, p3.Y + gap * Scalar / 2);
+
             Right.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Right.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
+            Right.Points[2] = new Point(p3.X, p3.Y + gap * Scalar / 2);
             Outline = outline;
             CrosshairColor = crosshairColor;
 
@@ -90,7 +97,7 @@ namespace CrosshairSelector
         }
         public void Modify(ICrosshair crosshair)
         {
-            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor);
+            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor, crosshair.Gap);
         }
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {

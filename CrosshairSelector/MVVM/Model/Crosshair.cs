@@ -21,8 +21,8 @@ namespace CrosshairSelector
     public enum CrosshairShape
     {
         Cross,
-        Cross2
-        //Circle
+        Cross2,
+        Triangle
     }
 
     [DataContract]
@@ -45,6 +45,17 @@ namespace CrosshairSelector
         public int Size { get; set; }
 
         [DataMember]
+        public int OutlineOpacity { get; set; }
+
+
+        [DataMember]
+        public bool CenterDot { get; set; }
+
+
+        [DataMember]
+        public int OutlineThickness { get; set; }
+
+        [DataMember]
         public bool Outline { get; set; }
 
         [DataMember]
@@ -52,6 +63,9 @@ namespace CrosshairSelector
 
         [DataMember]
         public System.Windows.Media.Color CrosshairColor { get; set; }
+
+        [DataMember]
+        public System.Windows.Media.Color OutlineColor { get; set; }
         public ICrosshairView View { get; set; }
         #endregion // Properties
 
@@ -71,14 +85,16 @@ namespace CrosshairSelector
         #endregion // Default Constructor
 
         #region ICrosshair interface implementation
-        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, Key assignedKey)
+        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, bool centerDot, int outlineRed, int outlineGreen, int outlineBlue, int outlineOpacity, Key assignedKey)
         {
             Size = size == 0 ? 1 : size;
             Opacity = opacity == 0 ? 255 : opacity;
             Thickness = thickness == 0 ? 1 : thickness;
             Gap = gap == 0 ? 1 : gap;
             CrosshairColor = System.Windows.Media.Color.FromArgb((byte)opacity, (byte)red, (byte)green, (byte)blue);
+            OutlineColor = System.Windows.Media.Color.FromArgb((byte)outlineOpacity, (byte)outlineRed, (byte)outlineGreen, (byte)outlineBlue);
             Outline = outline;
+            CenterDot = centerDot;
             AssignedKey = assignedKey;
             View.Modify(this);
         }
@@ -87,9 +103,12 @@ namespace CrosshairSelector
             Size = crosshair.Size == 0 ? 1 : crosshair.Size;
             Opacity = crosshair.Opacity == 0 ? 255 : crosshair.Opacity;
             Thickness = crosshair.Thickness == 0 ? 1 : crosshair.Thickness;
+            CenterDot = crosshair.CenterDot;
+            OutlineColor = crosshair.OutlineColor;
             //Gap = gap == 0 ? 1 : gap;
             CrosshairColor = crosshair.CrosshairColor;
             Outline = crosshair.Outline;
+            AssignedKey = crosshair.AssignedKey;
             View.Modify(this);
         }
         public void ChangeCrosshairShape(CrosshairShape newShape)
@@ -104,13 +123,16 @@ namespace CrosshairSelector
                     Shape = CrosshairShape.Cross2;
                     View = new Cross2View();
                     break;
-                //case CrosshairShape.Circle:
-                //    View = new CircleView();
-                //    break;
+                case CrosshairShape.Triangle:
+                    View = new TriangularCrossView();
+                    break;
                 default:
+                    Shape = CrosshairShape.Cross;
+                    View = new CrossView();
                     break;
             }
         }
+
         #endregion // ICrosshair interface implementation
 
     }

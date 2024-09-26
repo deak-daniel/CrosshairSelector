@@ -93,8 +93,39 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-        private int _red;
 
+        private int _outlineRed;
+        public int OutlineRed
+        {
+            get { return _outlineRed; }
+            set { _outlineRed = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+
+        private int _outlineGreen;
+        public int OutlineGreen
+        {
+            get { return _outlineGreen; }
+            set { _outlineGreen = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+
+        private int _outlineBlue;
+        public int OutlineBlue
+        {
+            get { return _outlineBlue; }
+            set { _outlineBlue = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+
+
+        private int _red;
         public int Red
         {
             get
@@ -108,8 +139,8 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-        private int _green;
 
+        private int _green;
         public int Green
         {
             get
@@ -123,8 +154,8 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-        private int _blue;
 
+        private int _blue;
         public int Blue
         {
             get
