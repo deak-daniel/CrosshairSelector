@@ -85,7 +85,7 @@ namespace CrosshairSelector
         #endregion // Default Constructor
 
         #region ICrosshair interface implementation
-        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, bool centerDot, int outlineRed, int outlineGreen, int outlineBlue, int outlineOpacity, Key assignedKey)
+        public void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, bool centerDot, int outlineRed, int outlineGreen, int outlineBlue, int outlineOpacity, int outlineThickness, Key assignedKey)
         {
             Size = size == 0 ? 1 : size;
             Opacity = opacity == 0 ? 255 : opacity;
@@ -93,6 +93,7 @@ namespace CrosshairSelector
             Gap = gap == 0 ? 1 : gap;
             CrosshairColor = System.Windows.Media.Color.FromArgb((byte)opacity, (byte)red, (byte)green, (byte)blue);
             OutlineColor = System.Windows.Media.Color.FromArgb((byte)outlineOpacity, (byte)outlineRed, (byte)outlineGreen, (byte)outlineBlue);
+            OutlineThickness = outlineThickness;
             Outline = outline;
             CenterDot = centerDot;
             AssignedKey = assignedKey;
@@ -107,6 +108,7 @@ namespace CrosshairSelector
             OutlineColor = crosshair.OutlineColor;
             //Gap = gap == 0 ? 1 : gap;
             CrosshairColor = crosshair.CrosshairColor;
+            OutlineThickness = crosshair.OutlineThickness;
             Outline = crosshair.Outline;
             AssignedKey = crosshair.AssignedKey;
             View.Modify(this);

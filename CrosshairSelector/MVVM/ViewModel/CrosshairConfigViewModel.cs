@@ -65,20 +65,6 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-        private int _opacity;
-        public int Opacity
-        {
-            get
-            {
-                return _opacity;
-            }
-            set
-            {
-                _opacity = value;
-                RaisePropertyChanged();
-                Modify();
-            }
-        }
         private int _gap;
         public int Gap
         {
@@ -89,6 +75,31 @@ namespace CrosshairSelector
             set
             {
                 _gap = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+
+        #region outline
+        private bool _outline;
+        public bool Outline
+        {
+            get
+            {
+                return _outline;
+            }
+            set
+            {
+                _outline = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+        private int _outlineThickness;
+        public int OutlineThickness
+        {
+            get { return _outlineThickness; }
+            set { _outlineThickness = value;
                 RaisePropertyChanged();
                 Modify();
             }
@@ -124,7 +135,18 @@ namespace CrosshairSelector
             }
         }
 
+        private int _outlineOpacity;
+        public int OutlineOpacity
+        {
+            get { return _outlineOpacity; }
+            set { _outlineOpacity = value;
+                RaisePropertyChanged();
+                Modify();
+            }
+        }
+        #endregion
 
+        #region crosshair color
         private int _red;
         public int Red
         {
@@ -169,21 +191,22 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-
-        private bool _outline;
-        public bool Outline
+        private int _opacity;
+        public int Opacity
         {
             get
             {
-                return _outline;
+                return _opacity;
             }
             set
             {
-                _outline = value;
+                _opacity = value;
                 RaisePropertyChanged();
                 Modify();
             }
         }
+        #endregion
+
         private CrosshairShape _shape;
         public CrosshairShape Shape
         {
@@ -210,14 +233,12 @@ namespace CrosshairSelector
             _red = (int)_crosshair.CrosshairColor.R;
             _green = (int)_crosshair.CrosshairColor.G;
             _blue = (int)_crosshair.CrosshairColor.B;
-            if (_crosshair.AssignedKey == null || _crosshair.AssignedKey == Key.None)
-            {
-                _assignedKey = "";
-            }
-            else
-            {
-                _assignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
-            }
+            _outlineRed = (int)_crosshair.OutlineColor.R;
+            _outlineGreen = (int)_crosshair.OutlineColor.G;
+            _outlineBlue = (int)_crosshair.OutlineColor.B;
+            _outlineOpacity = _crosshair.OutlineOpacity;
+            _outlineThickness = _crosshair.OutlineThickness;
+            _assignedKey = _crosshair.AssignedKey.ToStringFromKey();
             _shape = _crosshair.Shape;
             Modify();
             Shape = _crosshair.Shape;
@@ -227,16 +248,14 @@ namespace CrosshairSelector
             Outline = _crosshair.Outline;
             Opacity = _crosshair.Opacity;
             Red = _crosshair.CrosshairColor.R;
-            Green = (int)_crosshair.CrosshairColor.G;
-            Blue = (int)_crosshair.CrosshairColor.B;
-            if (_crosshair.AssignedKey == Key.None)
-            {
-                AssignedKey = "None";
-            }
-            else
-            {
-                AssignedKey = _crosshair.AssignedKey.ToString().Substring(1, _crosshair.AssignedKey.ToString().Length - 1);
-            }
+            Green = _crosshair.CrosshairColor.G;
+            Blue = _crosshair.CrosshairColor.B;
+            OutlineOpacity = _crosshair.OutlineOpacity;
+            OutlineRed = _crosshair.OutlineColor.R;
+            OutlineGreen = _crosshair.OutlineColor.G;
+            OutlineBlue = _crosshair.OutlineColor.B;
+            OutlineThickness = _crosshair.OutlineThickness;
+            AssignedKey = _crosshair.AssignedKey.ToStringFromKey();
         }
         public void Modify()
         {
@@ -246,8 +265,11 @@ namespace CrosshairSelector
             _crosshair.Thickness = Thickness;
             _crosshair.Outline = Outline;
             _crosshair.Opacity = Opacity;
+            _crosshair.OutlineOpacity = OutlineOpacity;
             _crosshair.CrosshairColor = System.Windows.Media.Color.FromArgb((byte)Opacity, (byte)Red, (byte)Green, (byte)Blue);
-            _crosshair.AssignedKey = AssignedKey == "" || _assignedKey == "None" ? Key.None : AssignedKey.ToKey();
+            _crosshair.OutlineColor = System.Windows.Media.Color.FromArgb((byte)OutlineOpacity, (byte)OutlineRed, (byte)OutlineGreen, (byte)OutlineBlue);
+            _crosshair.OutlineThickness = OutlineThickness;
+            _crosshair.AssignedKey = AssignedKey.ToKey();
 
             OnCrosshairModifed?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }

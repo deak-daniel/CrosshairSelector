@@ -25,6 +25,8 @@ namespace CrosshairSelector
         public int Thickness { get; set; }
         public int Size { get; set; }
         public Color CrosshairColor { get; set; }
+        public Color OutlineColor { get; set; }
+        public int OutlineThickness { get; set; }
         public int Gap { get; set; }
         #endregion // Properties
 
@@ -45,11 +47,12 @@ namespace CrosshairSelector
             Width = thickness;
             Height = size;
             CrosshairColor = new System.Windows.Media.Color();
+            OutlineColor = new System.Windows.Media.Color();
         }
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0)
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness, int gap = 0)
         {
             Up.Width = thickness * Scalar;
             Up.Height = size * Scalar;
@@ -62,14 +65,19 @@ namespace CrosshairSelector
 
             Outline = outline;
             CrosshairColor = crosshairColor;
+            OutlineColor = outlineColor;
+            OutlineThickness = outlineThickness;
             Width = thickness * Scalar;
             Height = thickness * Scalar;
             Gap = gap * Scalar;
             if (Outline)
             {
-                Up.Stroke = new SolidColorBrush(Colors.Black);
-                Left.Stroke = new SolidColorBrush(Colors.Black);
-                Right.Stroke = new SolidColorBrush(Colors.Black);
+                Up.Stroke = new SolidColorBrush(OutlineColor);
+                Left.Stroke = new SolidColorBrush(OutlineColor);
+                Right.Stroke = new SolidColorBrush(OutlineColor);
+                Up.StrokeThickness = OutlineThickness;
+                Left.StrokeThickness = OutlineThickness;
+                Right.StrokeThickness = OutlineThickness;
             }
             else
             {
@@ -85,7 +93,7 @@ namespace CrosshairSelector
 
         public void Modify(ICrosshair crosshair)
         {
-            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor, crosshair.Gap);
+            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness, crosshair.Gap);
         }
 
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)

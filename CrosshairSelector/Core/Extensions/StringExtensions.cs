@@ -9,7 +9,7 @@ namespace CrosshairSelector
 {
     public static class StringExtensions
     {
-        private static readonly Dictionary<Key, string> KeyToLetterMap = new Dictionary<Key, string>() 
+        private static readonly Dictionary<Key, string> KeyToLetterMap = new Dictionary<Key, string>()
         {
             {Key.D0, "0" },
             {Key.D1, "1"},
@@ -48,6 +48,7 @@ namespace CrosshairSelector
             {Key.Y, "y"},
             {Key.Z, "z"},
             {Key.Tab, "tab"},
+            {Key.None, "" },
             {Key.LeftCtrl, "leftcontrol"},
             {Key.LeftShift, "leftshift"},
             {Key.Space, "space"}
@@ -90,6 +91,7 @@ namespace CrosshairSelector
             {"x", Key.X},
             {"y", Key.Y},
             {"z", Key.Z},
+            {"", Key.None },
             {"space", Key.Space },
             {"tab", Key.Tab },
             {"leftshift", Key.LeftShift },
@@ -102,6 +104,15 @@ namespace CrosshairSelector
             if (value != null && value != "")
             {
                 res = LetterToKeyMap[value];
+            }
+            return res;
+        }
+        public static string ToStringFromKey(this Key value)
+        {
+            string res = "";
+            if (value != null)
+            {
+                res = KeyToLetterMap[value];
             }
             return res;
         }

@@ -33,6 +33,8 @@ namespace CrosshairSelector
         public int Thickness { get; set; }
         public int Size { get; set; }
         public Color CrosshairColor { get; set; }
+        public Color OutlineColor { get; set; }
+        public int OutlineThickness { get; set; }
 
         #endregion // Properties
 
@@ -50,7 +52,7 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0)
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness, int gap = 0)
         {
             Thickness = thickness;
             Size = size;
@@ -75,13 +77,19 @@ namespace CrosshairSelector
             Right.Points[2] = new Point(p3.X, p3.Y + gap * Scalar / 2);
             Outline = outline;
             CrosshairColor = crosshairColor;
+            OutlineColor = outlineColor;
+            OutlineThickness = outlineThickness;
 
             if (Outline)
             {
-                Up.Stroke = new SolidColorBrush(Colors.Black);
-                Down.Stroke = new SolidColorBrush(Colors.Black);
-                Left.Stroke = new SolidColorBrush(Colors.Black);
-                Right.Stroke = new SolidColorBrush(Colors.Black);
+                Up.Stroke = new SolidColorBrush(OutlineColor);
+                Down.Stroke = new SolidColorBrush(OutlineColor);
+                Left.Stroke = new SolidColorBrush(OutlineColor);
+                Right.Stroke = new SolidColorBrush(OutlineColor);
+                Up.StrokeThickness = outlineThickness;
+                Down.StrokeThickness = outlineThickness;
+                Left.StrokeThickness = outlineThickness;
+                Right.StrokeThickness = outlineThickness;
             }
             else
             {
@@ -98,7 +106,7 @@ namespace CrosshairSelector
         }
         public void Modify(ICrosshair crosshair)
         {
-            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor, crosshair.Gap);
+            Modify(crosshair.Thickness, crosshair.Size, crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness, crosshair.Gap);
         }
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {

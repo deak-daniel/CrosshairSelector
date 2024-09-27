@@ -31,7 +31,7 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, bool outline, Color crosshairColor, int gap = 0)
+        public void Modify(int thickness, int size, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness, int gap = 0)
         {
 
         }

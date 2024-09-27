@@ -16,6 +16,7 @@
                 <x:Type TypeName="local:CrosshairShape"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
     <Grid Background="#1E201E">
         <Grid.ColumnDefinitions>
@@ -51,35 +52,57 @@
                         Name="SizeSlider"
                         Value="{Binding Size, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
-        </StackPanel>
-
-        <StackPanel Grid.Row="1" Grid.Column="2" >
-
-            <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
-                <TextBox Text="{Binding ElementName=OpacitySlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
-                         DockPanel.Dock="Right" 
-                         Style="{StaticResource SideBox}" />
-                <Label Style="{StaticResource label}" Content="Opacity:"/>
-                <Slider Style="{StaticResource slider}"
-                        Name="OpacitySlider"
-                        Maximum="255"
-                        Value="{Binding Opacity, UpdateSourceTrigger=PropertyChanged}"/>
-
-            </DockPanel>
 
             <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
                 <TextBox Text="{Binding ElementName=GapSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
-                         DockPanel.Dock="Right"
-                         Style="{StaticResource SideBox}" />
+             DockPanel.Dock="Right"
+             Style="{StaticResource SideBox}" />
                 <Label Style="{StaticResource label}" Content="Gap:"/>
                 <Slider Style="{StaticResource slider}"
-                        Name="GapSlider"
-                        Maximum="30"
-                        Minimum="-30"
-                        Value="{Binding Gap, UpdateSourceTrigger=PropertyChanged}"/>
+            Name="GapSlider"
+            Maximum="30"
+            Minimum="-30"
+            Value="{Binding Gap, UpdateSourceTrigger=PropertyChanged}"/>
 
             </DockPanel>
 
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="2" >
+            <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=OpacitySlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+             DockPanel.Dock="Right" 
+             Style="{StaticResource SideBox}" />
+                <Label Style="{StaticResource label}" Content="Opacity:"/>
+                <Slider Style="{StaticResource slider}"
+            Name="OpacitySlider"
+            Maximum="255"
+            Value="{Binding Opacity, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
+
+            <DockPanel Visibility="{Binding Outline, Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=OutlineOpacitySlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                         DockPanel.Dock="Right" 
+                         Style="{StaticResource SideBox}" />
+                <Label Style="{StaticResource label}" Content="Outline Opacity:"/>
+                <Slider Style="{StaticResource slider}"
+                        Name="OutlineOpacitySlider"
+                        Maximum="255"
+                        Value="{Binding OutlineOpacity, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
+            <DockPanel Visibility="{Binding Outline, Converter={StaticResource BoolToVis}}" VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
+                <TextBox Text="{Binding ElementName=OutlineThicknessSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
+                         DockPanel.Dock="Right" 
+                         Style="{StaticResource SideBox}" />
+                <Label Style="{StaticResource label}" Content="Outline Thickness:"/>
+                <Slider Style="{StaticResource slider}"
+                        Name="OutlineThicknessSlider"
+                        Maximum="10"
+                        Value="{Binding OutlineThickness, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </DockPanel>
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="2">
@@ -127,7 +150,7 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Visibility="{Binding Outline, Converter={StaticResource BoolToVis}}">
             <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
                 <TextBox Text="{Binding ElementName=RedOutlineSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                          DockPanel.Dock="Left" 
@@ -136,7 +159,7 @@
                 <Slider Style="{StaticResource slider}"
                         Maximum="255"
                         Name="RedOutlineSlider"
-                        Value="{Binding Red, UpdateSourceTrigger=PropertyChanged}"/>
+                        Value="{Binding OutlineRed, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
 
             <DockPanel Style="{StaticResource DockPanelStyle}">
@@ -147,18 +170,18 @@
                 <Slider Style="{StaticResource slider}"
                         Maximum="255"
                         Name="GreenOutlineSlider"
-                        Value="{Binding Green, UpdateSourceTrigger=PropertyChanged}"/>
+                        Value="{Binding OutlineGreen, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
 
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <TextBox Text="{Binding ElementName=BlueOutlineSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
                          DockPanel.Dock="Left" 
                          Style="{StaticResource SideBox}" />
-                <Label Style="{StaticResource label}" Content="Blue:"/>
+                <Label Style="{StaticResource label}" Content=" Outline Blue:"/>
                 <Slider Style="{StaticResource slider}"
                         Maximum="255"
                         Name="BlueOutlineSlider"
-                        Value="{Binding Blue, UpdateSourceTrigger=PropertyChanged}"/>
+                        Value="{Binding OutlineBlue, UpdateSourceTrigger=PropertyChanged}"/>
 
             </DockPanel>
         </StackPanel>
