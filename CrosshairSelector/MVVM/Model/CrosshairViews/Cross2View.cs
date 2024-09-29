@@ -56,10 +56,11 @@ namespace CrosshairSelector
             Size = size;
             CrosshairColor = crosshairColor;
             Outline = outline;
-
             Up.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Up.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
             Up.Points[2] = new Point(p3.X, p3.X + gap * Scalar / 2);
+            Width = Distance(Up.Points[0], helperPoint);
+            Height = Distance(Up.Points[2], helperPoint);
 
             Down.Points[0] = new Point(p1.X - thickness * Scalar, p1.Y - size * Scalar);
             Down.Points[1] = new Point(p2.X + thickness * Scalar, p1.Y - size * Scalar);
@@ -106,20 +107,19 @@ namespace CrosshairSelector
             canvas.Children.Add(Up);
 
             Down.RenderTransform = new RotateTransform(180);
-            Canvas.SetLeft(Down, ActualWidth / 2 + Width *1.5 );
-            Canvas.SetTop(Down, ActualHeight / 2 + Height * 2);
+            Canvas.SetLeft(Down, ActualWidth / 2 + Width * 0.2);
+            Canvas.SetTop(Down, ActualHeight / 2);
             canvas.Children.Add(Down);
 
             Left.RenderTransform = new RotateTransform(270);
-            Canvas.SetLeft(Left, ActualWidth / 2 - Width / 3.5);
-            Canvas.SetTop(Left, ActualHeight / 2 + Height * 1.75);
+            Canvas.SetLeft(Left, ActualWidth / 2);
+            Canvas.SetTop(Left, ActualHeight / 2);
             canvas.Children.Add(Left);
 
             Right.RenderTransform = new RotateTransform(90);
-            Canvas.SetLeft(Right, ActualWidth / 2 + Width * 1.8);
-            Canvas.SetTop(Right, ActualHeight / 2 + Height / 4);
+            Canvas.SetLeft(Right, ActualWidth / 2);
+            Canvas.SetTop(Right, ActualHeight / 2 - Height * 0.4);
             canvas.Children.Add(Right);
-
         }
         public void RemoveCrosshairFromCanvas(ref Canvas canvas)
         {
