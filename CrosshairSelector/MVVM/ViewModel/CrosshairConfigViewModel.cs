@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -12,10 +13,11 @@ namespace CrosshairSelector
 {
     public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
-        public static event EventHandler<CrosshairModifiedEventArgs?> OnCrosshairModifed;
-        public static event EventHandler<CrosshairModifiedEventArgs?> OnChangeShape;
-        public static event EventHandler<CrosshairModifiedEventArgs?> OnTabRequested;
-        public static event EventHandler<CrosshairModifiedEventArgs?> OnSaveConfig;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnCrosshairModifed;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnShowRequested;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnChangeShape;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnTabRequested;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnSaveConfig;
 
         private Crosshair _crosshair;
         public Crosshair Crosshair
@@ -27,6 +29,7 @@ namespace CrosshairSelector
                 LoadCrosshair();
             }
         }
+
         private string _assignedKey;
         public string AssignedKey
         {
@@ -51,6 +54,7 @@ namespace CrosshairSelector
                 Modify();
             }
         }
+
         private int _size;
         public int Size
         {
@@ -65,6 +69,7 @@ namespace CrosshairSelector
                 Modify();
             }
         }
+
         private int _gap;
         public int Gap
         {
@@ -207,6 +212,17 @@ namespace CrosshairSelector
         }
         #endregion
 
+        private ObservableCollection<CrosshairShape> _crosshairTypes;
+        public ObservableCollection<CrosshairShape> CrosshairTypes
+        {
+            get { return _crosshairTypes; }
+            set { _crosshairTypes = value;
+                RaisePropertyChanged();
+                ChangeShape();
+            }
+        }
+
+
         private CrosshairShape _shape;
         public CrosshairShape Shape
         {
@@ -222,7 +238,13 @@ namespace CrosshairSelector
         public CrosshairConfigViewModel()
         {
             _crosshair = new Crosshair();
+            
+            if (FillCrosshairTypes(out ObservableCollection<CrosshairShape> tempList))
+            {
+                CrosshairTypes = tempList;
+            }
         }
+
         public void LoadCrosshair()
         {
             _gap = _crosshair.Gap;
@@ -294,9 +316,44 @@ namespace CrosshairSelector
                 OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
             }
         }
+        public bool Show()
+        {
+            bool res = false;
+            try
+            {
+                OnShowRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+                res = true;
+                return res;
+            }
+            catch (Exception)
+            {
+                return res;
+            }
+        }
         public object Clone()
         {
             return this.MemberwiseClone();
         }
+
+        #region Private methods
+        private bool FillCrosshairTypes(out ObservableCollection<CrosshairShape> list)
+        {
+            bool res = false;
+            list = new ObservableCollection<CrosshairShape>();
+            try
+            {
+                foreach (CrosshairShape item in Enum.GetValues<CrosshairShape>())
+                {
+                    list.Add(item);
+                }
+                res = true;
+                return res;
+            }
+            catch (NullReferenceException)
+            {
+                return res;
+            }
+        }
+        #endregion // Private methods
     }
 }

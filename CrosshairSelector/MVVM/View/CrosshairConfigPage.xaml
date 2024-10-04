@@ -10,12 +10,6 @@
       Title="CrosshairConfigPage">
 
     <Page.Resources>
-        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:CrosshairShape"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
     <Grid Background="#1E201E">
@@ -55,14 +49,13 @@
 
             <DockPanel VerticalAlignment="Center" Style="{StaticResource DockPanelStyle}">
                 <TextBox Text="{Binding ElementName=GapSlider, Path=Value, UpdateSourceTrigger=PropertyChanged}" 
-             DockPanel.Dock="Right"
-             Style="{StaticResource SideBox}" />
+                         DockPanel.Dock="Right"
+                         Style="{StaticResource SideBox}" />
                 <Label Style="{StaticResource label}" Content="Gap:"/>
                 <Slider Style="{StaticResource slider}"
-            Name="GapSlider"
-            Maximum="30"
-            Minimum="-30"
-            Value="{Binding Gap, UpdateSourceTrigger=PropertyChanged}"/>
+                        Name="GapSlider"
+                        Maximum="30"
+                        Value="{Binding Gap, UpdateSourceTrigger=PropertyChanged}"/>
 
             </DockPanel>
 
@@ -189,7 +182,7 @@
         <StackPanel Grid.Column="0" Grid.Row="2">
             <DockPanel Style="{StaticResource DockPanelStyle}">
                 <Label Content="Shape: " Style="{StaticResource label}"/>
-                <ComboBox ItemsSource="{Binding Source={StaticResource dataFromEnum}}"
+                <ComboBox ItemsSource="{Binding CrosshairTypes, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding Shape, UpdateSourceTrigger=PropertyChanged}">
                 </ComboBox>
             </DockPanel>

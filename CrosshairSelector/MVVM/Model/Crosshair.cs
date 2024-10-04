@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
@@ -62,10 +61,10 @@ namespace CrosshairSelector
         public CrosshairShape Shape { get; set; }
 
         [DataMember]
-        public System.Windows.Media.Color CrosshairColor { get; set; }
+        public Color CrosshairColor { get; set; }
 
         [DataMember]
-        public System.Windows.Media.Color OutlineColor { get; set; }
+        public Color OutlineColor { get; set; }
         public ICrosshairView View { get; set; }
         #endregion // Properties
 
@@ -91,8 +90,8 @@ namespace CrosshairSelector
             Opacity = opacity == 0 ? 255 : opacity;
             Thickness = thickness == 0 ? 1 : thickness;
             Gap = gap == 0 ? 1 : gap;
-            CrosshairColor = System.Windows.Media.Color.FromArgb((byte)opacity, (byte)red, (byte)green, (byte)blue);
-            OutlineColor = System.Windows.Media.Color.FromArgb((byte)outlineOpacity, (byte)outlineRed, (byte)outlineGreen, (byte)outlineBlue);
+            CrosshairColor = Color.FromArgb((byte)opacity, (byte)red, (byte)green, (byte)blue);
+            OutlineColor = Color.FromArgb((byte)outlineOpacity, (byte)outlineRed, (byte)outlineGreen, (byte)outlineBlue);
             OutlineThickness = outlineThickness;
             Outline = outline;
             CenterDot = centerDot;
