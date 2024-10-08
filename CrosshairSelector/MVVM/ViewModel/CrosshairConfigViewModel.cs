@@ -308,12 +308,12 @@ namespace CrosshairSelector
         {
             if (AssignedKey != null)
             {
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
             }
             if (AssignedKey == null)
             {
                 _crosshair.AssignedKey = Key.None;
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
             }
         }
         public bool Show()

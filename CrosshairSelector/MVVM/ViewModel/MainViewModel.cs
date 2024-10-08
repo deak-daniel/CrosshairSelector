@@ -115,6 +115,10 @@ namespace CrosshairSelector
             {
                 _crosshairConfig.Add(new Crosshair());
             }
+            if (e.Flag == CrosshairEventFlags.NewCrosshairRequested)
+            {
+                _crosshairConfig.Add(new Crosshair());
+            }
             Frame frame = WrapCrosshairConfigPage(c);
             _pages.Add(frame);
         }
