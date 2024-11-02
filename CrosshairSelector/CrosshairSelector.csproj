@@ -13,4 +13,8 @@
     <Content Include="LOGO2.ico" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ppy.SDL2-CS" Version="1.0.82" />
+  </ItemGroup>
+
 </Project>

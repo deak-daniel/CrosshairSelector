@@ -14,6 +14,7 @@ namespace CrosshairSelector
     {
         int index = 1;
         private GlobalKeyboardHook _globalKeyboardHook;
+        private GlobalMouseWheelHook _globalMouseWheelHook;
         public static Action<Key> HandleKeyboard;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
         HomePage homepage = new HomePage();
@@ -26,6 +27,8 @@ namespace CrosshairSelector
             HandleKeyboard = HandleKeys;
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
+            _globalMouseWheelHook = new GlobalMouseWheelHook();
+            _globalMouseWheelHook.Start();
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
@@ -37,6 +40,7 @@ namespace CrosshairSelector
         protected override void OnClosed(EventArgs e)
         {
             _globalKeyboardHook.Unhook();
+            _globalMouseWheelHook.Stop();
             base.OnClosed(e);
         }
         private void HandleKeys(Key key)

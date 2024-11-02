@@ -64,23 +64,23 @@ namespace CrosshairSelector
         }
         public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
-            Canvas.SetLeft(Up, ActualWidth / 2);
+            Canvas.SetLeft(Up, ActualWidth / 2 - 0.55);
             Canvas.SetTop(Up, ActualHeight / 2);
             canvas.Children.Add(Up);
 
             Down.RenderTransform = new RotateTransform(180);
-            Canvas.SetLeft(Down, ActualWidth / 2 + Width * 1.5);
+            Canvas.SetLeft(Down, ActualWidth / 2 + Width * 1.3);
             Canvas.SetTop(Down, ActualHeight / 2 + Height * 2);
             canvas.Children.Add(Down);
 
             Left.RenderTransform = new RotateTransform(270);
             Canvas.SetLeft(Left, ActualWidth / 2 - Width / 3.5);
-            Canvas.SetTop(Left, ActualHeight / 2 + Height * 1.75);
+            Canvas.SetTop(Left, ActualHeight / 2 + Height * 1.5);
             canvas.Children.Add(Left);
 
             Right.RenderTransform = new RotateTransform(90);
             Canvas.SetLeft(Right, ActualWidth / 2 + Width * 1.8);
-            Canvas.SetTop(Right, ActualHeight / 2 + Height / 4);
+            Canvas.SetTop(Right, ActualHeight / 2 + Height / 8);
             canvas.Children.Add(Right);
         }
         public void RemoveCrosshairFromCanvas(ref Canvas canvas)

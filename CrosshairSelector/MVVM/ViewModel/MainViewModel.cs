@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.PortableExecutable;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,6 +59,10 @@ namespace CrosshairSelector
         private List<Frame> _pages;
         #endregion // Properties
 
+        #region Fields
+        private int currentCrosshairIndex = 1;
+        #endregion // Fields
+
         #region Constructor
         public MainViewModel()
         {
@@ -65,6 +70,7 @@ namespace CrosshairSelector
             _pages = new List<Frame>();
             AddHomePage();
             model = new Model(new Crosshair());
+            GlobalMouseWheelHook.MouseWheelScrolled += ScrollCrosshair!;
             CrosshairConfigViewModel.OnCrosshairModifed += CrosshairModifedHandler!;
             CrosshairConfigViewModel.OnShowRequested += ShowCrosshairHandler!;
             CrosshairConfigViewModel.OnChangeShape += ChangeShapeHandler!;
@@ -80,6 +86,7 @@ namespace CrosshairSelector
         #region Destructor
         ~MainViewModel()
         {
+            GlobalMouseWheelHook.MouseWheelScrolled -= ScrollCrosshair!;
             CrosshairConfigViewModel.OnCrosshairModifed -= CrosshairModifedHandler!;
             CrosshairConfigViewModel.OnShowRequested -= ShowCrosshairHandler!;
             CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler!;
@@ -155,6 +162,21 @@ namespace CrosshairSelector
             if (e.Crosshair != null)
             {
                 model.ModifyCrosshair(e.Crosshair);
+            }
+        }
+        private void ScrollCrosshair(object sender, MouseWheelEventArgs e)
+        {
+            if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count-1)
+            {
+                if (e.Delta > 0 && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
+                {
+                    currentCrosshairIndex++;
+                }
+                if(e.Delta < 0 && (currentCrosshairIndex - 1 >= 0)) // DOWN
+                {
+                    currentCrosshairIndex--;
+                }
+                model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
             }
         }
         #endregion // Eventhandlers
