@@ -14,7 +14,7 @@ namespace CrosshairSelector
     public class CrossView : ICrosshairView
     {
         private const int Scalar = 1;
-        private const int GapOffset = -4;
+        private const int GapOffset = -10;
 
         #region Properties
         public double Height { get; set; }

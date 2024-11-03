@@ -316,12 +316,12 @@ namespace CrosshairSelector
                 OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
             }
         }
-        public bool Show()
+        public bool Show(Crosshair previous = null)
         {
             bool res = false;
             try
             {
-                OnShowRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+                OnShowRequested?.Invoke(this, new CrosshairModifiedEventArgs(previous ?? _crosshair));
                 res = true;
                 return res;
             }

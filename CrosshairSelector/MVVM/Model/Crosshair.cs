@@ -25,7 +25,7 @@ namespace CrosshairSelector
     }
 
     [DataContract]
-    public class Crosshair : ICrosshair
+    public class Crosshair : ICrosshair, ICloneable
     {
         #region Properties
         [DataMember]
@@ -74,6 +74,11 @@ namespace CrosshairSelector
         /// </summary>
         public Crosshair()
         {
+            AssignedKey = Key.None;
+            OutlineOpacity = 0;
+            CenterDot = false;
+            Outline = false;
+            OutlineThickness = 0;
             View = new CrossView();
             Shape = CrosshairShape.Cross;
             Thickness = 1;
@@ -107,7 +112,7 @@ namespace CrosshairSelector
             OutlineColor = crosshair.OutlineColor;
             //Gap = gap == 0 ? 1 : gap;
             CrosshairColor = crosshair.CrosshairColor;
-            OutlineThickness = crosshair.OutlineThickness;
+            OutlineThickness = crosshair.OutlineThickness == 0 ? 1 : crosshair.OutlineThickness;
             Outline = crosshair.Outline;
             AssignedKey = crosshair.AssignedKey;
             View.Modify(this);
@@ -133,8 +138,14 @@ namespace CrosshairSelector
                     break;
             }
         }
-
         #endregion // ICrosshair interface implementation
+
+        #region ICloneable implementation
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+        #endregion // ICloneable implementation
 
     }
 

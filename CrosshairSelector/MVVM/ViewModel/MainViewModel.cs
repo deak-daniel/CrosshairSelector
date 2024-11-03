@@ -61,6 +61,9 @@ namespace CrosshairSelector
 
         #region Fields
         private int currentCrosshairIndex = 1;
+        private bool keyboardSwitching = true;
+        private bool mouseWheelSwitching = false;
+        private Crosshair previous = default(Crosshair);
         #endregion // Fields
 
         #region Constructor
@@ -80,6 +83,7 @@ namespace CrosshairSelector
             HomePageViewModel.ConfigSaved += SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded += AddTab!;
             HomePageViewModel.CrosshairEdited += EditCrosshair!;
+            HomePageViewModel.SwitchingTypeUpdated += SwitchingTypeUpdatedHandler!;
         }
         #endregion // Constructor
 
@@ -96,6 +100,7 @@ namespace CrosshairSelector
             HomePageViewModel.ConfigSaved -= SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded -= AddTab!;
             HomePageViewModel.CrosshairEdited -= EditCrosshair!;
+            HomePageViewModel.SwitchingTypeUpdated -= SwitchingTypeUpdatedHandler!;
         }
         #endregion // Destructor
 
@@ -166,6 +171,7 @@ namespace CrosshairSelector
         }
         private void ScrollCrosshair(object sender, MouseWheelEventArgs e)
         {
+            if (!mouseWheelSwitching) return;
             if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count-1)
             {
                 if (e.Delta > 0 && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
@@ -178,6 +184,11 @@ namespace CrosshairSelector
                 }
                 model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
             }
+        }
+        private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel)
+        {
+            mouseWheelSwitching = mousewheel;
+            keyboardSwitching = keyboard;
         }
         #endregion // Eventhandlers
 
@@ -236,6 +247,10 @@ namespace CrosshairSelector
         }
         public void ChangeCrosshair(Key key)
         {
+            if (!keyboardSwitching)
+            {
+                return;
+            }
             for (int i = 0; i < _pages.Count; i++)
             {
                 if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)

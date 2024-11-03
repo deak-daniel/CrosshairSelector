@@ -54,6 +54,16 @@
                     Click="Add_click">
                 Add crosshair Config
             </Button>
+            <CheckBox Style="{StaticResource checkbox}" 
+                      Width="150"
+                      Height="20"
+                      Content="Keyboard switching"
+                      IsChecked="{Binding KeyboardSwitch, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+            <CheckBox Style="{StaticResource checkbox}" 
+                      Width="150"
+                      Height="20"
+                      Content="Mousewheel switching"
+                      IsChecked="{Binding MouseSwitch, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
         </StackPanel>
 
 

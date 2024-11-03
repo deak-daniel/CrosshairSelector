@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace CrosshairSelector
 {
-    public interface ICrosshair
+    public interface ICrosshair : ICloneable
     {
         int Thickness { get; set; }
         int Opacity { get; set; }
