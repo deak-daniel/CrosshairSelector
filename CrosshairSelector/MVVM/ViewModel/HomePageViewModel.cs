@@ -31,7 +31,7 @@ namespace CrosshairSelector
             get { return _keyboardSwitch; }
             set { _keyboardSwitch = value;
                 RaisePropertyChanged();
-                SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch);
+                SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch, _controllerSwitch);
             }
         }
 
@@ -43,9 +43,22 @@ namespace CrosshairSelector
             {
                 _mouseSwitch = value;
                 RaisePropertyChanged();
-                SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch);
+                SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch, _controllerSwitch);
             }
         }
+
+        private bool _controllerSwitch;
+
+        public bool ControllerSwitch
+        {
+            get { return _controllerSwitch; }
+            set { 
+                _controllerSwitch = value;
+                RaisePropertyChanged();
+                SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch, _controllerSwitch);
+            }
+        }
+
 
         #endregion // Properties
 
@@ -123,7 +136,7 @@ namespace CrosshairSelector
         public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
         public static event EventHandler<CrosshairEditedEventArgs>? CrosshairEdited;
         public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
-        public static event Action<bool, bool>? SwitchingTypeUpdated;
+        public static event Action<bool, bool, bool>? SwitchingTypeUpdated;
         #endregion // Events
 
     }

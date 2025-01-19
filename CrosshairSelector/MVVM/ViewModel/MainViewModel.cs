@@ -62,6 +62,7 @@ namespace CrosshairSelector
         #region Fields
         private int currentCrosshairIndex = 1;
         private bool keyboardSwitching = true;
+        private bool controllerSwitching = false;
         private bool mouseWheelSwitching = false;
         private Crosshair previous = default(Crosshair);
         #endregion // Fields
@@ -84,6 +85,7 @@ namespace CrosshairSelector
             HomePageViewModel.CrosshairAdded += AddTab!;
             HomePageViewModel.CrosshairEdited += EditCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated += SwitchingTypeUpdatedHandler!;
+            MainWindow.OnControllerSwitch += ControllerSwitch!;
         }
         #endregion // Constructor
 
@@ -101,6 +103,7 @@ namespace CrosshairSelector
             HomePageViewModel.CrosshairAdded -= AddTab!;
             HomePageViewModel.CrosshairEdited -= EditCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated -= SwitchingTypeUpdatedHandler!;
+            MainWindow.OnControllerSwitch -= ControllerSwitch!;
         }
         #endregion // Destructor
 
@@ -185,9 +188,47 @@ namespace CrosshairSelector
                 model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
             }
         }
-        private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel)
+        private void ControllerSwitch(byte button)
+        {
+            string buttonName = "";
+            switch (button)
+            {
+                //case 0: return "A";
+                //case 1: return "B";
+                //case 2: return "X";
+                //case 3: return "Y";
+                //case 4: return "map";
+                //case 6: return "menu";
+                //case 7: return "L3";
+                //case 8: return "R3";
+                case 9: 
+                    buttonName = "LB";
+                    break;
+                case 10: 
+                    buttonName = "RB";
+                    break;
+
+                default: 
+                    break;
+            }
+            if (!controllerSwitching) return;
+            if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count - 1)
+            {
+                if (buttonName == "LB" && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
+                {
+                    currentCrosshairIndex++;
+                }
+                if (buttonName == "RB" && (currentCrosshairIndex - 1 >= 0)) // DOWN
+                {
+                    currentCrosshairIndex--;
+                }
+                model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
+            }
+        }
+        private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel, bool controller)
         {
             mouseWheelSwitching = mousewheel;
+            controllerSwitching = controller;
             keyboardSwitching = keyboard;
         }
         #endregion // Eventhandlers

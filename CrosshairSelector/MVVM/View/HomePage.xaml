@@ -16,7 +16,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="60"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -64,6 +64,11 @@
                       Height="20"
                       Content="Mousewheel switching"
                       IsChecked="{Binding MouseSwitch, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
+            <CheckBox Style="{StaticResource checkbox}" 
+          Width="150"
+          Height="20"
+          Content="Controller switching"
+          IsChecked="{Binding ControllerSwitch, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
         </StackPanel>
 
 

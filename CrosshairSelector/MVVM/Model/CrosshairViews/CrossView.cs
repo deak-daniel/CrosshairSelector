@@ -93,71 +93,51 @@ namespace CrosshairSelector
         #endregion // Public methods
 
         #region Private methods
-        private bool SetSize(int thickness, int size, int gap)
+        private void SetSize(int thickness, int size, int gap)
         {
-            bool res = false;
             Thickness = thickness * Scalar;
             Size = size * Scalar;
             Gap = (gap * Scalar) + GapOffset;
-            try
-            {
-                Up.Width = Thickness;
-                Up.Height = Size;
-                Down.Width = Thickness;
-                Down.Height = Size;
-                Left.Width = Size;
-                Left.Height = Thickness;
-                Right.Width = Size;
-                Right.Height = Thickness;
-                Width = Thickness;
-                Height = Thickness;
-                res = true; 
-                return res; 
-            }
-            catch (Exception)
-            {
-                return res;
-            }
+            Up.Width = Thickness;
+            Up.Height = Size;
+            Down.Width = Thickness;
+            Down.Height = Size;
+            Left.Width = Size;
+            Left.Height = Thickness;
+            Right.Width = Size;
+            Right.Height = Thickness;
+            Width = Thickness;
+            Height = Thickness;
         }
-        private bool SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        private void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
         {
-            bool res = false;
-            try
+            Outline = outline;
+            CrosshairColor = crosshairColor;
+            OutlineColor = outlineColor;
+            OutlineThickness = outlineThickness;
+            if (Outline)
             {
-                Outline = outline;
-                CrosshairColor = crosshairColor;
-                OutlineColor = outlineColor;
-                OutlineThickness = outlineThickness;
-                if (Outline)
-                {
-                    Up.Stroke = new SolidColorBrush(OutlineColor);
-                    Down.Stroke = new SolidColorBrush(OutlineColor);
-                    Left.Stroke = new SolidColorBrush(OutlineColor);
-                    Right.Stroke = new SolidColorBrush(OutlineColor);
-                    Up.StrokeThickness = OutlineThickness;
-                    Down.StrokeThickness = OutlineThickness;
-                    Left.StrokeThickness = OutlineThickness;
-                    Right.StrokeThickness = OutlineThickness;
-                }
-                else
-                {
-                    Up.Stroke = new SolidColorBrush(CrosshairColor);
-                    Down.Stroke = new SolidColorBrush(CrosshairColor);
-                    Left.Stroke = new SolidColorBrush(CrosshairColor);
-                    Right.Stroke = new SolidColorBrush(CrosshairColor);
-                }
+                Up.Stroke = new SolidColorBrush(OutlineColor);
+                Down.Stroke = new SolidColorBrush(OutlineColor);
+                Left.Stroke = new SolidColorBrush(OutlineColor);
+                Right.Stroke = new SolidColorBrush(OutlineColor);
+                Up.StrokeThickness = OutlineThickness;
+                Down.StrokeThickness = OutlineThickness;
+                Left.StrokeThickness = OutlineThickness;
+                Right.StrokeThickness = OutlineThickness;
+            }
+            else
+            {
+                Up.Stroke = new SolidColorBrush(CrosshairColor);
+                Down.Stroke = new SolidColorBrush(CrosshairColor);
+                Left.Stroke = new SolidColorBrush(CrosshairColor);
+                Right.Stroke = new SolidColorBrush(CrosshairColor);
+            }
 
-                Up.Fill = new SolidColorBrush(CrosshairColor);
-                Down.Fill = new SolidColorBrush(CrosshairColor);
-                Left.Fill = new SolidColorBrush(CrosshairColor);
-                Right.Fill = new SolidColorBrush(CrosshairColor);
-                res = true;
-                return res;
-            }
-            catch (Exception)
-            {
-                return res;
-            }
+            Up.Fill = new SolidColorBrush(CrosshairColor);
+            Down.Fill = new SolidColorBrush(CrosshairColor);
+            Left.Fill = new SolidColorBrush(CrosshairColor);
+            Right.Fill = new SolidColorBrush(CrosshairColor);
         }
         #endregion // Private methods
     }

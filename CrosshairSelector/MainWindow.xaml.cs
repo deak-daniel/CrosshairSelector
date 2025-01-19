@@ -1,9 +1,12 @@
 ﻿using CrosshairSelector.MVVM.View;
 using CrosshairSelector.Windows;
+using SDL2;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using SDL2;
 
 namespace CrosshairSelector
 {
@@ -16,12 +19,14 @@ namespace CrosshairSelector
         private GlobalKeyboardHook _globalKeyboardHook;
         private GlobalMouseWheelHook _globalMouseWheelHook;
         public static Action<Key> HandleKeyboard;
+        public static event Action<byte> OnControllerSwitch;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
         HomePage homepage = new HomePage();
         MainViewModel viewModel = new MainViewModel();
         public MainWindow()
         {
             InitializeComponent();
+            InitializeSDL();
             this.DataContext = viewModel;
             crosshairWindow.Topmost = true;
             HandleKeyboard = HandleKeys;
@@ -36,6 +41,40 @@ namespace CrosshairSelector
         ~MainWindow()
         {
             MainViewModel.OnCrosshairAdded -= OnCrosshairAddedHandler;
+        }
+        private void InitializeSDL()
+        {
+            if (SDL.SDL_Init(SDL.SDL_INIT_GAMECONTROLLER) < 0)
+            {
+                Application.Current.Shutdown();
+            }
+
+            int joystickCount = SDL.SDL_NumJoysticks();
+            for (int i = 0; i < joystickCount; i++)
+            {
+                if (SDL.SDL_IsGameController(i) == SDL.SDL_bool.SDL_TRUE)
+                {
+                    IntPtr controller = SDL.SDL_GameControllerOpen(i);
+                    if (controller != IntPtr.Zero)
+                    {
+                        Debug.WriteLine($"Controller {i} connected: {SDL.SDL_GameControllerName(controller)}");
+                    }
+                }
+            }
+
+            // Start polling for events
+            CompositionTarget.Rendering += OnRender;
+        }
+
+        private void OnRender(object sender, EventArgs ev)
+        {
+            while (SDL.SDL_PollEvent(out SDL.SDL_Event e) != 0)
+            {
+                if (e.type == SDL.SDL_EventType.SDL_CONTROLLERBUTTONDOWN)
+                {
+                    OnControllerSwitch?.Invoke(e.cbutton.button);
+                }
+            }
         }
         protected override void OnClosed(EventArgs e)
         {
