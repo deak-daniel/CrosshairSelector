@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace CrosshairSelector
 {
-    public class Cross2View : ICrosshairView
+    public class Cross2View : CrosshairViewBase
     {
         #region Fields
         private Point helperPoint;
@@ -23,19 +23,10 @@ namespace CrosshairSelector
         #endregion // Fields
 
         #region Properties
-        public double Height { get; set; }
-        public double Width { get; set; }
         public Polygon Up { get; private set; }
         public Polygon Down { get; private set; }
         public Polygon Left { get; private set; }
         public Polygon Right { get; private set; }
-        public bool Outline { get; private set; }
-        public int Thickness { get; private set; }
-        public int Size { get; private set; }
-        public Color CrosshairColor { get; private set; }
-        public Color OutlineColor { get; private set; }
-        public int OutlineThickness { get; private set; }
-        public int Gap { get; private set; }
 
         #endregion // Properties
 
@@ -53,16 +44,12 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, int gap, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        public override void Modify(ICrosshair crosshair)
         {
-            SetSize(thickness, size, gap);
-            SetStyle(outline, crosshairColor, outlineColor, outlineThickness);
+            SetSize(crosshair.Thickness, crosshair.Size, crosshair.Gap);
+            SetStyle(crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
         }
-        public void Modify(ICrosshair crosshair)
-        {
-            Modify(crosshair.Thickness, crosshair.Size, crosshair.Gap, crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
-        }
-        public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
+        public override void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2 - 0.55);
             Canvas.SetTop(Up, ActualHeight / 2);
@@ -83,7 +70,7 @@ namespace CrosshairSelector
             Canvas.SetTop(Right, ActualHeight / 2 + Height / 8);
             canvas.Children.Add(Right);
         }
-        public void RemoveCrosshairFromCanvas(ref Canvas canvas)
+        public override void RemoveCrosshairFromCanvas(ref Canvas canvas)
         {
             canvas.Children.Remove(Up); 
             canvas.Children.Remove(Down);
@@ -99,77 +86,53 @@ namespace CrosshairSelector
             double second = (int)Math.Pow(point2.Y - point1.Y, 2);
             return Math.Sqrt(first + second);
         }
-        private bool SetSize(int thickness, int size, int gap)
+        public override void SetSize(int thickness, int size, int gap)
         {
             Thickness = (int)(thickness * Scalar);
             Size = (int)(size * Scalar);
             Gap = (int)(gap * Scalar);
-            bool res = false;
-            try
-            {
-                Up.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
-                Up.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
-                Up.Points[2] = new Point(p3.X, p3.X - Gap / 2);
+            Up.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            Up.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            Up.Points[2] = new Point(p3.X, p3.X - Gap / 2);
 
-                Down.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
-                Down.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
-                Down.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
+            Down.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            Down.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            Down.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
 
-                Left.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
-                Left.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
-                Left.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
+            Left.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            Left.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            Left.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
 
-                Right.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
-                Right.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
-                Right.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
-
-                res = true;
-                return res;
-            }
-            catch (Exception)
-            {
-                return res;
-            }
+            Right.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            Right.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            Right.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
         }
-        private bool SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        public override void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
         {
-            bool res = false;
-            try
+            base.SetStyle(outline, crosshairColor, outlineColor, outlineThickness);
+            if (Outline)
             {
-                Outline = outline;
-                OutlineColor = outlineColor;
-                OutlineThickness = outlineThickness;
-                CrosshairColor = crosshairColor;
-                if (Outline)
-                {
-                    Up.Stroke = new SolidColorBrush(OutlineColor);
-                    Down.Stroke = new SolidColorBrush(OutlineColor);
-                    Left.Stroke = new SolidColorBrush(OutlineColor);
-                    Right.Stroke = new SolidColorBrush(OutlineColor);
-                    Up.StrokeThickness = OutlineThickness;
-                    Down.StrokeThickness = OutlineThickness;
-                    Left.StrokeThickness = OutlineThickness;
-                    Right.StrokeThickness = OutlineThickness;
-                }
-                else
-                {
-                    Up.Stroke = new SolidColorBrush(CrosshairColor);
-                    Down.Stroke = new SolidColorBrush(CrosshairColor);
-                    Left.Stroke = new SolidColorBrush(CrosshairColor);
-                    Right.Stroke = new SolidColorBrush(CrosshairColor);
-                }
+                Up.Stroke = new SolidColorBrush(OutlineColor);
+                Down.Stroke = new SolidColorBrush(OutlineColor);
+                Left.Stroke = new SolidColorBrush(OutlineColor);
+                Right.Stroke = new SolidColorBrush(OutlineColor);
+                Up.StrokeThickness = OutlineThickness;
+                Down.StrokeThickness = OutlineThickness;
+                Left.StrokeThickness = OutlineThickness;
+                Right.StrokeThickness = OutlineThickness;
+            }
+            else
+            {
+                Up.Stroke = new SolidColorBrush(CrosshairColor);
+                Down.Stroke = new SolidColorBrush(CrosshairColor);
+                Left.Stroke = new SolidColorBrush(CrosshairColor);
+                Right.Stroke = new SolidColorBrush(CrosshairColor);
+            }
 
-                Up.Fill = new SolidColorBrush(CrosshairColor);
-                Down.Fill = new SolidColorBrush(CrosshairColor);
-                Left.Fill = new SolidColorBrush(CrosshairColor);
-                Right.Fill = new SolidColorBrush(CrosshairColor);
-                res = true;
-                return res;
-            }
-            catch (Exception)
-            {
-                return res;
-            }
+            Up.Fill = new SolidColorBrush(CrosshairColor);
+            Down.Fill = new SolidColorBrush(CrosshairColor);
+            Left.Fill = new SolidColorBrush(CrosshairColor);
+            Right.Fill = new SolidColorBrush(CrosshairColor);
         }
         #endregion // Private methods
     }

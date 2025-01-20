@@ -11,25 +11,16 @@ using System.Windows.Media;
 
 namespace CrosshairSelector
 {
-    public class CrossView : ICrosshairView
+    public class CrossView : CrosshairViewBase
     {
         private const int Scalar = 1;
         private const int GapOffset = -10;
 
         #region Properties
-        public double Height { get; set; }
-        public double Width { get; set; }
         public System.Windows.Shapes.Rectangle Up { get; private set; }
         public System.Windows.Shapes.Rectangle Down { get; private set; }
         public System.Windows.Shapes.Rectangle Left { get; private set; }
         public System.Windows.Shapes.Rectangle Right { get; private set; }
-        public bool Outline { get; private set; }
-        public int Thickness { get; private set; }
-        public int Size { get; private set; }
-        public Color CrosshairColor { get; private set; }
-        public Color OutlineColor { get; private set; }
-        public int OutlineThickness { get; private set; }
-        public int Gap { get; private set; }
         #endregion // Properties
 
         #region Constructor
@@ -56,16 +47,12 @@ namespace CrosshairSelector
         #endregion // constructor
 
         #region Public methods
-        public void Modify(int thickness, int size, int gap, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        public override void Modify(ICrosshair crosshair)
         {
-            SetSize(thickness, size, gap);
-            SetStyle(outline, crosshairColor, outlineColor, outlineThickness);
+            SetSize(crosshair.Thickness, crosshair.Size, crosshair.Gap);
+            SetStyle(crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
         }
-        public void Modify(ICrosshair crosshair)
-        {
-            Modify(crosshair.Thickness, crosshair.Size, crosshair.Gap, crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
-        }
-        public void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
+        public override void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2);
             Canvas.SetTop(Up, ActualHeight / 2 - Up.Height - Gap / 4);
@@ -83,7 +70,7 @@ namespace CrosshairSelector
             Canvas.SetTop(Right, ActualHeight / 2);
             canvas.Children.Add(Right);
         }
-        public void RemoveCrosshairFromCanvas(ref Canvas canvas)
+        public override void RemoveCrosshairFromCanvas(ref Canvas canvas)
         {
             canvas.Children.Remove(Up);
             canvas.Children.Remove(Down);
@@ -93,7 +80,7 @@ namespace CrosshairSelector
         #endregion // Public methods
 
         #region Private methods
-        private void SetSize(int thickness, int size, int gap)
+        public override void SetSize(int thickness, int size, int gap)
         {
             Thickness = thickness * Scalar;
             Size = size * Scalar;
@@ -109,12 +96,9 @@ namespace CrosshairSelector
             Width = Thickness;
             Height = Thickness;
         }
-        private void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        public override void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
         {
-            Outline = outline;
-            CrosshairColor = crosshairColor;
-            OutlineColor = outlineColor;
-            OutlineThickness = outlineThickness;
+            base.SetStyle(outline, crosshairColor, outlineColor, outlineThickness);
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(OutlineColor);

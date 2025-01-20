@@ -68,25 +68,28 @@ namespace CrosshairSelector.MVVM.View
             switch (name)
             {
                 case "TopLeft":
-                    crosshair = topLeft;
+                    crosshair = (Crosshair)topLeft.Clone();
                     crosshair.View.RemoveCrosshairFromCanvas(ref TopLeft);
                     break;
                 case "TopRight":
-                    crosshair = topRight;
+                    crosshair = (Crosshair)topRight.Clone();
                     crosshair.View.RemoveCrosshairFromCanvas(ref TopRight);
                     break;
                 case "BottomRight":
-                    crosshair = bottomRight;
+                    crosshair = (Crosshair)bottomRight.Clone();
                     crosshair.View.RemoveCrosshairFromCanvas(ref BottomRight);
                     break;
                 case "BottomLeft":
-                    crosshair = bottomLeft;
+                    crosshair = (Crosshair)bottomLeft.Clone();
                     crosshair.View.RemoveCrosshairFromCanvas(ref BottomLeft);
                     break;
                 default:
                     break;
             }
-            viewModel.AddCrosshair(crosshair);
+            if (crosshair != default(Crosshair))
+            {
+                viewModel.AddCrosshair(crosshair);
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -101,7 +104,7 @@ namespace CrosshairSelector.MVVM.View
                 bottomLeft.Opacity = 255;
                 bottomLeft.CrosshairColor = Colors.Red;
                 bottomLeft.ModifyCrossView(bottomLeft);
-                (bottomLeft.View as Cross2View).PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
+                bottomLeft.View.PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
 
                 topLeft.View = new Cross2View();
                 topLeft.Thickness = 3;
@@ -111,7 +114,7 @@ namespace CrosshairSelector.MVVM.View
                 topLeft.Opacity = 255;
                 topLeft.CrosshairColor = Colors.Yellow;
                 topLeft.ModifyCrossView(topLeft);
-                (topLeft.View as Cross2View).PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
+                topLeft.View.PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
 
                 bottomRight.View = new CrossView();
                 bottomRight.Thickness = 7;
@@ -122,7 +125,7 @@ namespace CrosshairSelector.MVVM.View
                 bottomRight.Shape = CrosshairShape.Cross;
                 bottomRight.Opacity = 255;
                 bottomRight.ModifyCrossView(bottomRight);
-                (bottomRight.View as CrossView).PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
+                bottomRight.View.PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
 
                 topRight.View = new Cross2View();
                 topRight.Thickness = 4;
@@ -132,7 +135,7 @@ namespace CrosshairSelector.MVVM.View
                 topRight.Opacity = 255;
                 topRight.CrosshairColor = Colors.SteelBlue;
                 topRight.ModifyCrossView(topRight);
-                (topRight.View as Cross2View).PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
+                topRight.View.PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
 
                 loaded++;
             }

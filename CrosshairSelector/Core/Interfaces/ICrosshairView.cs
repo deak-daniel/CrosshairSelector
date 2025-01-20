@@ -13,9 +13,17 @@ namespace CrosshairSelector
     {
         public double Width{ get; set; }
         public double Height{ get; set; }
-        void Modify(int thickness, int size, int gap, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness);
+        public int Thickness { get; }
+        public int Size{ get; }
+        public int Gap{ get; }
+        public Color CrosshairColor { get; }
+        public Color OutlineColor { get;  }
+        public int OutlineThickness { get; }
+        public bool Outline { get; }
         void Modify(ICrosshair crosshair);
         void PutCrosshairOnCanvas(double ActualWidth,  double ActualHeight, ref Canvas canvas);
         void RemoveCrosshairFromCanvas(ref Canvas canvas);
+        void SetSize(int thickness, int size, int gap);
+        void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness);
     }
 }

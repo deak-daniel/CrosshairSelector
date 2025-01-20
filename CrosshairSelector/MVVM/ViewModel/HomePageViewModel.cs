@@ -58,14 +58,12 @@ namespace CrosshairSelector
                 SwitchingTypeUpdated?.Invoke(_keyboardSwitch, _mouseSwitch, _controllerSwitch);
             }
         }
-
-
         #endregion // Properties
 
         #region Constructor
         public HomePageViewModel()
         {
-            MainViewModel.OnCrosshairRequested += CrosshairRequestedHandler;
+            MainViewModel.OnCrosshairRequested += CrosshairRequestedHandler!;
             _crosshairList = new List<Crosshair>();
             Crosshairs = new ObservableCollection<string>();
             dict = new Dictionary<string, Crosshair>();
@@ -75,7 +73,7 @@ namespace CrosshairSelector
         #region Destructor
         ~HomePageViewModel()
         {
-            MainViewModel.OnCrosshairRequested -= CrosshairRequestedHandler;
+            MainViewModel.OnCrosshairRequested -= CrosshairRequestedHandler!;
         }
         #endregion // Destructor
 

@@ -37,7 +37,6 @@ namespace CrosshairSelector
             }
         }
         private Frame _currentPage;
-
         public Frame CurrentPage
         {
             get { return _currentPage; }
@@ -47,15 +46,6 @@ namespace CrosshairSelector
         }
         private Model model;
         private CrosshairList _crosshairConfig;
-        private int _last_index;
-        public int lastIndex
-        {
-            get { return _last_index; }
-            set { _last_index = value;
-                RaisePropertyChanged();
-            }
-        }
-
         private List<Frame> _pages;
         #endregion // Properties
 
@@ -64,7 +54,6 @@ namespace CrosshairSelector
         private bool keyboardSwitching = true;
         private bool controllerSwitching = false;
         private bool mouseWheelSwitching = false;
-        private Crosshair previous = default(Crosshair);
         #endregion // Fields
 
         #region Constructor
@@ -193,14 +182,6 @@ namespace CrosshairSelector
             string buttonName = "";
             switch (button)
             {
-                //case 0: return "A";
-                //case 1: return "B";
-                //case 2: return "X";
-                //case 3: return "Y";
-                //case 4: return "map";
-                //case 6: return "menu";
-                //case 7: return "L3";
-                //case 8: return "R3";
                 case 9: 
                     buttonName = "LB";
                     break;
@@ -311,21 +292,15 @@ namespace CrosshairSelector
         }
         public void UpdateCrosshairConfig()
         {
+            if (_crosshairConfig.Count == 0) return;
             int index = 0;
-            if (_crosshairConfig.Count > 0)
+            for (int i = 0; i < _pages.Count; i++)
             {
-                for (int i = 0; i < _pages.Count; i++)
+                if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
                 {
-                    if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
-                    {
-                        GetViewModel(i).Crosshair = _crosshairConfig[index];
-                        index++;
-                    }
+                    GetViewModel(i).Crosshair = _crosshairConfig[index];
+                    index++;
                 }
-            }
-            else
-            {
-                throw new Exception("No crosshairconfig file");
             }
         }
         public void ChangePage(Page page)
@@ -346,17 +321,18 @@ namespace CrosshairSelector
         }
         public void ChangePage(string pageName)
         {
-            if (pageName != null && pageName != "")
+            if (pageName == null || pageName == "")
             {
-                for (int i = 0; i < _pages.Count; i++)
+                return;
+            }
+            for (int i = 0; i < _pages.Count; i++)
+            {
+                if (_pages[i].Content != null && _pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
                 {
-                    if (_pages[i].Content != null && _pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
+                    if ((_pages[i].Content as CrosshairConfigPage)!.Name == pageName)
                     {
-                        if ((_pages[i].Content as CrosshairConfigPage)!.Name == pageName)
-                        {
-                            CurrentPage = _pages[i];
-                            GetViewModel(i).Show();
-                        }
+                        CurrentPage = _pages[i];
+                        GetViewModel(i).Show();
                     }
                 }
             }

@@ -23,7 +23,6 @@ namespace CrosshairSelector
         System.Windows.Media.Color OutlineColor { get; set; }
         int OutlineThickness { get; set; }
         ICrosshairView View { get; set; }
-        void ModifyCrossView(int size, int thickness, int gap, int opacity, int red, int green, int blue, bool outline, bool CenterDot, int outlineRed, int outlineGreen, int outlineBlue, int outlineOpacity, int outlineThickness, Key assignedKey);
         void ModifyCrossView(ICrosshair crosshair);
         void ChangeCrosshairShape(CrosshairShape shape);
     }
