@@ -26,6 +26,7 @@ namespace CrosshairSelector
         public static event EventHandler<PageChangedEventArgs>? OnCrosshairAdded;
         public static event EventHandler<PageChangedEventArgs>? OnCrosshairDeleted;
         public static event EventHandler<CrosshairsRequestedEventArgs>? OnCrosshairRequested;
+        public static event Func<string, bool>? OnLoadRequest;
         #endregion // Events
 
         #region Properties
@@ -45,25 +46,17 @@ namespace CrosshairSelector
             }
         }
         private Model model;
-        private CrosshairList _crosshairConfig;
         private List<Frame> _pages;
         #endregion // Properties
 
-        #region Fields
-        private int currentCrosshairIndex = 1;
-        private bool keyboardSwitching = true;
-        private bool controllerSwitching = false;
-        private bool mouseWheelSwitching = false;
-        #endregion // Fields
 
         #region Constructor
         public MainViewModel()
         {
-            _crosshairConfig = new CrosshairList();
             _pages = new List<Frame>();
             AddHomePage();
-            model = new Model(new Crosshair());
-            GlobalMouseWheelHook.MouseWheelScrolled += ScrollCrosshair!;
+            model = Model.Instance;
+            model.Initialize();
             CrosshairConfigViewModel.OnCrosshairModifed += CrosshairModifedHandler!;
             CrosshairConfigViewModel.OnShowRequested += ShowCrosshairHandler!;
             CrosshairConfigViewModel.OnChangeShape += ChangeShapeHandler!;
@@ -73,15 +66,12 @@ namespace CrosshairSelector
             HomePageViewModel.ConfigSaved += SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded += AddTab!;
             HomePageViewModel.CrosshairEdited += EditCrosshair!;
-            HomePageViewModel.SwitchingTypeUpdated += SwitchingTypeUpdatedHandler!;
-            MainWindow.OnControllerSwitch += ControllerSwitch!;
         }
         #endregion // Constructor
 
         #region Destructor
         ~MainViewModel()
         {
-            GlobalMouseWheelHook.MouseWheelScrolled -= ScrollCrosshair!;
             CrosshairConfigViewModel.OnCrosshairModifed -= CrosshairModifedHandler!;
             CrosshairConfigViewModel.OnShowRequested -= ShowCrosshairHandler!;
             CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler!;
@@ -91,8 +81,6 @@ namespace CrosshairSelector
             HomePageViewModel.ConfigSaved -= SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded -= AddTab!;
             HomePageViewModel.CrosshairEdited -= EditCrosshair!;
-            HomePageViewModel.SwitchingTypeUpdated -= SwitchingTypeUpdatedHandler!;
-            MainWindow.OnControllerSwitch -= ControllerSwitch!;
         }
         #endregion // Destructor
 
@@ -106,22 +94,22 @@ namespace CrosshairSelector
         }
         private void ChangeShapeHandler(object sender, CrosshairModifiedEventArgs e)
         {
-            model.ChangeShape(e.Crosshair.Shape);
+            model.ChangeShape(e.Crosshair);
         }
         private void AddTab(object sender, CrosshairModifiedEventArgs e)
         {
             CrosshairConfigPage c = new CrosshairConfigPage();
             if ((Crosshair)e.Crosshair != null)
             {
-                _crosshairConfig.Add((Crosshair)e.Crosshair);
+                model.AddCrosshair((Crosshair)e.Crosshair);
             }
             else
             {
-                _crosshairConfig.Add(new Crosshair());
+                model.AddCrosshair(new Crosshair());
             }
             if (e.Flag == CrosshairEventFlags.NewCrosshairRequested)
             {
-                _crosshairConfig.Add(new Crosshair());
+                model.AddCrosshair(new Crosshair());
             }
             Frame frame = WrapCrosshairConfigPage(c);
             _pages.Add(frame);
@@ -131,9 +119,9 @@ namespace CrosshairSelector
             string xmlPath = "crosshair.xml";
             if (e.Crosshair != null)
             {
-                _crosshairConfig.Add((Crosshair)e.Crosshair);
+                model.AddCrosshair((Crosshair)e.Crosshair);
             }
-            Model.SaveCrosshair(xmlPath, _crosshairConfig);
+            Model.SaveCrosshair(xmlPath, model.Crosshairs);
         }
         private void CrosshairDeletedHandler(object sender, CrosshairModifiedEventArgs e)
         {
@@ -145,7 +133,7 @@ namespace CrosshairSelector
                     {
                         OnCrosshairDeleted?.Invoke(this, new PageChangedEventArgs(_pages[i].Content as CrosshairConfigPage));
                         _pages.RemoveAt(i);
-                        _crosshairConfig.list.Remove((Crosshair)e.Crosshair);
+                        model.DeleteCrosshair((Crosshair)e.Crosshair);
                     }
                 }
             }
@@ -160,57 +148,6 @@ namespace CrosshairSelector
             {
                 model.ModifyCrosshair(e.Crosshair);
             }
-        }
-        private void ScrollCrosshair(object sender, MouseWheelEventArgs e)
-        {
-            if (!mouseWheelSwitching) return;
-            if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count-1)
-            {
-                if (e.Delta > 0 && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
-                {
-                    currentCrosshairIndex++;
-                }
-                if(e.Delta < 0 && (currentCrosshairIndex - 1 >= 0)) // DOWN
-                {
-                    currentCrosshairIndex--;
-                }
-                model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
-            }
-        }
-        private void ControllerSwitch(byte button)
-        {
-            string buttonName = "";
-            switch (button)
-            {
-                case 9: 
-                    buttonName = "LB";
-                    break;
-                case 10: 
-                    buttonName = "RB";
-                    break;
-
-                default: 
-                    break;
-            }
-            if (!controllerSwitching) return;
-            if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count - 1)
-            {
-                if (buttonName == "LB" && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
-                {
-                    currentCrosshairIndex++;
-                }
-                if (buttonName == "RB" && (currentCrosshairIndex - 1 >= 0)) // DOWN
-                {
-                    currentCrosshairIndex--;
-                }
-                model.ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
-            }
-        }
-        private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel, bool controller)
-        {
-            mouseWheelSwitching = mousewheel;
-            controllerSwitching = controller;
-            keyboardSwitching = keyboard;
         }
         #endregion // Eventhandlers
 
@@ -232,7 +169,7 @@ namespace CrosshairSelector
                 CurrentPage = _pages.Last();
                 if (CurrentPage.Content != null)
                 {
-                    (CurrentPage.Content as CrosshairConfigPage).viewModel.Crosshair = _crosshairConfig.list.Last();
+                    (CurrentPage.Content as CrosshairConfigPage).viewModel.Crosshair = model.Crosshairs.list.Last();
                 }
                 OnCrosshairAdded?.Invoke(this, new PageChangedEventArgs(e.Content as CrosshairConfigPage));
             };
@@ -269,7 +206,7 @@ namespace CrosshairSelector
         }
         public void ChangeCrosshair(Key key)
         {
-            if (!keyboardSwitching)
+            if (!model.KeyboardSwitch)
             {
                 return;
             }
@@ -284,21 +221,24 @@ namespace CrosshairSelector
         public CrosshairConfigViewModel GetViewModel(int index) => (_pages[index].Content as CrosshairConfigPage).viewModel;
         public void LoadCrosshairConfig()
         {
-            _crosshairConfig = Model.LoadCrosshair("crosshair.xml");
-            for (int i = 0; i < _crosshairConfig.Count; i++)
+            bool res = OnLoadRequest.Invoke("crosshair.xml");
+            if (res)
             {
-                _pages.Add(WrapCrosshairConfigPage(new CrosshairConfigPage()));
+                for (int i = 0; i < model.Crosshairs.Count; i++)
+                {
+                    _pages.Add(WrapCrosshairConfigPage(new CrosshairConfigPage()));
+                }
             }
         }
         public void UpdateCrosshairConfig()
         {
-            if (_crosshairConfig.Count == 0) return;
+            if (model.Crosshairs.Count == 0) return;
             int index = 0;
             for (int i = 0; i < _pages.Count; i++)
             {
                 if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
                 {
-                    GetViewModel(i).Crosshair = _crosshairConfig[index];
+                    GetViewModel(i).Crosshair = model.Crosshairs[index];
                     index++;
                 }
             }
@@ -340,7 +280,7 @@ namespace CrosshairSelector
         }
         public void SendCrosshairs()
         {
-            OnCrosshairRequested?.Invoke(this, new CrosshairsRequestedEventArgs(_crosshairConfig.list));
+            OnCrosshairRequested?.Invoke(this, new CrosshairsRequestedEventArgs(model.Crosshairs.list));
         }
         #endregion // Public methods
     }
