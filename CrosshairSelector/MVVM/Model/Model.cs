@@ -20,14 +20,13 @@ namespace CrosshairSelector
 {
     public class Model
     {
-        #region Events
-        #endregion // Events
-
         #region Fields
         private int currentCrosshairIndex = 1;
         private bool keyboardSwitching = true;
         private bool controllerSwitching = false;
         private bool mouseWheelSwitching = false;
+        private CrosshairList _crosshairConfig;
+        private static Model instance;
         #endregion // Fields
 
         #region Properties
@@ -47,9 +46,6 @@ namespace CrosshairSelector
         {
             get => mouseWheelSwitching;
         }
-        #endregion // Properties
-
-        private static Model instance;
         public static Model Instance
         {
             get
@@ -64,7 +60,9 @@ namespace CrosshairSelector
                 return instance;
             }
         }
-        private CrosshairList _crosshairConfig;
+        #endregion // Properties
+
+        #region Constructor
         private Model()
         {
             _crosshairConfig = new CrosshairList();
@@ -73,6 +71,9 @@ namespace CrosshairSelector
             MainWindow.OnControllerSwitch += ControllerSwitching!;
             MainViewModel.OnLoadRequest += LoadCrosshair;
         }
+        #endregion // Constructor
+
+        #region Destructor
         ~Model()
         {
             GlobalMouseWheelHook.MouseWheelScrolled -= ScrollCrosshair!;
@@ -80,6 +81,9 @@ namespace CrosshairSelector
             MainWindow.OnControllerSwitch -= ControllerSwitching!;
             MainViewModel.OnLoadRequest -= LoadCrosshair;
         }
+        #endregion // Destructor
+
+        #region Public methods
         public void Initialize()
         {
             _crosshairConfig = new CrosshairList();
@@ -126,15 +130,6 @@ namespace CrosshairSelector
             _crosshairConfig = readIn;
             return true;
         }
-        public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
-        {           
-            DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
-            XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
-            using (XmlWriter w = XmlWriter.Create(xmlPath, settings))
-            {
-                serializer.WriteObject(w, crosshairs);
-            }
-        }
         public void ChangeShape(ICrosshair crosshair)
         {
             if (_crosshairConfig.Contains(crosshair))
@@ -151,6 +146,13 @@ namespace CrosshairSelector
             }
             return false;
         }
+        public void AddCrosshair(ICrosshair crosshair)
+        {
+            _crosshairConfig.Add((Crosshair)crosshair);
+        }
+        #endregion // Public methods
+
+        #region Eventhandlers
         private void ScrollCrosshair(object sender, MouseWheelEventArgs e)
         {
             if (!mouseWheelSwitching) return;
@@ -196,15 +198,22 @@ namespace CrosshairSelector
                 ModifyCrosshair(_crosshairConfig.list[currentCrosshairIndex]);
             }
         }
-        public void AddCrosshair(ICrosshair crosshair)
-        {
-            _crosshairConfig.Add((Crosshair)crosshair);
-        }
         private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel, bool controller)
         {
             mouseWheelSwitching = mousewheel;
             controllerSwitching = controller;
             keyboardSwitching = keyboard;
+        }
+        #endregion // Eventhandlers
+
+        public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
+        {           
+            DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
+            XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
+            using (XmlWriter w = XmlWriter.Create(xmlPath, settings))
+            {
+                serializer.WriteObject(w, crosshairs);
+            }
         }
     }
 }
