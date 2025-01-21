@@ -8,6 +8,15 @@ using System.Windows.Input;
 
 namespace CrosshairSelector
 {
+    public enum CrosshairShape
+    {
+        Cross,
+        Cross2,
+        Triangle,
+        Circle,
+        X
+    }
+
     public interface ICrosshair : ICloneable
     {
         int Thickness { get; set; }

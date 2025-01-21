@@ -10,13 +10,14 @@ using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
-    public class TriangularCrossView : CrosshairViewBase
+    public class XCrossView : CrosshairViewBase
     {
-        private const int scalar = 1;
-        private const int gapOffset = -10;
+        private const int Scalar = 1;
+        private const int GapOffset = -10;
 
         #region Properties
         public Rectangle Up { get; private set; }
+        public Rectangle Down { get; private set; }
         public Rectangle Left { get; private set; }
         public Rectangle Right { get; private set; }
         #endregion // Properties
@@ -27,13 +28,16 @@ namespace CrosshairSelector
         /// </summary>
         /// <param name="thickness">optional</param>
         /// <param name="size">optional</param>
-        public TriangularCrossView(int thickness = 10, int size = 1)
+        public XCrossView(int thickness = 1, int size = 1)
         {
             Outline = false;
             Gap = 0;
             Up = new Rectangle();
             Up.Width = thickness;
             Up.Height = size;
+            Down = new Rectangle();
+            Down.Width = thickness;
+            Down.Height = size;
             Left = new Rectangle();
             Left.Width = size;
             Left.Height = thickness;
@@ -43,49 +47,57 @@ namespace CrosshairSelector
             Width = thickness;
             Height = size;
             CrosshairColor = new Color();
-            OutlineColor = new Color();
         }
         #endregion // Constructor
 
         #region CrosshairViewBase implementation
         public override void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
-            Up.RenderTransform = new RotateTransform(0);
-            Canvas.SetLeft(Up, ActualWidth / 2);
-            Canvas.SetTop(Up, ActualHeight / 2 - Size - Gap / 4);
+            RotateTransform rotateTransform = new RotateTransform(3*45);
+            Up.RenderTransform = rotateTransform;
+            Canvas.SetLeft(Up, ActualWidth / 2 - Gap / 4 + 1 + Thickness/2); // upper left
+            Canvas.SetTop(Up, ActualHeight / 2 - Gap / 4 + Thickness / 4);
             canvas.Children.Add(Up);
 
-            Left.RenderTransform = new RotateTransform(140);
-            Canvas.SetLeft(Left, ActualWidth / 2 + 3 - Gap / 4 + Thickness/2);
-            Canvas.SetTop(Left, ActualHeight / 2 + Gap / 4 + Thickness);
+            rotateTransform = new RotateTransform(45);
+            Down.RenderTransform = rotateTransform;
+            Canvas.SetLeft(Down, ActualWidth / 2 - Gap / 4 - Thickness / 8); // Lower left
+            Canvas.SetTop(Down, ActualHeight / 2 + Gap / 4 + Thickness / 4);
+            canvas.Children.Add(Down);
+            
+            Left.RenderTransform = rotateTransform;
+            Canvas.SetLeft(Left, ActualWidth / 2 + Gap / 4 + Thickness);
+            Canvas.SetTop(Left, ActualHeight / 2 + Gap / 4 + Thickness / 2); // Lower right
             canvas.Children.Add(Left);
 
-            Right.RenderTransform = new RotateTransform(310);
-            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/2);
-            Canvas.SetTop(Right, ActualHeight / 2 + Gap / 4 + Thickness);
+            rotateTransform = new RotateTransform(-45); // Upper right
+            Right.RenderTransform = rotateTransform;
+            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/4);
+            Canvas.SetTop(Right, ActualHeight / 2 - Gap / 4);
             canvas.Children.Add(Right);
         }
         public override void RemoveCrosshairFromCanvas(ref Canvas canvas)
         {
             canvas.Children.Remove(Up);
+            canvas.Children.Remove(Down);
             canvas.Children.Remove(Left);
             canvas.Children.Remove(Right);
         }
         public override void SetSize(int thickness, int size, int gap)
         {
-            Width = thickness * scalar;
-            Height = thickness * scalar;
-            Thickness = thickness * scalar;
-            Size = size * scalar;
-            Gap = gap * scalar + gapOffset;
+            Thickness = thickness * Scalar;
+            Size = size * Scalar;
+            Gap = (gap * Scalar) + GapOffset;
             Up.Width = Thickness;
             Up.Height = Size;
-
+            Down.Width = Thickness;
+            Down.Height = Size;
             Left.Width = Size;
             Left.Height = Thickness;
-
-            Right.Width = Thickness;
-            Right.Height = Size;
+            Right.Width = Size;
+            Right.Height = Thickness;
+            Width = Thickness;
+            Height = Thickness;
         }
         public override void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
         {
@@ -93,20 +105,24 @@ namespace CrosshairSelector
             if (Outline)
             {
                 Up.Stroke = new SolidColorBrush(OutlineColor);
+                Down.Stroke = new SolidColorBrush(OutlineColor);
                 Left.Stroke = new SolidColorBrush(OutlineColor);
                 Right.Stroke = new SolidColorBrush(OutlineColor);
                 Up.StrokeThickness = OutlineThickness;
+                Down.StrokeThickness = OutlineThickness;
                 Left.StrokeThickness = OutlineThickness;
                 Right.StrokeThickness = OutlineThickness;
             }
             else
             {
                 Up.Stroke = new SolidColorBrush(CrosshairColor);
+                Down.Stroke = new SolidColorBrush(CrosshairColor);
                 Left.Stroke = new SolidColorBrush(CrosshairColor);
                 Right.Stroke = new SolidColorBrush(CrosshairColor);
             }
 
             Up.Fill = new SolidColorBrush(CrosshairColor);
+            Down.Fill = new SolidColorBrush(CrosshairColor);
             Left.Fill = new SolidColorBrush(CrosshairColor);
             Right.Fill = new SolidColorBrush(CrosshairColor);
         }

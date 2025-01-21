@@ -9,60 +9,61 @@ using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
-    public class CircleView /*: ICrosshairView*/
+    public class CircleView : CrosshairViewBase
     {
         #region Fields
         private const int Scalar = 1;
-        private Color _crosshairColor;
-        Ellipse Ellipse;
         #endregion // Fields
 
         #region Properties
-        public double Width { get; set; }
-        public double Height { get; set; }
-        public int Thickness { get; private set; }
+        public Ellipse Ellipse { get; }
         #endregion // Properties
 
         #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="thickness">optional</param>
+        /// <param name="size">optional</param>
         public CircleView()
         {
             Ellipse = new Ellipse();
         }
         #endregion // Constructor
 
-        #region ICrosshairView interface implementation
-        public void Modify(int thickness, int size, bool outline, Color crosshairColor, Color outlineColor, int outlineThickness, int gap = 0)
+        #region CrosshairViewBase implementation
+        public override void PutCrosshairOnCanvas(double ActualWidth,  double ActualHeight, ref Canvas canvas)
         {
-
+            Canvas.SetLeft(Ellipse, ActualWidth / 2 );
+            Canvas.SetTop(Ellipse, ActualHeight / 2 );
+            canvas.Children.Add(Ellipse);
         }
-        public void Modify(ICrosshair crosshair)
+        public override void RemoveCrosshairFromCanvas(ref Canvas canvas)
         {
-            Height = crosshair.Size * Scalar;
-            Width = crosshair.Size * Scalar;
-            Thickness = crosshair.Thickness * Scalar;
+            canvas.Children.Remove(Ellipse);
+        }
+        public override void SetSize(int thickness, int size, int gap)
+        {
+            Height = size * Scalar;
+            Width = size * Scalar;
+            Thickness = thickness * Scalar;
             Ellipse.Width = Width;
             Ellipse.Height = Height;
-            if (crosshair.Outline)
+        }
+        public override void SetStyle(bool outline, Color crosshairColor, Color outlineColor, int outlineThickness)
+        {
+            base.SetStyle(outline, crosshairColor, outlineColor, outlineThickness);
+            if (Outline)
             {
                 Ellipse.Stroke = new SolidColorBrush(Colors.Black);
             }
             else
             {
-                Ellipse.Stroke = new SolidColorBrush(crosshair.CrosshairColor);
+                Ellipse.Stroke = new SolidColorBrush(CrosshairColor);
             }
             Ellipse.StrokeThickness = Thickness;
-            Ellipse.Fill = new SolidColorBrush(crosshair.CrosshairColor);
+            Ellipse.Fill = new SolidColorBrush(CrosshairColor);
         }
-        public void PutCrosshairOnCanvas(double ActualWidth,  double ActualHeight, ref Canvas canvas)
-        {
-            Canvas.SetLeft(Ellipse, ActualWidth / 2 - Ellipse.Width);
-            Canvas.SetTop(Ellipse, ActualHeight / 2 - Ellipse.Height);
-            canvas.Children.Add(Ellipse);
-        }
-        public void RemoveCrosshairFromCanvas(ref Canvas canvas)
-        {
-            canvas.Children.Remove(Ellipse);
-        }
-        #endregion // ICrosshairView interface implementation
+        #endregion // CrosshairViewBase implementation
     }
 }

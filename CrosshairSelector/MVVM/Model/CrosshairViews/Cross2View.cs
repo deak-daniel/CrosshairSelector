@@ -31,6 +31,11 @@ namespace CrosshairSelector
         #endregion // Properties
 
         #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="thickness">optional</param>
+        /// <param name="size">optional</param>
         public Cross2View(int thickness = 10, int size = 10)
         {
             helperPoint = new Point(1, 2);
@@ -43,12 +48,7 @@ namespace CrosshairSelector
         }
         #endregion // Constructor
 
-        #region ICrosshairView interface implementation
-        public override void Modify(ICrosshair crosshair)
-        {
-            SetSize(crosshair.Thickness, crosshair.Size, crosshair.Gap);
-            SetStyle(crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
-        }
+        #region CrosshairViewBase implementation
         public override void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2 - 0.55);
@@ -76,15 +76,6 @@ namespace CrosshairSelector
             canvas.Children.Remove(Down);
             canvas.Children.Remove(Left);
             canvas.Children.Remove(Right);
-        }
-        #endregion // ICrosshairView interface implementation
-
-        #region Private methods
-        private double Distance(Point point1, Point point2)
-        {
-            double first = (int)Math.Pow(point2.X - point1.X, 2);
-            double second = (int)Math.Pow(point2.Y - point1.Y, 2);
-            return Math.Sqrt(first + second);
         }
         public override void SetSize(int thickness, int size, int gap)
         {
@@ -133,6 +124,15 @@ namespace CrosshairSelector
             Down.Fill = new SolidColorBrush(CrosshairColor);
             Left.Fill = new SolidColorBrush(CrosshairColor);
             Right.Fill = new SolidColorBrush(CrosshairColor);
+        }
+        #endregion // CrosshairViewBase implementation
+
+        #region Private methods
+        private double Distance(Point point1, Point point2)
+        {
+            double first = (int)Math.Pow(point2.X - point1.X, 2);
+            double second = (int)Math.Pow(point2.Y - point1.Y, 2);
+            return Math.Sqrt(first + second);
         }
         #endregion // Private methods
     }

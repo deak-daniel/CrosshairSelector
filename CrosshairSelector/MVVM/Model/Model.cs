@@ -114,6 +114,12 @@ namespace CrosshairSelector
                         case CrosshairShape.Cross2:
                             readIn[i].View = new Cross2View();
                             break;
+                        case CrosshairShape.X:
+                            readIn[i].View = new XCrossView();
+                            break;
+                        case CrosshairShape.Circle:
+                            readIn[i].View = new CircleView();
+                            break;
                         case CrosshairShape.Triangle:
                             readIn[i].View = new TriangularCrossView();
                             break;

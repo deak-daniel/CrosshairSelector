@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
@@ -17,41 +18,41 @@ namespace CrosshairSelector
         private const int GapOffset = -10;
 
         #region Properties
-        public System.Windows.Shapes.Rectangle Up { get; private set; }
-        public System.Windows.Shapes.Rectangle Down { get; private set; }
-        public System.Windows.Shapes.Rectangle Left { get; private set; }
-        public System.Windows.Shapes.Rectangle Right { get; private set; }
+        public Rectangle Up { get; private set; }
+        public Rectangle Down { get; private set; }
+        public Rectangle Left { get; private set; }
+        public Rectangle Right { get; private set; }
         #endregion // Properties
 
         #region Constructor
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="thickness">Optional</param>
+        /// <param name="size">Optional</param>
         public CrossView(int thickness = 1, int size = 1)
         {
             Outline = false;
             Gap = 0;
-            Up = new System.Windows.Shapes.Rectangle();
+            Up = new Rectangle();
             Up.Width = thickness;
             Up.Height = size;
-            Down = new System.Windows.Shapes.Rectangle();
+            Down = new Rectangle();
             Down.Width = thickness;
             Down.Height = size;
-            Left = new System.Windows.Shapes.Rectangle();
+            Left = new Rectangle();
             Left.Width = size;
             Left.Height = thickness;
-            Right = new System.Windows.Shapes.Rectangle();
+            Right = new Rectangle();
             Right.Width = size;
             Right.Height = thickness;
             Width = thickness;
             Height = size;
-            CrosshairColor = new System.Windows.Media.Color();
+            CrosshairColor = new Color();
         }
         #endregion // constructor
 
-        #region Public methods
-        public override void Modify(ICrosshair crosshair)
-        {
-            SetSize(crosshair.Thickness, crosshair.Size, crosshair.Gap);
-            SetStyle(crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
-        }
+        #region CrosshairViewBase Implementation
         public override void PutCrosshairOnCanvas(double ActualWidth, double ActualHeight, ref Canvas canvas)
         {
             Canvas.SetLeft(Up, ActualWidth / 2);
@@ -77,9 +78,6 @@ namespace CrosshairSelector
             canvas.Children.Remove(Left);
             canvas.Children.Remove(Right);
         }
-        #endregion // Public methods
-
-        #region Private methods
         public override void SetSize(int thickness, int size, int gap)
         {
             Thickness = thickness * Scalar;
@@ -123,6 +121,6 @@ namespace CrosshairSelector
             Left.Fill = new SolidColorBrush(CrosshairColor);
             Right.Fill = new SolidColorBrush(CrosshairColor);
         }
-        #endregion // Private methods
+        #endregion // CrosshairViewBase Implementation
     }
 }

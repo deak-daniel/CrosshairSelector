@@ -17,13 +17,6 @@ using System.Windows.Input;
 
 namespace CrosshairSelector
 {
-    public enum CrosshairShape
-    {
-        Cross,
-        Cross2,
-        Triangle
-    }
-
     [DataContract]
     public class Crosshair : ICrosshair, ICloneable
     {
@@ -75,16 +68,16 @@ namespace CrosshairSelector
         public Crosshair()
         {
             AssignedKey = Key.None;
-            OutlineOpacity = 0;
             CenterDot = false;
             Outline = false;
-            OutlineThickness = 0;
             View = new CrossView();
             Shape = CrosshairShape.Cross;
             Thickness = 1;
-            Opacity = 1;
+            Opacity = 255;
             Gap = 1;
             Size = 1;
+            OutlineOpacity = 255;
+            OutlineThickness = 1;
         }
         #endregion // Default Constructor
 
@@ -115,11 +108,18 @@ namespace CrosshairSelector
                     View = new Cross2View();
                     break;
                 case CrosshairShape.Triangle:
+                    Shape = CrosshairShape.Triangle;
                     View = new TriangularCrossView();
                     break;
+                case CrosshairShape.Circle: 
+                    Shape = CrosshairShape.Circle;
+                    View = new CircleView();
+                    break;
+                case CrosshairShape.X:
+                    Shape = CrosshairShape.X;
+                    View = new XCrossView();
+                    break;
                 default:
-                    Shape = CrosshairShape.Cross;
-                    View = new CrossView();
                     break;
             }
         }
