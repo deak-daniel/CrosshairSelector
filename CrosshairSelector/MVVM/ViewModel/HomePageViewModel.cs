@@ -9,6 +9,15 @@ namespace CrosshairSelector
 {
     public class HomePageViewModel : NotifyPropertyChanged
     {
+
+        #region Events
+        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairDeleted;
+        public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
+        public static event EventHandler<CrosshairEditedEventArgs>? CrosshairEdited;
+        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
+        public static event Action<bool, bool, bool>? SwitchingTypeUpdated;
+        #endregion // Events
+
         #region Fields
         private List<Crosshair> _crosshairList;
         Dictionary<string, Crosshair> dict;
@@ -128,14 +137,5 @@ namespace CrosshairSelector
             }
         }
         #endregion // Eventhandlers
-
-        #region Events
-        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairDeleted;
-        public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
-        public static event EventHandler<CrosshairEditedEventArgs>? CrosshairEdited;
-        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
-        public static event Action<bool, bool, bool>? SwitchingTypeUpdated;
-        #endregion // Events
-
     }
 }

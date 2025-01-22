@@ -34,9 +34,14 @@ namespace CrosshairSelector.MVVM.View
             viewModel.AddConfig();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Save_Crosshair_click(object sender, RoutedEventArgs e)
         {
             viewModel.SaveCrosshair();
+        }
+
+        private void Delete_Crosshair_click(object sender, RoutedEventArgs e)
+        {
+            viewModel.DeleteCrosshair();
         }
     }
 }

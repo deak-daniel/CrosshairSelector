@@ -104,12 +104,21 @@
                       Content="Outline"
                       IsChecked="{Binding Outline, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <Button
-                Style="{StaticResource button}"
-                Width="150"
-                Click="Button_Click">
-                Save Crosshair
-            </Button>
+            <DockPanel Margin="20,0,0,0">
+                <Button
+                    Style="{StaticResource button}"
+                    Width="150"
+                    Click="Save_Crosshair_click">
+                    Save Crosshair
+                </Button>
+                <Button
+                    Style="{StaticResource button}"
+                    Width="150"
+                    Click="Delete_Crosshair_click">
+                    Delete Crosshair
+                </Button>
+            </DockPanel>
+            
         </StackPanel>
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="1">

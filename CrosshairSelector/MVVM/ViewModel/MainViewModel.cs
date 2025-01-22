@@ -49,7 +49,6 @@ namespace CrosshairSelector
         private List<Frame> _pages;
         #endregion // Properties
 
-
         #region Constructor
         public MainViewModel()
         {
@@ -62,6 +61,7 @@ namespace CrosshairSelector
             CrosshairConfigViewModel.OnChangeShape += ChangeShapeHandler!;
             CrosshairConfigViewModel.OnTabRequested += AddTab!;
             CrosshairConfigViewModel.OnSaveConfig += SaveCrosshairConfig!;
+            CrosshairConfigViewModel.OnDeleteCrosshair += CrosshairDeletedHandler!;
             HomePageViewModel.CrosshairDeleted += CrosshairDeletedHandler!;
             HomePageViewModel.ConfigSaved += SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded += AddTab!;
@@ -77,6 +77,7 @@ namespace CrosshairSelector
             CrosshairConfigViewModel.OnChangeShape -= ChangeShapeHandler!;
             CrosshairConfigViewModel.OnTabRequested -= AddTab!;
             CrosshairConfigViewModel.OnSaveConfig -= SaveCrosshairConfig!;
+            CrosshairConfigViewModel.OnDeleteCrosshair -= CrosshairDeletedHandler!;
             HomePageViewModel.CrosshairDeleted -= CrosshairDeletedHandler!;
             HomePageViewModel.ConfigSaved -= SaveCrosshairConfig!;
             HomePageViewModel.CrosshairAdded -= AddTab!;
@@ -113,6 +114,7 @@ namespace CrosshairSelector
             }
             Frame frame = WrapCrosshairConfigPage(c);
             _pages.Add(frame);
+            SendCrosshairs();
         }
         private void SaveCrosshairConfig(object sender, CrosshairModifiedEventArgs e)
         {
@@ -137,6 +139,13 @@ namespace CrosshairSelector
                     }
                 }
             }
+
+            CurrentPage = _pages.Last();
+            if (CurrentPage.Content.GetType().Name == typeof(CrosshairConfigPage).Name)
+            {
+                ((CurrentPage.Content as CrosshairConfigPage).DataContext as CrosshairConfigViewModel).Show();
+            }
+            SendCrosshairs();
         }
         private void EditCrosshair(object sender, CrosshairEditedEventArgs e)
         {
@@ -175,19 +184,6 @@ namespace CrosshairSelector
             };
             return frame;
         }
-        private bool ShowActivatedCrosshair(Key key, int index)
-        {
-            bool res = false;
-            if (GetViewModel(index).AssignedKey != "None")
-            {
-                if (GetViewModel(index).Crosshair.AssignedKey == key)
-                {
-                    GetViewModel(index).Modify();
-                    res = true;
-                }
-            }
-            return res;
-        }
         #endregion // Private methods
 
         #region Public methods
@@ -214,7 +210,8 @@ namespace CrosshairSelector
             {
                 if (_pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
                 {
-                    ShowActivatedCrosshair(key, i);
+                    CrosshairConfigViewModel viewModel = GetViewModel(i);
+                    model.KeyboardSwitching(viewModel.Crosshair, key);
                 }
             }
         }

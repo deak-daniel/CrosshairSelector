@@ -64,7 +64,6 @@ namespace CrosshairSelector
             // Start polling for events
             CompositionTarget.Rendering += OnRender;
         }
-
         private void OnRender(object sender, EventArgs ev)
         {
             while (SDL.SDL_PollEvent(out SDL.SDL_Event e) != 0)
@@ -79,6 +78,7 @@ namespace CrosshairSelector
         {
             _globalKeyboardHook.Unhook();
             _globalMouseWheelHook.Stop();
+            CrosshairWindow.Closed.Invoke();
             base.OnClosed(e);
         }
         private void HandleKeys(Key key)
@@ -121,6 +121,7 @@ namespace CrosshairSelector
             radioButton.Click += Crosshair_click;
             radioButton.Style = (Style)FindResource("SideButton");
             radioButton.Content = "Crosshair" + index;
+            radioButton.IsChecked = true;
             SidePanel.Children.Add(radioButton);
             index++;
         }
@@ -131,6 +132,7 @@ namespace CrosshairSelector
                 if (e.Source.Name == (SidePanel.Children[i] as RadioButton).Content.ToString())
                 {
                     SidePanel.Children.RemoveAt(i);
+                    (SidePanel.Children[i - 1] as RadioButton).IsChecked = true;
                 }
             }
         }

@@ -156,6 +156,13 @@ namespace CrosshairSelector
         {
             _crosshairConfig.Add((Crosshair)crosshair);
         }
+        public void KeyboardSwitching(ICrosshair crosshair, Key key)
+        {
+            if (crosshair.AssignedKey == key)
+            {
+                ModifyCrosshair(crosshair);
+            }
+        }
         #endregion // Public methods
 
         #region Eventhandlers

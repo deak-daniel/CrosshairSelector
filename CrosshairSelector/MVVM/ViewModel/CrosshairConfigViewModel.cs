@@ -18,6 +18,7 @@ namespace CrosshairSelector
         public static event EventHandler<CrosshairModifiedEventArgs>? OnChangeShape;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnTabRequested;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnSaveConfig;
+        public static event EventHandler<CrosshairModifiedEventArgs>? OnDeleteCrosshair;
 
         private Crosshair _crosshair;
         public Crosshair Crosshair
@@ -244,7 +245,6 @@ namespace CrosshairSelector
                 CrosshairTypes = tempList;
             }
         }
-
         public void LoadCrosshair()
         {
             _gap = _crosshair.Gap;
@@ -315,6 +315,10 @@ namespace CrosshairSelector
                 _crosshair.AssignedKey = Key.None;
                 OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
             }
+        }
+        public void DeleteCrosshair()
+        {
+            OnDeleteCrosshair?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
         public bool Show(Crosshair previous = null)
         {

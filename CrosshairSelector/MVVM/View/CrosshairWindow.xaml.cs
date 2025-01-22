@@ -23,12 +23,18 @@ namespace CrosshairSelector.Windows
     public partial class CrosshairWindow : Window
     {
         public static Action<ICrosshair> DisplayCrosshair;
+        public static Action Closed;
         public CrosshairWindow()
         {
             InitializeComponent();
             this.Width = 480.0;
             this.Height = 270.0;
             DisplayCrosshair = changeCrosshair;
+            Closed = CloseWindow;
+        }
+        private void CloseWindow()
+        {
+            this.Close();
         }
         public void changeCrosshair(ICrosshair crosshair)
         {
