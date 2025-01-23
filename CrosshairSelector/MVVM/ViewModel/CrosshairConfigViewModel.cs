@@ -13,12 +13,16 @@ namespace CrosshairSelector
 {
     public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
+        #region Events
         public static event EventHandler<CrosshairModifiedEventArgs>? OnCrosshairModifed;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnShowRequested;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnChangeShape;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnTabRequested;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnSaveConfig;
         public static event EventHandler<CrosshairModifiedEventArgs>? OnDeleteCrosshair;
+        #endregion // Events
+
+        #region Properties
 
         private Crosshair _crosshair;
         public Crosshair Crosshair
@@ -236,6 +240,9 @@ namespace CrosshairSelector
                 Modify();
             }
         }
+        #endregion // Properties
+
+        #region Constructor
         public CrosshairConfigViewModel()
         {
             _crosshair = new Crosshair();
@@ -245,6 +252,9 @@ namespace CrosshairSelector
                 CrosshairTypes = tempList;
             }
         }
+        #endregion // Constructor
+
+        #region Public methods
         public void LoadCrosshair()
         {
             _gap = _crosshair.Gap;
@@ -338,6 +348,7 @@ namespace CrosshairSelector
         {
             return this.MemberwiseClone();
         }
+        #endregion // Public methods
 
         #region Private methods
         private bool FillCrosshairTypes(out ObservableCollection<CrosshairShape> list)

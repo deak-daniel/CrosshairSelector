@@ -56,12 +56,12 @@ namespace CrosshairSelector
             canvas.Children.Add(Up);
 
             Left.RenderTransform = new RotateTransform(140);
-            Canvas.SetLeft(Left, ActualWidth / 2 - 0.5 - Gap / 4 + Thickness/2);
+            Canvas.SetLeft(Left, ActualWidth / 2 - 0.1 - Gap / 4 + Thickness/2);
             Canvas.SetTop(Left, ActualHeight / 2 + Gap / 4 + Thickness);
             canvas.Children.Add(Left);
 
             Right.RenderTransform = new RotateTransform(310);
-            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/2);
+            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/2 + 0.4);
             Canvas.SetTop(Right, ActualHeight / 2 + Gap / 4 + Thickness);
             canvas.Children.Add(Right);
         }

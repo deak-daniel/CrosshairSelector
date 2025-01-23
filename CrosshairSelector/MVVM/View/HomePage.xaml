@@ -52,7 +52,7 @@
             <Button Style="{StaticResource button}"
                     Width="200"
                     Click="Add_click">
-                Add crosshair Config
+                Add crosshair
             </Button>
             <CheckBox Style="{StaticResource checkbox}" 
                       Width="150"

@@ -8,8 +8,7 @@
         mc:Ignorable="d"
         Title="Crosshair" Height="450" Width="800"
         Background="#1E201E"
-        Loaded="Window_Loaded"
-        ResizeMode="NoResize">
+        Loaded="Window_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
