@@ -5,14 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CrosshairSelector.MVVM.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="640"
       Title="HomePage"
       Loaded="Page_Loaded">
 
     <Grid Background="#1E201E">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -36,7 +36,7 @@
                      x:Name="CrosshairListbox">
             </ListBox>
 
-            <DockPanel Margin="0,10,0,0">
+            <DockPanel Margin="10,10,0,0">
                 <Button Style="{StaticResource button}"
                         Click="Delete_Click">Delete</Button>
                 
@@ -46,11 +46,13 @@
 
             <Button Style="{StaticResource button}"
                     Width="200"
+                    Margin="0,10,0,10"
                     Click="Save_click">
                 Save Current Config
             </Button>
             <Button Style="{StaticResource button}"
                     Width="200"
+                    Margin="0,0,0,10"
                     Click="Add_click">
                 Add crosshair
             </Button>
