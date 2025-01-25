@@ -240,7 +240,32 @@ namespace CrosshairSelector
                 Modify();
             }
         }
+
         #endregion // Properties
+
+        #region Commands
+        private RelayCommand addCrosshair;
+        public ICommand AddCrosshairCommand
+        {
+            get { return addCrosshair; }
+        }
+
+        private RelayCommand saveCrosshair;
+
+        public ICommand SaveCrosshairCommand
+        {
+            get { return saveCrosshair; }
+        }
+
+        private RelayCommand deleteCrosshair;
+
+        public ICommand DeleteCrosshairCommand
+        {
+            get { return deleteCrosshair; }
+        }
+
+
+        #endregion // Commands
 
         #region Constructor
         public CrosshairConfigViewModel()
@@ -251,6 +276,9 @@ namespace CrosshairSelector
             {
                 CrosshairTypes = tempList;
             }
+            addCrosshair = new RelayCommand(AddConfig);
+            saveCrosshair = new RelayCommand(SaveCrosshair);
+            deleteCrosshair = new RelayCommand(DeleteCrosshair);
         }
         #endregion // Constructor
 
@@ -310,26 +338,6 @@ namespace CrosshairSelector
             _crosshair.Shape = Shape;
             OnChangeShape?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
-        public void SaveCrosshair()
-        {
-            OnSaveConfig?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
-        }
-        public void AddConfig()
-        {
-            if (AssignedKey != null)
-            {
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
-            }
-            if (AssignedKey == null)
-            {
-                _crosshair.AssignedKey = Key.None;
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
-            }
-        }
-        public void DeleteCrosshair()
-        {
-            OnDeleteCrosshair?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
-        }
         public bool Show(Crosshair previous = null)
         {
             bool res = false;
@@ -368,6 +376,27 @@ namespace CrosshairSelector
             {
                 return res;
             }
+        }
+
+        private void SaveCrosshair()
+        {
+            OnSaveConfig?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+        }
+        private void AddConfig()
+        {
+            if (AssignedKey != null)
+            {
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
+            }
+            if (AssignedKey == null)
+            {
+                _crosshair.AssignedKey = Key.None;
+                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
+            }
+        }
+        private void DeleteCrosshair()
+        {
+            OnDeleteCrosshair?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
         }
         #endregion // Private methods
     }

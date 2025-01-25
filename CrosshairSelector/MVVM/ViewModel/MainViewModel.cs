@@ -187,19 +187,6 @@ namespace CrosshairSelector
         #endregion // Private methods
 
         #region Public methods
-        public void SaveCurrentCrosshair(string pageName)
-        {
-            for (int i = 0; i < _pages.Count; i++)
-            {
-                if (_pages[i].Content != null && _pages[i].Content.GetType().Name == typeof(CrosshairConfigPage).Name)
-                {
-                    if ((_pages[i].Content as CrosshairConfigPage).Name == pageName)
-                    {
-                        GetViewModel(i).SaveCrosshair();
-                    }
-                }
-            }
-        }
         public void ChangeCrosshair(Key key)
         {
             if (!model.KeyboardSwitch)

@@ -12,7 +12,11 @@
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local:CrosshairConfigViewModel x:Key="viewModel"/>
     </Page.Resources>
+    <Page.DataContext>
+        <Binding Source="{StaticResource viewModel}"/>
+    </Page.DataContext>
     <Grid Background="#1E201E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -108,13 +112,13 @@
                 <Button
                     Style="{StaticResource button}"
                     Width="150"
-                    Click="Save_Crosshair_click">
+                    Command="{Binding SaveCrosshairCommand}">
                     Save Crosshair
                 </Button>
                 <Button
                     Style="{StaticResource button}"
                     Width="150"
-                    Click="Delete_Crosshair_click">
+                    Command="{Binding DeleteCrosshairCommand}">
                     Delete Crosshair
                 </Button>
             </DockPanel>
@@ -204,7 +208,7 @@
             <DockPanel>
                 <Button Style="{StaticResource button}"
                         Width="150"
-                        Click="Add_config_click">
+                        Command="{Binding AddCrosshairCommand}">
                     Add crosshair
                 </Button>
                 <Label

@@ -29,19 +29,5 @@ namespace CrosshairSelector.MVVM.View
             this.DataContext = viewModel;
             ChangeCrosshair = CrosshairWindow.DisplayCrosshair;
         }
-        private void Add_config_click(object sender, RoutedEventArgs e)
-        {
-            viewModel.AddConfig();
-        }
-
-        private void Save_Crosshair_click(object sender, RoutedEventArgs e)
-        {
-            viewModel.SaveCrosshair();
-        }
-
-        private void Delete_Crosshair_click(object sender, RoutedEventArgs e)
-        {
-            viewModel.DeleteCrosshair();
-        }
     }
 }
