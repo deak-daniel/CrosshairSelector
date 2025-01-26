@@ -17,7 +17,6 @@ namespace CrosshairSelector
         int index = 1;
         private GlobalKeyboardHook _globalKeyboardHook;
         private GlobalMouseWheelHook _globalMouseWheelHook;
-        public static Action<Key> HandleKeyboard;
         public static event Action<byte> OnControllerSwitch;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
         HomePage homepage = new HomePage();
@@ -28,11 +27,10 @@ namespace CrosshairSelector
             InitializeSDL();
             this.DataContext = viewModel;
             crosshairWindow.Topmost = true;
-            HandleKeyboard = HandleKeys;
-            _globalKeyboardHook = new GlobalKeyboardHook();
-            _globalKeyboardHook.SetHook();
-            _globalMouseWheelHook = new GlobalMouseWheelHook();
-            _globalMouseWheelHook.Start();
+            //_globalKeyboardHook = new GlobalKeyboardHook();
+            //_globalKeyboardHook.SetHook();
+            //_globalMouseWheelHook = new GlobalMouseWheelHook();
+            //_globalMouseWheelHook.Start();
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
@@ -80,10 +78,6 @@ namespace CrosshairSelector
             _globalMouseWheelHook.Stop();
             CrosshairWindow.Closed.Invoke();
             base.OnClosed(e);
-        }
-        private void HandleKeys(Key key)
-        {
-            viewModel.ChangeCrosshair(key);
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

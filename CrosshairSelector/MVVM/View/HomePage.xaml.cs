@@ -53,7 +53,6 @@ namespace CrosshairSelector.MVVM.View
         private void Save_click(object sender, RoutedEventArgs e)
         {
             viewModel.SaveConfig();
-            MessageBox.Show("Crosshair saved!");
         }
 
         private void Add_click(object sender, RoutedEventArgs e)

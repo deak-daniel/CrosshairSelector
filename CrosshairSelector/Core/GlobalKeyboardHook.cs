@@ -64,7 +64,7 @@ namespace CrosshairSelector
             {
                 int vkCode = Marshal.ReadInt32(lParam);
                 Key key = KeyInterop.KeyFromVirtualKey(vkCode);
-                MainWindow.HandleKeyboard(key);
+                Model.OnKeyPressed(key);
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }

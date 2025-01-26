@@ -20,19 +20,38 @@ namespace CrosshairSelector
 {
     public class Model
     {
+        #region Events
+        public static Action<Key> OnKeyPressed;
+        #endregion // Events
+
         #region Fields
+        private HomePage homePage;
         private int currentCrosshairIndex = 1;
         private bool keyboardSwitching = true;
         private bool controllerSwitching = false;
         private bool mouseWheelSwitching = false;
         private CrosshairList _crosshairConfig;
         private static Model instance;
+        private Dictionary<string, Frame> pageDict;
         #endregion // Fields
 
         #region Properties
+        public HomePage HomePage { 
+            get 
+            { 
+                return homePage; 
+            } 
+        }
         public CrosshairList Crosshairs 
         { 
             get => _crosshairConfig; 
+        }
+        public Dictionary<string, Frame> Pages
+        {
+            get
+            {
+                return pageDict;
+            }
         }
         public bool KeyboardSwitch
         {
@@ -66,10 +85,12 @@ namespace CrosshairSelector
         private Model()
         {
             _crosshairConfig = new CrosshairList();
+            pageDict = new Dictionary<string, Frame>();
             GlobalMouseWheelHook.MouseWheelScrolled += ScrollCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated += SwitchingTypeUpdatedHandler!;
             MainWindow.OnControllerSwitch += ControllerSwitching!;
             MainViewModel.OnLoadRequest += LoadCrosshair;
+            OnKeyPressed = KeyboardSwitching;
         }
         #endregion // Constructor
 
@@ -154,13 +175,36 @@ namespace CrosshairSelector
         }
         public void AddCrosshair(ICrosshair crosshair)
         {
+            if (_crosshairConfig.Count != 0)
+            {
+                crosshair.Name = "Crosshair" + (_crosshairConfig.Last().Name.GetNumberFromString() + 1);
+            }
+            else
+            {
+                crosshair.Name = "Crosshair1";
+            }
             _crosshairConfig.Add((Crosshair)crosshair);
         }
-        public void KeyboardSwitching(ICrosshair crosshair, Key key)
+        public void AddCrosshair(ICrosshair crosshair, Frame page)
         {
-            if (crosshair.AssignedKey == key)
+            AddCrosshair(crosshair);
+            if (!pageDict.ContainsKey(crosshair.Name))
             {
-                ModifyCrosshair(crosshair);
+                pageDict.Add(crosshair.Name, page);
+            }
+        }
+        public void KeyboardSwitching(Key key)
+        {
+            if (!keyboardSwitching)
+            {
+                return;
+            }
+            for (int i = 0; i < _crosshairConfig.Count; i++)
+            {
+                if (_crosshairConfig[i].AssignedKey == key)
+                {
+                    ModifyCrosshair(_crosshairConfig[i]);
+                }
             }
         }
         #endregion // Public methods

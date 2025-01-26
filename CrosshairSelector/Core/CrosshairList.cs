@@ -38,5 +38,13 @@ namespace CrosshairSelector
         {
             return list.Contains(item);
         }
+        public Crosshair Last()
+        {
+            return list.Last();
+        }
+        public Crosshair First()
+        {
+            return list.First();
+        }
     }
 }

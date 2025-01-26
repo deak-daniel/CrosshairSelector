@@ -223,7 +223,7 @@ namespace CrosshairSelector
             get { return _crosshairTypes; }
             set { _crosshairTypes = value;
                 RaisePropertyChanged();
-                ChangeShape();
+                Modify();
             }
         }
 

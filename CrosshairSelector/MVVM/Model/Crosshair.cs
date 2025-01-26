@@ -22,6 +22,9 @@ namespace CrosshairSelector
     {
         #region Properties
         [DataMember]
+        public string Name { get; set; }
+
+        [DataMember]
         public Key AssignedKey { get; set; }
 
         [DataMember]
@@ -67,6 +70,7 @@ namespace CrosshairSelector
         /// </summary>
         public Crosshair()
         {
+            Name = "";
             AssignedKey = Key.None;
             CenterDot = false;
             Outline = false;

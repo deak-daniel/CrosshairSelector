@@ -21,6 +21,7 @@ namespace CrosshairSelector
         #region Fields
         private List<Crosshair> _crosshairList;
         Dictionary<string, Crosshair> dict;
+        Model model = Model.Instance;
         #endregion // Fields
 
         #region Properties

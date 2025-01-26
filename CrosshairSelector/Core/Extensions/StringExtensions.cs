@@ -116,5 +116,17 @@ namespace CrosshairSelector
             }
             return res;
         }
+        public static int GetNumberFromString(this string value)
+        {
+            string output = "";
+            for (int i = 0; i < value.Length; i++)
+            {
+                if (char.IsDigit(value[i]))
+                {
+                    output += value[i];
+                }
+            }
+            return int.Parse(output);
+        }
     }
 }

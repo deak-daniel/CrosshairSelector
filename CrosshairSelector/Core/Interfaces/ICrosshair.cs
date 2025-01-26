@@ -19,6 +19,7 @@ namespace CrosshairSelector
 
     public interface ICrosshair : ICloneable
     {
+        string Name { get; set; }
         int Thickness { get; set; }
         int Opacity { get; set; }
         int OutlineOpacity { get; set; }
