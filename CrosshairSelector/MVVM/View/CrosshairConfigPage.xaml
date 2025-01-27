@@ -73,9 +73,9 @@
              Style="{StaticResource SideBox}" />
                 <Label Style="{StaticResource label}" Content="Opacity:"/>
                 <Slider Style="{StaticResource slider}"
-            Name="OpacitySlider"
-            Maximum="255"
-            Value="{Binding Opacity, UpdateSourceTrigger=PropertyChanged}"/>
+                        Name="OpacitySlider"
+                        Maximum="255"
+                        Value="{Binding Opacity, UpdateSourceTrigger=PropertyChanged}"/>
 
             </DockPanel>
 

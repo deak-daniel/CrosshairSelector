@@ -175,6 +175,11 @@ namespace CrosshairSelector
         }
         public void AddCrosshair(ICrosshair crosshair)
         {
+            if (crosshair.Name != "")
+            {
+                _crosshairConfig.Add((Crosshair)crosshair);
+                return;
+            }
             if (_crosshairConfig.Count != 0)
             {
                 crosshair.Name = "Crosshair" + (_crosshairConfig.Last().Name.GetNumberFromString() + 1);

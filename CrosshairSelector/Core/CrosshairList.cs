@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,10 @@ namespace CrosshairSelector
         {
             get { return list[index]; }
             set { list[index] = value ?? default(Crosshair)!; }
+        }
+        public Crosshair this[string name]
+        {
+            get { return list.First(x => x.Name == name); }
         }
         public bool Contains(ICrosshair item)
         {

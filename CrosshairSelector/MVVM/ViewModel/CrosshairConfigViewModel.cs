@@ -14,12 +14,12 @@ namespace CrosshairSelector
     public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
         #region Events
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnCrosshairModifed;
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnShowRequested;
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnChangeShape;
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnTabRequested;
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnSaveConfig;
-        public static event EventHandler<CrosshairModifiedEventArgs>? OnDeleteCrosshair;
+        public static event Action<Crosshair>? OnCrosshairModifed;
+        public static event Action<Crosshair>? OnShowRequested;
+        public static event Action<Crosshair>? OnChangeShape;
+        public static event Action<Crosshair?>? OnTabRequested;
+        public static event Action<Crosshair>? OnSaveConfig;
+        public static event Action<Crosshair>? OnDeleteCrosshair;
         #endregion // Events
 
         #region Properties
@@ -145,7 +145,7 @@ namespace CrosshairSelector
             }
         }
 
-        private int _outlineOpacity;
+        private int _outlineOpacity = 255;
         public int OutlineOpacity
         {
             get { return _outlineOpacity; }
@@ -201,7 +201,7 @@ namespace CrosshairSelector
                 Modify();
             }
         }
-        private int _opacity;
+        private int _opacity = 255;
         public int Opacity
         {
             get
@@ -331,19 +331,19 @@ namespace CrosshairSelector
             _crosshair.OutlineThickness = OutlineThickness;
             _crosshair.AssignedKey = AssignedKey.ToKey();
 
-            OnCrosshairModifed?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+            OnCrosshairModifed?.Invoke(_crosshair);
         }
         public void ChangeShape()
         {
             _crosshair.Shape = Shape;
-            OnChangeShape?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+            OnChangeShape?.Invoke(_crosshair);
         }
         public bool Show(Crosshair previous = null)
         {
             bool res = false;
             try
             {
-                OnShowRequested?.Invoke(this, new CrosshairModifiedEventArgs(previous ?? _crosshair));
+                OnShowRequested?.Invoke(previous ?? _crosshair);
                 res = true;
                 return res;
             }
@@ -377,26 +377,17 @@ namespace CrosshairSelector
                 return res;
             }
         }
-
         private void SaveCrosshair()
         {
-            OnSaveConfig?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+            OnSaveConfig?.Invoke(_crosshair);
         }
         private void AddConfig()
         {
-            if (AssignedKey != null)
-            {
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
-            }
-            if (AssignedKey == null)
-            {
-                _crosshair.AssignedKey = Key.None;
-                OnTabRequested?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair, CrosshairEventFlags.NewCrosshairRequested));
-            }
+            OnTabRequested?.Invoke(null);
         }
         private void DeleteCrosshair()
         {
-            OnDeleteCrosshair?.Invoke(this, new CrosshairModifiedEventArgs(_crosshair));
+            OnDeleteCrosshair?.Invoke(_crosshair);
         }
         #endregion // Private methods
     }

@@ -14,7 +14,6 @@ namespace CrosshairSelector
     /// </summary>
     public partial class MainWindow : Window
     {
-        int index = 1;
         private GlobalKeyboardHook _globalKeyboardHook;
         private GlobalMouseWheelHook _globalMouseWheelHook;
         public static event Action<byte> OnControllerSwitch;
@@ -27,10 +26,10 @@ namespace CrosshairSelector
             InitializeSDL();
             this.DataContext = viewModel;
             crosshairWindow.Topmost = true;
-            //_globalKeyboardHook = new GlobalKeyboardHook();
-            //_globalKeyboardHook.SetHook();
-            //_globalMouseWheelHook = new GlobalMouseWheelHook();
-            //_globalMouseWheelHook.Start();
+            _globalKeyboardHook = new GlobalKeyboardHook();
+            _globalKeyboardHook.SetHook();
+            _globalMouseWheelHook = new GlobalMouseWheelHook();
+            _globalMouseWheelHook.Start();
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
@@ -83,7 +82,6 @@ namespace CrosshairSelector
         {
             try
             {
-                viewModel.UpdateCrosshairConfig();
                 viewModel.SendCrosshairs();
             }
             catch (Exception ex)
@@ -103,27 +101,25 @@ namespace CrosshairSelector
         {
             //viewModel.SaveCurrentCrosshair((sender as RadioButton).Content.ToString());
         }
-        private void OnCrosshairAddedHandler(object sender, PageChangedEventArgs e)
+        private void OnCrosshairAddedHandler(string crosshairName)
         {
             for (int i = 0; i < SidePanel.Children.Count; i++)
             {
                 (SidePanel.Children[i] as RadioButton).IsChecked = false;
             }
             RadioButton radioButton = new RadioButton();
-            e.Source.Name = "Crosshair" + index;
             radioButton.LostFocus += Crosshair_lostfocus;
             radioButton.Click += Crosshair_click;
             radioButton.Style = (Style)FindResource("SideButton");
-            radioButton.Content = "Crosshair" + index;
+            radioButton.Content = crosshairName;
             radioButton.IsChecked = true;
             SidePanel.Children.Add(radioButton);
-            index++;
         }
-        private void OnCrosshairDeletedHandler(object sender, PageChangedEventArgs e)
+        private void OnCrosshairDeletedHandler(string crosshairName)
         {
             for (int i = 0; i < SidePanel.Children.Count; i++)
             {
-                if (e.Source.Name == (SidePanel.Children[i] as RadioButton).Content.ToString())
+                if (crosshairName == (SidePanel.Children[i] as RadioButton).Content.ToString())
                 {
                     SidePanel.Children.RemoveAt(i);
                     (SidePanel.Children[i - 1] as RadioButton).IsChecked = true;

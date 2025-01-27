@@ -11,17 +11,16 @@ namespace CrosshairSelector
     {
 
         #region Events
-        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairDeleted;
-        public static event EventHandler<CrosshairModifiedEventArgs>? ConfigSaved;
-        public static event EventHandler<CrosshairEditedEventArgs>? CrosshairEdited;
-        public static event EventHandler<CrosshairModifiedEventArgs>? CrosshairAdded;
+        public static event Action<Crosshair>? CrosshairDeleted;
+        public static event Action<Crosshair>? ConfigSaved;
+        public static event Action<string>? CrosshairEdited;
+        public static event Action<Crosshair?>? CrosshairAdded;
         public static event Action<bool, bool, bool>? SwitchingTypeUpdated;
         #endregion // Events
 
         #region Fields
         private List<Crosshair> _crosshairList;
         Dictionary<string, Crosshair> dict;
-        Model model = Model.Instance;
         #endregion // Fields
 
         #region Properties
@@ -90,22 +89,19 @@ namespace CrosshairSelector
         #region Public methods
         public void DeleteCrosshair(string selectedItem)
         {
-            CrosshairDeleted?.Invoke(this, new CrosshairModifiedEventArgs(dict[selectedItem]));
-            _crosshairList.Remove(dict[selectedItem]);
-            dict.Remove(selectedItem);
-            Crosshairs.Remove(selectedItem);
+            CrosshairDeleted?.Invoke(dict[selectedItem]);
         }
         public void SaveConfig()
         {
-            ConfigSaved?.Invoke(this, new CrosshairModifiedEventArgs());
+            ConfigSaved?.Invoke(null);
         }
         public void AddEmptyCrosshair()
         {
-            CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs());
+            CrosshairAdded?.Invoke(null);
         }
         public void AddCrosshair(Crosshair crosshair)
         {
-            CrosshairAdded?.Invoke(this, new CrosshairModifiedEventArgs(crosshair));
+            CrosshairAdded?.Invoke(crosshair);
             if (!_crosshairList.Contains(crosshair))
             {
                 int number = 1;
@@ -121,20 +117,20 @@ namespace CrosshairSelector
         }
         public void EditCrosshair(string selectedItem)
         {
-            CrosshairEdited?.Invoke(this, new CrosshairEditedEventArgs(selectedItem));
+            CrosshairEdited?.Invoke(selectedItem);
         }
         #endregion // Public methods
 
         #region Eventhandlers
-        private void CrosshairRequestedHandler(object sender, CrosshairsRequestedEventArgs e)
-        {
+        private void CrosshairRequestedHandler(List<Crosshair> crosshairs)
+        { 
             dict = new Dictionary<string, Crosshair>();
             Crosshairs = new ObservableCollection<string>();
-            for (int i = 0; i < e.Crosshairs.Count; i++)
+            for (int i = 0; i < crosshairs.Count; i++)
             {
-                _crosshairList.Add(e.Crosshairs[i]);
+                _crosshairList.Add(crosshairs[i]);
                 Crosshairs.Add($"Crosshair{i + 1}");
-                dict.Add($"Crosshair{i + 1}", e.Crosshairs[i]);
+                dict.Add($"Crosshair{i + 1}", crosshairs[i]);
             }
         }
         #endregion // Eventhandlers
