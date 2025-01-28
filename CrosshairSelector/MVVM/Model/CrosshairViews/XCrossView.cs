@@ -55,14 +55,14 @@ namespace CrosshairSelector
         {
             RotateTransform rotateTransform = new RotateTransform(3*45);
             Up.RenderTransform = rotateTransform;
-            Canvas.SetLeft(Up, ActualWidth / 2 - Gap / 4 + 1 + Thickness/2); // upper left
-            Canvas.SetTop(Up, ActualHeight / 2 - Gap / 4 - 0.4 + Thickness / 4);
+            Canvas.SetLeft(Up, ActualWidth / 2 - Gap / 4 + Thickness / 6 + 0.2); // upper left
+            Canvas.SetTop(Up, ActualHeight / 2 - Gap / 4 - Thickness / 4 + 0.2);
             canvas.Children.Add(Up);
 
             rotateTransform = new RotateTransform(45);
             Down.RenderTransform = rotateTransform;
-            Canvas.SetLeft(Down, ActualWidth / 2 - Gap / 4 - Thickness / 8 + 0.5); // Lower left
-            Canvas.SetTop(Down, ActualHeight / 2 + Gap / 4 + Thickness / 4 - 0.8);
+            Canvas.SetLeft(Down, ActualWidth / 2 - Gap / 4 - Thickness / 4 + 0.5); // Lower left
+            Canvas.SetTop(Down, ActualHeight / 2 + Gap / 4 + Thickness / 2 - 0.8);
             canvas.Children.Add(Down);
             
             Left.RenderTransform = rotateTransform;

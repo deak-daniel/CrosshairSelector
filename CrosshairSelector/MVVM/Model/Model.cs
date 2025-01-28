@@ -125,6 +125,9 @@ namespace CrosshairSelector
             {
                 Stream reader = File.OpenRead(xmlPath);
                 readIn = (CrosshairList)serializer.ReadObject(reader);
+                mouseWheelSwitching = readIn.MouseSwitch;
+                controllerSwitching = readIn.ControllerSwitch;
+                keyboardSwitching = readIn.KeyboardSwitch;
                 for (int i = 0; i < readIn.Count; i++)
                 {
                     switch (readIn[i].Shape)
@@ -150,7 +153,7 @@ namespace CrosshairSelector
                     }
                 }
             }
-            catch (FileNotFoundException e)
+            catch (Exception e)
             {
                 Debug.WriteLine("Could not read crosshair config");
             }
@@ -212,6 +215,24 @@ namespace CrosshairSelector
                 }
             }
         }
+        public void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
+        {
+            DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
+            XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
+            using (XmlWriter w = XmlWriter.Create(xmlPath, settings))
+            {
+                serializer.WriteObject(w, crosshairs);
+            }
+        }
+        public void SaveCrosshairConfig(Crosshair crosshair = null)
+        {
+            string xmlPath = "crosshair.xml";
+            if (crosshair != null)
+            {
+                AddCrosshair(crosshair);
+            }
+            SaveCrosshair(xmlPath, Crosshairs);
+        }
         #endregion // Public methods
 
         #region Eventhandlers
@@ -265,17 +286,10 @@ namespace CrosshairSelector
             mouseWheelSwitching = mousewheel;
             controllerSwitching = controller;
             keyboardSwitching = keyboard;
+            Crosshairs.ControllerSwitch = controllerSwitching;
+            Crosshairs.KeyboardSwitch = keyboardSwitching;
+            Crosshairs.MouseSwitch = mouseWheelSwitching;
         }
         #endregion // Eventhandlers
-
-        public static void SaveCrosshair(string xmlPath, CrosshairList crosshairs)
-        {           
-            DataContractSerializer serializer = new DataContractSerializer(typeof(Crosshair), new List<Type> { typeof(CrosshairList) });
-            XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
-            using (XmlWriter w = XmlWriter.Create(xmlPath, settings))
-            {
-                serializer.WriteObject(w, crosshairs);
-            }
-        }
     }
 }

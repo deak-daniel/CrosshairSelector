@@ -14,13 +14,13 @@ namespace CrosshairSelector
     public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
     {
         #region Events
-        public static event Action<Crosshair>? OnCrosshairModifed;
-        public static event Action<Crosshair>? OnShowRequested;
-        public static event Action<Crosshair>? OnChangeShape;
         public static event Action<Crosshair?>? OnTabRequested;
-        public static event Action<Crosshair>? OnSaveConfig;
         public static event Action<Crosshair>? OnDeleteCrosshair;
         #endregion // Events
+
+        #region Fields
+        private Model model = Model.Instance;
+        #endregion // Fields
 
         #region Properties
 
@@ -331,19 +331,20 @@ namespace CrosshairSelector
             _crosshair.OutlineThickness = OutlineThickness;
             _crosshair.AssignedKey = AssignedKey.ToKey();
 
-            OnCrosshairModifed?.Invoke(_crosshair);
+            model.ModifyCrosshair(_crosshair);
         }
         public void ChangeShape()
         {
             _crosshair.Shape = Shape;
-            OnChangeShape?.Invoke(_crosshair);
+            model.ChangeShape(_crosshair);
         }
         public bool Show(Crosshair previous = null)
         {
             bool res = false;
             try
             {
-                OnShowRequested?.Invoke(previous ?? _crosshair);
+                model.ModifyCrosshair(previous ?? _crosshair);
+                //OnShowRequested?.Invoke(previous ?? _crosshair);
                 res = true;
                 return res;
             }
@@ -379,7 +380,7 @@ namespace CrosshairSelector
         }
         private void SaveCrosshair()
         {
-            OnSaveConfig?.Invoke(_crosshair);
+            model.SaveCrosshairConfig(_crosshair);
         }
         private void AddConfig()
         {
@@ -387,6 +388,7 @@ namespace CrosshairSelector
         }
         private void DeleteCrosshair()
         {
+            model.DeleteCrosshair(_crosshair);
             OnDeleteCrosshair?.Invoke(_crosshair);
         }
         #endregion // Private methods

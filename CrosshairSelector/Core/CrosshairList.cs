@@ -12,6 +12,15 @@ namespace CrosshairSelector
     public class CrosshairList
     {
         [DataMember]
+        public bool KeyboardSwitch { get; set; }
+
+        [DataMember]
+        public bool MouseSwitch { get; set; }
+
+        [DataMember]
+        public bool ControllerSwitch { get; set; }
+
+        [DataMember]
         public List<Crosshair> list { get; set; }
         public int Count{
             get { 

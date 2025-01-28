@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace CrosshairSelector
 {
@@ -20,7 +21,8 @@ namespace CrosshairSelector
 
         #region Fields
         private List<Crosshair> _crosshairList;
-        Dictionary<string, Crosshair> dict;
+        private Dictionary<string, Crosshair> dict;
+        private Model model = Model.Instance;
         #endregion // Fields
 
         #region Properties
@@ -93,7 +95,7 @@ namespace CrosshairSelector
         }
         public void SaveConfig()
         {
-            ConfigSaved?.Invoke(null);
+            model.SaveCrosshairConfig();
         }
         public void AddEmptyCrosshair()
         {
