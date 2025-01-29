@@ -95,45 +95,16 @@ namespace CrosshairSelector.MVVM.View
         {
             if (loaded == 0)
             {
-                bottomLeft.View = new Cross2View();
-                bottomLeft.Thickness = 10;
-                bottomLeft.Shape = CrosshairShape.Cross2;
-                bottomLeft.Size = 30;
-                bottomLeft.Outline = true;
-                bottomLeft.Opacity = 255;
-                bottomLeft.CrosshairColor = Colors.Red;
-                bottomLeft.ModifyCrossView(bottomLeft);
+                bottomLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 10, 20, true, 255, 10, 255, 1, Colors.White, Colors.Red);
                 bottomLeft.View.PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
 
-                topLeft.View = new Cross2View();
-                topLeft.Thickness = 3;
-                topLeft.Size = 30;
-                topLeft.Outline = true;
-                topLeft.Shape = CrosshairShape.Cross2;
-                topLeft.Opacity = 255;
-                topLeft.CrosshairColor = Colors.Yellow;
-                topLeft.ModifyCrossView(topLeft);
+                topLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross2, 10, 20, false, 255, 10, 0, 0, Colors.White, Colors.Red);
                 topLeft.View.PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
 
-                bottomRight.View = new CrossView();
-                bottomRight.Thickness = 7;
-                bottomRight.Size = 9;
-                bottomRight.Outline = true;
-                bottomRight.CrosshairColor = Colors.White;
-                bottomRight.Gap = 8;
-                bottomRight.Shape = CrosshairShape.Cross;
-                bottomRight.Opacity = 255;
-                bottomRight.ModifyCrossView(bottomRight);
+                bottomRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Triangle, 10, 20, true, 255, 5, 255, 1, Colors.Violet, Colors.Black);
                 bottomRight.View.PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
 
-                topRight.View = new Cross2View();
-                topRight.Thickness = 4;
-                topRight.Size = 30;
-                topRight.Outline = true;
-                topRight.Shape = CrosshairShape.Cross2;
-                topRight.Opacity = 255;
-                topRight.CrosshairColor = Colors.SteelBlue;
-                topRight.ModifyCrossView(topRight);
+                topRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 1, 6, false, 255, 5, 0, 0, Colors.Yellow, Colors.Black);
                 topRight.View.PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
 
                 loaded++;

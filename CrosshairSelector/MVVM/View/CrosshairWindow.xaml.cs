@@ -22,6 +22,9 @@ namespace CrosshairSelector.Windows
     /// </summary>
     public partial class CrosshairWindow : Window
     {
+        Tuple<int, int> screenRes = PcInformations.GetResolution();
+        double width = (screenRes.Item1 / 2);
+        double height = (screenRes.Item2 / 2);
         public static Action<ICrosshair> DisplayCrosshair;
         public static Action Closed;
         public CrosshairWindow()
@@ -40,9 +43,7 @@ namespace CrosshairSelector.Windows
         {
             canvas.Children.Clear();
 
-            Tuple<int, int> screenRes = PcInformations.GetResolution();
-            double width = (screenRes.Item1 / 2);
-            double height = (screenRes.Item2 / 2);
+            
 
             crosshair.View.PutCrosshairOnCanvas(this.ActualWidth, this.ActualHeight ,ref canvas);
 
