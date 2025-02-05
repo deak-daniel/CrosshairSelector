@@ -22,9 +22,9 @@ namespace CrosshairSelector.Windows
     /// </summary>
     public partial class CrosshairWindow : Window
     {
-        Tuple<int, int> screenRes = PcInformations.GetResolution();
-        double width = (screenRes.Item1 / 2);
-        double height = (screenRes.Item2 / 2);
+        private static Tuple<int, int> screenRes = PcInformations.GetResolution();
+        private static double width = (screenRes.Item1 / 2);
+        private static double height = (screenRes.Item2 / 2);
         public static Action<ICrosshair> DisplayCrosshair;
         public static Action Closed;
         public CrosshairWindow()
@@ -42,11 +42,7 @@ namespace CrosshairSelector.Windows
         public void changeCrosshair(ICrosshair crosshair)
         {
             canvas.Children.Clear();
-
-            
-
             crosshair.View.PutCrosshairOnCanvas(this.ActualWidth, this.ActualHeight ,ref canvas);
-
             this.Left = width - (crosshair.View.Width / 2) - (this.Width / 2);
             this.Top = height - (crosshair.View.Height / 2) - (this.Height / 2);
             this.Show();

@@ -9,7 +9,7 @@
       Title="HomePage"
       Loaded="Page_Loaded">
 
-    <Grid Background="#1E201E">
+    <Grid Background="#09122C">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="4*"/>

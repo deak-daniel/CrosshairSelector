@@ -169,12 +169,13 @@ namespace CrosshairSelector
         }
         public bool DeleteCrosshair(ICrosshair crosshair)
         {
+            bool res = false;
             if (_crosshairConfig.Contains(crosshair))
             {
                 _crosshairConfig.list.Remove((Crosshair)crosshair);
-                return true;
+                res = true;
             }
-            return false;
+            return res;
         }
         public void AddCrosshair(ICrosshair crosshair)
         {

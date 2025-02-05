@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace CrosshairSelector
 {
-    public class CrosshairConfigViewModel : NotifyPropertyChanged, ICloneable
+    public class CrosshairConfigViewModel : NotifyPropertyChanged
     {
         #region Events
         public static event Action<Crosshair?>? OnTabRequested;
@@ -346,16 +346,12 @@ namespace CrosshairSelector
                 model.ModifyCrosshair(previous ?? _crosshair);
                 //OnShowRequested?.Invoke(previous ?? _crosshair);
                 res = true;
-                return res;
             }
             catch (Exception)
             {
-                return res;
+                res = false;
             }
-        }
-        public object Clone()
-        {
-            return this.MemberwiseClone();
+            return res;
         }
         #endregion // Public methods
 
@@ -371,12 +367,12 @@ namespace CrosshairSelector
                     list.Add(item);
                 }
                 res = true;
-                return res;
             }
             catch (NullReferenceException)
             {
-                return res;
+                res = false;
             }
+            return res;
         }
         private void SaveCrosshair()
         {

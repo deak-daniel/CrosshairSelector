@@ -17,7 +17,7 @@
     <Page.DataContext>
         <Binding Source="{StaticResource viewModel}"/>
     </Page.DataContext>
-    <Grid Background="#1E201E">
+    <Grid Background="#09122C">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>

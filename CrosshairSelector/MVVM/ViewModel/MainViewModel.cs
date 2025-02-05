@@ -29,6 +29,11 @@ namespace CrosshairSelector
         public static event Func<string, bool>? OnLoadRequest;
         #endregion // Events
 
+        #region Fields
+
+        private Model model;
+        #endregion // Fields
+
         #region Properties
         private Frame _currentPage;
         public Frame CurrentPage
@@ -38,7 +43,6 @@ namespace CrosshairSelector
                 RaisePropertyChanged();
             }
         }
-        private Model model;
         #endregion // Properties
 
         #region Constructor
@@ -79,12 +83,11 @@ namespace CrosshairSelector
             OnCrosshairDeleted?.Invoke(crosshair.Name);
             model.Pages.Remove(crosshair.Name);
             model.DeleteCrosshair(crosshair);
-                   
+            CurrentPage = model.Pages[model.Crosshairs.Last().Name];
             if (CurrentPage.Content.GetType().Name == typeof(CrosshairConfigPage).Name)
             {
                 ((CurrentPage.Content as CrosshairConfigPage).DataContext as CrosshairConfigViewModel).Show();
             }
-            CurrentPage = model.Pages[model.Crosshairs.Last().Name];
             SendCrosshairs();
         }
         private void EditCrosshair(string crosshairName)

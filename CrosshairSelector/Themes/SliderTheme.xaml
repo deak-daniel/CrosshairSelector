@@ -16,15 +16,15 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Slider}">
-                    <Border Background="#3f4345">
+                    <Border Background="#09122C" Height="15">
                         <Grid>
-                            <Border Background="#3f4345" Height="2.5"/>
+                            <Border Background="#3f4345" Height="5"/>
                             <Track x:Name="PART_Track" >
                                 <Track.Thumb>
                                     <Thumb>
                                         <Thumb.Template>
                                             <ControlTemplate>
-                                                <Ellipse Width="15" Height="15" Fill="#0F4C75"/>
+                                                <Border Background="#872341" Width="15" Height="15" CornerRadius="12"/>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>
