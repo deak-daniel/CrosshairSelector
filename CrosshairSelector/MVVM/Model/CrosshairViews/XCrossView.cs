@@ -10,11 +10,8 @@ using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
-    public class XCrossView : CrosshairViewBase
+    public sealed class XCrossView : CrosshairViewBase
     {
-        private const int Scalar = 1;
-        private const int GapOffset = -10;
-
         #region Properties
         public Rectangle Up { get; private set; }
         public Rectangle Down { get; private set; }
@@ -85,9 +82,9 @@ namespace CrosshairSelector
         }
         public override void SetSize(int thickness, int size, int gap)
         {
-            Thickness = thickness * Scalar;
-            Size = size * Scalar;
-            Gap = (gap * Scalar) + GapOffset;
+            Thickness = thickness * scalar;
+            Size = size * scalar;
+            Gap = (gap * scalar) + gapOffset;
             Up.Width = Thickness;
             Up.Height = Size;
             Down.Width = Thickness;

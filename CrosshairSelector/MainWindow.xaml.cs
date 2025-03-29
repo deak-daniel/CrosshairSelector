@@ -18,7 +18,6 @@ namespace CrosshairSelector
         private GlobalMouseWheelHook _globalMouseWheelHook;
         public static event Action<byte> OnControllerSwitch;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
-        HomePage homepage = new HomePage();
         MainViewModel viewModel = new MainViewModel();
         public MainWindow()
         {
@@ -29,7 +28,7 @@ namespace CrosshairSelector
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             _globalMouseWheelHook = new GlobalMouseWheelHook();
-            _globalMouseWheelHook.Start();
+            //_globalMouseWheelHook.Start();
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
@@ -91,7 +90,7 @@ namespace CrosshairSelector
         }
         private void HomePage_click(object sender, RoutedEventArgs e)
         {
-            viewModel.ChangePage(homepage);
+            viewModel.ChangePage(HomePage.Instance);
         }
         private void Crosshair_click(object sender, RoutedEventArgs e)
         {

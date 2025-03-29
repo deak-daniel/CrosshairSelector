@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosshairSelector.MVVM.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,57 +9,58 @@ using System.Threading.Tasks;
 
 namespace CrosshairSelector
 {
-    [DataContract]
-    public class CrosshairList
+    public class CrosshairList : List<Crosshair>
     {
-        [DataMember]
-        public bool KeyboardSwitch { get; set; }
-
-        [DataMember]
-        public bool MouseSwitch { get; set; }
-
-        [DataMember]
-        public bool ControllerSwitch { get; set; }
-
-        [DataMember]
-        public List<Crosshair> list { get; set; }
-        public int Count{
-            get { 
-                return list.Count; 
-            }  
-        }
-        public CrosshairList()
+        public new void Add(Crosshair item)
         {
-            list = new List<Crosshair>();
-        }
-
-        public void Add(Crosshair item)
-        {
-            if (!list.Contains(item))
+            if (!base.Contains(item))
             {
-                list.Add(item);
+                base.Add(item);
             }
-        }
-        public Crosshair this[int index]
-        {
-            get { return list[index]; }
-            set { list[index] = value ?? default(Crosshair)!; }
         }
         public Crosshair this[string name]
         {
-            get { return list.First(x => x.Name == name); }
+            get 
+            {
+                int index = 0;
+                while (index < base.Count && base[index].Name != name )
+                {
+                    index++;
+                }
+                return index < base.Count ? base[index] : default;
+            }
         }
-        public bool Contains(ICrosshair item)
+    }
+    public sealed class Parameters
+    {
+        private bool keyboardSwitch;
+
+        public bool KeyboardSwitch
         {
-            return list.Contains(item);
+            get { return keyboardSwitch; }
+            set { 
+                keyboardSwitch = value;
+            }
         }
-        public Crosshair Last()
+        private bool mouseSwitch;
+
+        public bool MouseSwitch
         {
-            return list.Last();
+            get { return mouseSwitch; }
+            set
+            {
+                mouseSwitch = value;
+            }
         }
-        public Crosshair First()
+        private bool controllerSwitch;
+
+        public bool ControllerSwitch
         {
-            return list.First();
+            get { return controllerSwitch; }
+            set
+            {
+                controllerSwitch = value;
+            }
         }
     }
 }

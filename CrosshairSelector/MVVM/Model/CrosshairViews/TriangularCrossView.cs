@@ -10,11 +10,8 @@ using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
-    public class TriangularCrossView : CrosshairViewBase
+    public sealed class TriangularCrossView : CrosshairViewBase
     {
-        private const int scalar = 1;
-        private const int gapOffset = -10;
-
         #region Properties
         public Rectangle Up { get; private set; }
         public Rectangle Left { get; private set; }

@@ -215,7 +215,7 @@
                     Style="{StaticResource label}">Assign to key:
                 </Label>
                 <TextBox Style="{StaticResource SideBox}"
-                         Text="{Binding AssignedKey}"
+                         Text="{Binding AssignedKey, UpdateSourceTrigger=PropertyChanged}"
                          Width="40"
                          TextAlignment="Right"
                          BorderBrush="White"></TextBox>

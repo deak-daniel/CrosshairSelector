@@ -96,14 +96,17 @@ namespace CrosshairSelector
             {"tab", Key.Tab },
             {"leftshift", Key.LeftShift },
             {"leftcontrol", Key.LeftCtrl }
-
         };
         public static Key ToKey(this string value)
         {
             Key res = Key.None;
-            if (value != null && value != "")
+            if (value != null)
             {
                 res = LetterToKeyMap[value];
+            }
+            else if (value == "")
+            {
+                res = Key.None;
             }
             return res;
         }

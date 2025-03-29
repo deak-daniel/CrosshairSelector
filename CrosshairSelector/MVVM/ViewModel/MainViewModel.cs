@@ -26,7 +26,6 @@ namespace CrosshairSelector
         public static event Action<string>? OnCrosshairAdded;
         public static event Action<string>? OnCrosshairDeleted;
         public static event Action<List<Crosshair>>? OnCrosshairRequested;
-        public static event Func<string, bool>? OnLoadRequest;
         #endregion // Events
 
         #region Fields
@@ -83,10 +82,14 @@ namespace CrosshairSelector
             OnCrosshairDeleted?.Invoke(crosshair.Name);
             model.Pages.Remove(crosshair.Name);
             model.DeleteCrosshair(crosshair);
-            CurrentPage = model.Pages[model.Crosshairs.Last().Name];
-            if (CurrentPage.Content.GetType().Name == typeof(CrosshairConfigPage).Name)
+            if (model.Pages.Count > 0)
             {
+                CurrentPage = model.Pages[model.Crosshairs.Last().Name];
                 ((CurrentPage.Content as CrosshairConfigPage).DataContext as CrosshairConfigViewModel).Show();
+            }
+            else if (model.Pages.Count == 0)
+            {
+                ChangePage(HomePage.Instance);
             }
             SendCrosshairs();
         }
@@ -129,7 +132,7 @@ namespace CrosshairSelector
         #region Public methods
         public void LoadCrosshairConfig()
         {
-            bool res = OnLoadRequest.Invoke("crosshair.xml");
+            bool res = model.LoadCrosshairList("crosshair.xml");
             if (res)
             {
                 for (int i = 0; i < model.Crosshairs.Count; i++)
@@ -155,7 +158,10 @@ namespace CrosshairSelector
         }
         public void SendCrosshairs()
         {
-            OnCrosshairRequested?.Invoke(model.Crosshairs.list);
+            if (model.Crosshairs != null)
+            {
+                OnCrosshairRequested?.Invoke(model.Crosshairs);
+            }
         }
         #endregion // Public methods
     }

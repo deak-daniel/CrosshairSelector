@@ -344,7 +344,6 @@ namespace CrosshairSelector
             try
             {
                 model.ModifyCrosshair(previous ?? _crosshair);
-                //OnShowRequested?.Invoke(previous ?? _crosshair);
                 res = true;
             }
             catch (Exception)
@@ -384,7 +383,6 @@ namespace CrosshairSelector
         }
         private void DeleteCrosshair()
         {
-            model.DeleteCrosshair(_crosshair);
             OnDeleteCrosshair?.Invoke(_crosshair);
         }
         #endregion // Private methods

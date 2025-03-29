@@ -20,15 +20,32 @@ namespace CrosshairSelector.MVVM.View
     /// </summary>
     public partial class HomePage : Page
     {
+        private static HomePage instance;
+        public static HomePage Instance { 
+            get 
+            {
+                lock (typeof(MainWindow))
+                {
+                    if (instance == null)
+                    {
+                        instance = new HomePage();
+                    }
+                }
+                
+                return instance;
+            }
+        }
         int loaded = 0;
         Crosshair bottomLeft = new Crosshair();
         Crosshair topLeft = new Crosshair();
         Crosshair bottomRight = new Crosshair();
         Crosshair topRight = new Crosshair();
-        HomePageViewModel viewModel = new HomePageViewModel();
+        private HomePageViewModel viewModel;
+        public HomePageViewModel ViewModel { get => viewModel; } 
         public HomePage()
         {
             InitializeComponent();
+            viewModel = new HomePageViewModel();
             this.DataContext = viewModel;
         }
 

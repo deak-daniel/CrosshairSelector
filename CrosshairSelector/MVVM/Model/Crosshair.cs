@@ -17,49 +17,21 @@ using System.Windows.Input;
 
 namespace CrosshairSelector
 {
-    [DataContract]
     public class Crosshair : ICrosshair, ICloneable
     {
         #region Properties
-        [DataMember]
         public string Name { get; set; }
-
-        [DataMember]
         public Key AssignedKey { get; set; }
-
-        [DataMember]
         public int Thickness { get; set; }
-
-        [DataMember]
         public int Opacity { get; set; }
-
-        [DataMember]
         public int Gap { get; set; }
-
-        [DataMember]
         public int Size { get; set; }
-
-        [DataMember]
         public int OutlineOpacity { get; set; }
-
-
-        [DataMember]
         public bool CenterDot { get; set; }
-
-
-        [DataMember]
         public int OutlineThickness { get; set; }
-
-        [DataMember]
         public bool Outline { get; set; }
-
-        [DataMember]
         public CrosshairShape Shape { get; set; }
-
-        [DataMember]
         public Color CrosshairColor { get; set; }
-
-        [DataMember]
         public Color OutlineColor { get; set; }
         public ICrosshairView View { get; set; }
         #endregion // Properties

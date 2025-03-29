@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace CrosshairSelector
 {
-    public class Cross2View : CrosshairViewBase
+    public sealed class Cross2View : CrosshairViewBase
     {
         #region Fields
         private Point helperPoint;

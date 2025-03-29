@@ -11,6 +11,11 @@ namespace CrosshairSelector
 {
     public abstract class CrosshairViewBase : ICrosshairView
     {
+        #region Constants
+        protected const int scalar = 1;
+        protected const int gapOffset = -10;
+        #endregion // Constants
+
         #region Properties
         public double Height { get; set; }
         public double Width { get; set; }

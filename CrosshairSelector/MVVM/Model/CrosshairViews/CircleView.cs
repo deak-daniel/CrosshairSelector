@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace CrosshairSelector
 {
-    public class CircleView : CrosshairViewBase
+    public sealed class CircleView : CrosshairViewBase
     {
         #region Fields
         private const int Scalar = 1;

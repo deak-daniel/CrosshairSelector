@@ -10,7 +10,6 @@ namespace CrosshairSelector
 {
     public class HomePageViewModel : NotifyPropertyChanged
     {
-
         #region Events
         public static event Action<Crosshair>? CrosshairDeleted;
         public static event Action<Crosshair>? ConfigSaved;
