@@ -19,8 +19,7 @@ namespace CrosshairSelector
         #endregion // Events
 
         #region Fields
-        private List<Crosshair> _crosshairList;
-        private Dictionary<string, Crosshair> dict;
+        private CrosshairList crosshairList;
         private Model model = Model.Instance;
         #endregion // Fields
 
@@ -74,9 +73,8 @@ namespace CrosshairSelector
         public HomePageViewModel()
         {
             MainViewModel.OnCrosshairRequested += CrosshairRequestedHandler!;
-            _crosshairList = new List<Crosshair>();
+            crosshairList = new CrosshairList();
             Crosshairs = new ObservableCollection<string>();
-            dict = new Dictionary<string, Crosshair>();
         }
         #endregion // Constructor
 
@@ -90,7 +88,7 @@ namespace CrosshairSelector
         #region Public methods
         public void DeleteCrosshair(string selectedItem)
         {
-            CrosshairDeleted?.Invoke(dict[selectedItem]);
+            CrosshairDeleted?.Invoke(crosshairList[selectedItem]);
         }
         public void SaveConfig()
         {
@@ -103,17 +101,16 @@ namespace CrosshairSelector
         public void AddCrosshair(Crosshair crosshair)
         {
             CrosshairAdded?.Invoke(crosshair);
-            if (!_crosshairList.Contains(crosshair))
+            if (!crosshairList.Contains(crosshair))
             {
                 int number = 1;
-                _crosshairList.Add(crosshair);
+                crosshairList.Add(crosshair);
                 if (Crosshairs.Count > 0)
                 {
                     string subs = Crosshairs.Last().Remove(0, "Crosshair".Length);
                     number = int.Parse(subs) + 1;
                 }
                 Crosshairs.Add($"Crosshair{number}");
-                dict.Add($"Crosshair{number}", crosshair);
             }
         }
         public void EditCrosshair(string selectedItem)
@@ -125,13 +122,11 @@ namespace CrosshairSelector
         #region Eventhandlers
         private void CrosshairRequestedHandler(List<Crosshair> crosshairs)
         { 
-            dict = new Dictionary<string, Crosshair>();
             Crosshairs = new ObservableCollection<string>();
             for (int i = 0; i < crosshairs.Count; i++)
             {
-                _crosshairList.Add(crosshairs[i]);
-                Crosshairs.Add($"Crosshair{i + 1}");
-                dict.Add($"Crosshair{i + 1}", crosshairs[i]);
+                crosshairList.Add(crosshairs[i]);
+                Crosshairs.Add(crosshairs[i].Name);
             }
         }
         #endregion // Eventhandlers

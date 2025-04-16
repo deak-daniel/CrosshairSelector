@@ -134,26 +134,9 @@ namespace CrosshairSelector
             }
             return res;
         }
-        public void AddCrosshair(ICrosshair crosshair)
-        {
-            if (crosshair.Name != "")
-            {
-                _crosshairConfig.Add((Crosshair)crosshair);
-                return;
-            }
-            if (_crosshairConfig.Count != 0)
-            {
-                crosshair.Name = "Crosshair" + (_crosshairConfig.Last().Name.GetNumberFromString() + 1);
-            }
-            else
-            {
-                crosshair.Name = "Crosshair1";
-            }
-            _crosshairConfig.Add((Crosshair)crosshair);
-        }
         public void AddCrosshair(ICrosshair crosshair, Frame page)
         {
-            AddCrosshair(crosshair);
+            _crosshairConfig.Add((Crosshair)crosshair);
             if (!pageDict.ContainsKey(crosshair.Name))
             {
                 pageDict.Add(crosshair.Name, page);
@@ -178,7 +161,7 @@ namespace CrosshairSelector
             string xmlPath = "crosshair.xml";
             if (crosshair != null)
             {
-                AddCrosshair(crosshair);
+                _crosshairConfig.Add(crosshair);
             }
             SaveXml(xmlPath);
         }

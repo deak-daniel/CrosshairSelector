@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CrosshairSelector
 {
@@ -13,9 +14,27 @@ namespace CrosshairSelector
     {
         public new void Add(Crosshair item)
         {
-            if (!base.Contains(item))
+            if (base.Count == 0)
             {
                 base.Add(item);
+            }
+            else
+            {
+                int index = 0;
+                while (index < base.Count && base[index].Name != item.Name)
+                {
+                    index++;
+                }
+                if (index < base.Count)
+                {
+                    return;
+                }
+                else
+                {
+                    string name = base[base.Count-1].Name;
+                    item.Name = "Crosshair" + (name.GetNumberFromString() + 1);
+                    base.Add(item);
+                }
             }
         }
         public Crosshair this[string name]

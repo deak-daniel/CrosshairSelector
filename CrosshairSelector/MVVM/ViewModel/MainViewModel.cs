@@ -25,11 +25,11 @@ namespace CrosshairSelector
         #region Events
         public static event Action<string>? OnCrosshairAdded;
         public static event Action<string>? OnCrosshairDeleted;
+        public static event Action<string>? OnCrosshairChanged;
         public static event Action<List<Crosshair>>? OnCrosshairRequested;
         #endregion // Events
 
         #region Fields
-
         private Model model;
         #endregion // Fields
 
@@ -155,10 +155,11 @@ namespace CrosshairSelector
             }
             CurrentPage = model.Pages[pageName];
             (model.Pages[pageName].Content as CrosshairConfigPage).viewModel.Show();
+            OnCrosshairChanged?.Invoke(pageName);
         }
         public void SendCrosshairs()
         {
-            if (model.Crosshairs != null)
+            if (model.Crosshairs.Count != 0)
             {
                 OnCrosshairRequested?.Invoke(model.Crosshairs);
             }

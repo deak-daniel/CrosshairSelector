@@ -28,14 +28,18 @@ namespace CrosshairSelector
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             _globalMouseWheelHook = new GlobalMouseWheelHook();
-            //_globalMouseWheelHook.Start();
+            _globalMouseWheelHook.Start();
             viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
+            MainViewModel.OnCrosshairChanged += OnCrosshairChanged!;
+            _ = HomePage.Instance;
         }
         ~MainWindow()
         {
-            MainViewModel.OnCrosshairAdded -= OnCrosshairAddedHandler;
+            MainViewModel.OnCrosshairChanged -= OnCrosshairChanged!;
+            MainViewModel.OnCrosshairDeleted -= OnCrosshairDeletedHandler!;
+            MainViewModel.OnCrosshairAdded -= OnCrosshairAddedHandler!;
         }
         private void InitializeSDL()
         {
@@ -99,6 +103,22 @@ namespace CrosshairSelector
         private void Crosshair_lostfocus(object sender, RoutedEventArgs e)
         {
             //viewModel.SaveCurrentCrosshair((sender as RadioButton).Content.ToString());
+        }
+        private void OnCrosshairChanged(string name)
+        {
+            for (int i = 0; i < SidePanel.Children.Count; i++)
+            {
+                (SidePanel.Children[i] as RadioButton).IsChecked = false;
+            }
+            int index = 0;
+            while (index < SidePanel.Children.Count && (SidePanel.Children[index] as RadioButton).Content.ToString() != name)
+            {
+                index++;
+            }
+            if (index < SidePanel.Children.Count)
+            {
+                (SidePanel.Children[index] as RadioButton).IsChecked = true;
+            }
         }
         private void OnCrosshairAddedHandler(string crosshairName)
         {
