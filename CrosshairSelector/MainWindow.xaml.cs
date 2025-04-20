@@ -1,11 +1,13 @@
-﻿using CrosshairSelector.MVVM.View;
-using CrosshairSelector.Windows;
-using SDL2;
+﻿using SDL2;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+
+using CrosshairSelector.MVVM.View;
+using CrosshairSelector.Windows;
+using CrosshairSelector.ViewModel;
 
 namespace CrosshairSelector
 {
@@ -18,22 +20,22 @@ namespace CrosshairSelector
         private GlobalMouseWheelHook _globalMouseWheelHook;
         public static event Action<byte> OnControllerSwitch;
         CrosshairWindow crosshairWindow = new CrosshairWindow();
-        MainViewModel viewModel = new MainViewModel();
+        MainViewModel viewModel;
         public MainWindow()
         {
             InitializeComponent();
             InitializeSDL();
+            viewModel = new MainViewModel();
             this.DataContext = viewModel;
             crosshairWindow.Topmost = true;
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             _globalMouseWheelHook = new GlobalMouseWheelHook();
             _globalMouseWheelHook.Start();
-            viewModel.LoadCrosshairConfig();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
             MainViewModel.OnCrosshairChanged += OnCrosshairChanged!;
-            _ = HomePage.Instance;
+            viewModel.LoadCrosshairConfig();
         }
         ~MainWindow()
         {
@@ -94,7 +96,7 @@ namespace CrosshairSelector
         }
         private void HomePage_click(object sender, RoutedEventArgs e)
         {
-            viewModel.ChangePage(HomePage.Instance);
+            viewModel.ChangePage(HomeControl.Instance);
         }
         private void Crosshair_click(object sender, RoutedEventArgs e)
         {

@@ -12,7 +12,7 @@ namespace CrosshairSelector
 {
     public class GlobalKeyboardHook
     {
-        // Define the Windows API function to set the hook
+        public static event Action<Key> OnKeyPressed;
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -57,19 +57,17 @@ namespace CrosshairSelector
             }
         }
 
-        // Callback method to handle keyboard events
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
                 int vkCode = Marshal.ReadInt32(lParam);
                 Key key = KeyInterop.KeyFromVirtualKey(vkCode);
-                Model.OnKeyPressed(key);
+                OnKeyPressed(key);
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
     }
-
 }

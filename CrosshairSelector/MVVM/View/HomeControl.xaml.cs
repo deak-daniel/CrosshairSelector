@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosshairSelector.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,22 +17,23 @@ using System.Windows.Shapes;
 namespace CrosshairSelector.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for HomeControl.xaml
     /// </summary>
-    public partial class HomePage : Page
+    public partial class HomeControl : UserControl
     {
-        private static HomePage instance;
-        public static HomePage Instance { 
-            get 
+        private static HomeControl instance;
+        public static HomeControl Instance
+        {
+            get
             {
                 lock (typeof(MainWindow))
                 {
                     if (instance == null)
                     {
-                        instance = new HomePage();
+                        instance = new HomeControl();
                     }
                 }
-                
+
                 return instance;
             }
         }
@@ -41,8 +43,8 @@ namespace CrosshairSelector.MVVM.View
         Crosshair bottomRight = new Crosshair();
         Crosshair topRight = new Crosshair();
         private HomePageViewModel viewModel;
-        public HomePageViewModel ViewModel { get => viewModel; } 
-        public HomePage()
+        public HomePageViewModel ViewModel { get => viewModel; }
+        public HomeControl()
         {
             InitializeComponent();
             viewModel = new HomePageViewModel();

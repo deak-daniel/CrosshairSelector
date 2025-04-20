@@ -110,15 +110,7 @@ namespace CrosshairSelector
             }
             return res;
         }
-        public static string ToStringFromKey(this Key value)
-        {
-            string res = "";
-            if (value != null)
-            {
-                res = KeyToLetterMap[value];
-            }
-            return res;
-        }
+        public static string ToStringFromKey(this Key value) => KeyToLetterMap[value];
         public static int GetNumberFromString(this string value)
         {
             string output = "";

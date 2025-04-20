@@ -20,7 +20,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ContentPresenter Grid.Column="1" Content="{Binding CurrentPage}"/>
+        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
 
         <StackPanel x:Name="SidePanel">
             <RadioButton Style="{StaticResource SideButton}" Content="Home page" Click="HomePage_click"/>

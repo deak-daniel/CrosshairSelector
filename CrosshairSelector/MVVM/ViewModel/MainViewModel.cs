@@ -18,7 +18,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
-namespace CrosshairSelector
+namespace CrosshairSelector.ViewModel
 {
     public class MainViewModel : NotifyPropertyChanged
     {
@@ -26,6 +26,7 @@ namespace CrosshairSelector
         public static event Action<string>? OnCrosshairAdded;
         public static event Action<string>? OnCrosshairDeleted;
         public static event Action<string>? OnCrosshairChanged;
+        public static event Action<bool, bool, bool>? OnLoadCompleted;
         public static event Action<List<Crosshair>>? OnCrosshairRequested;
         #endregion // Events
 
@@ -34,8 +35,8 @@ namespace CrosshairSelector
         #endregion // Fields
 
         #region Properties
-        private Frame _currentPage;
-        public Frame CurrentPage
+        private UserControl _currentPage;
+        public UserControl CurrentPage
         {
             get { return _currentPage; }
             set { _currentPage = value;
@@ -72,9 +73,10 @@ namespace CrosshairSelector
         #region Eventhandlers
         private void AddTab(Crosshair crosshair)
         {
-            CrosshairConfigPage c = new CrosshairConfigPage();
-            Frame frame = WrapCrosshairConfigPage(c);
-            model.AddCrosshair(c.viewModel.Crosshair, frame);
+            CrosshairConfigControl c = new CrosshairConfigControl();
+            model.AddCrosshair(c.viewModel.Crosshair, c);
+            OnCrosshairAdded?.Invoke(model.Crosshairs.Last().Name);
+            ChangePage(model.Crosshairs.Last().Name);
             SendCrosshairs();
         }
         private void CrosshairDeletedHandler(Crosshair crosshair)
@@ -84,12 +86,11 @@ namespace CrosshairSelector
             model.DeleteCrosshair(crosshair);
             if (model.Pages.Count > 0)
             {
-                CurrentPage = model.Pages[model.Crosshairs.Last().Name];
-                ((CurrentPage.Content as CrosshairConfigPage).DataContext as CrosshairConfigViewModel).Show();
+                ChangePage(model.Crosshairs.Last().Name);
             }
             else if (model.Pages.Count == 0)
             {
-                ChangePage(HomePage.Instance);
+                ChangePage(HomeControl.Instance);
             }
             SendCrosshairs();
         }
@@ -102,50 +103,30 @@ namespace CrosshairSelector
         #region Private methods
         private void AddHomePage()
         {
-            Frame frame = new Frame();
-            frame.Content = model.HomePage;
-            CurrentPage = frame;
-        }
-        private Frame WrapCrosshairConfigPage(CrosshairConfigPage page, Crosshair crosshair = null)
-        {
-            Frame frame = new Frame();
-            frame.Content = page;
-            frame.NavigationService.Navigated += (sender, e) =>
-            {
-                Debug.WriteLine(e.Content.GetType());
-                if (crosshair != null)
-                {
-                    CurrentPage = model.Pages[crosshair.Name];
-                    (CurrentPage.Content as CrosshairConfigPage).viewModel.Crosshair = model.Crosshairs[crosshair.Name];
-                    OnCrosshairAdded?.Invoke(crosshair.Name);
-                }
-                else
-                {
-                    CurrentPage = model.Pages.Last().Value;
-                    OnCrosshairAdded?.Invoke(model.Pages.Last().Key);
-                }
-            };
-            return frame;
+            CurrentPage = model.HomePage;
         }
         #endregion // Private methods
 
         #region Public methods
         public void LoadCrosshairConfig()
         {
-            bool res = model.LoadCrosshairList("crosshair.xml");
+            bool res = model.LoadCrosshairList();
             if (res)
             {
                 for (int i = 0; i < model.Crosshairs.Count; i++)
                 {
-                    model.AddCrosshair(model.Crosshairs[i], WrapCrosshairConfigPage(new CrosshairConfigPage(), model.Crosshairs[i]));
+                    CrosshairConfigControl control = new CrosshairConfigControl();
+                    control.viewModel.Crosshair = model.Crosshairs[i];
+                    model.Pages.Add(model.Crosshairs[i].Name, control);
+                    OnCrosshairAdded?.Invoke(model.Crosshairs[i].Name);
                 }
             }
+            ChangePage(model.Crosshairs.Last().Name);
+            OnLoadCompleted?.Invoke(model.KeyboardSwitch, model.ScrollSwitch, model.ControllerSwitch);
         }
-        public void ChangePage(HomePage page)
+        public void ChangePage(HomeControl control)
         {
-            Frame frame = new Frame();
-            frame.Content = page;
-            CurrentPage = frame;
+            CurrentPage = control;
         }
         public void ChangePage(string pageName)
         {
@@ -154,15 +135,12 @@ namespace CrosshairSelector
                 return;
             }
             CurrentPage = model.Pages[pageName];
-            (model.Pages[pageName].Content as CrosshairConfigPage).viewModel.Show();
+            (model.Pages[pageName] as CrosshairConfigControl).viewModel.Show();
             OnCrosshairChanged?.Invoke(pageName);
         }
         public void SendCrosshairs()
         {
-            if (model.Crosshairs.Count != 0)
-            {
-                OnCrosshairRequested?.Invoke(model.Crosshairs);
-            }
+            OnCrosshairRequested?.Invoke(model.Crosshairs);
         }
         #endregion // Public methods
     }

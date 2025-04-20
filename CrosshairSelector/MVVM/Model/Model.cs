@@ -17,55 +17,52 @@ using System.Windows.Controls;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
 
+using CrosshairSelector.ViewModel;
 
 namespace CrosshairSelector
 {
     public class Model
     {
         #region Constants
-        private string xmlConfig = "Config";
-        private string xmlCrosshair = "Crosshair";
-        private string xmlName = "Name";
-        private string xmlAssignedKey = "AssignedKey";
-        private string xmlThickness = "Thickness";
-        private string xmlOpacity = "Opacity";
-        private string xmlGap = "Gap";
-        private string xmlSize = "Size";
-        private string xmlOutlineOpacity = "OutlineOpacity";
-        private string xmlOutline = "Outline";
-        private string xmlCenterDot = "CenterDot";
-        private string xmlOutlineThickness = "OutlineThickness";
-        private string xmlCrosshairShape = "CrosshairShape";
-        private string xmlColor = "Color";
-        private string xmlOutlineColor = "OutlineColor";
-        private string xmlKeyboard = "Keyboard";
-        private string xmlController = "Controller";
-        private string xmlScroll = "Scroll";
+        private readonly string controllerLb = "LB";
+        private readonly string controllerRb = "RB";
+        private readonly string saveName = "crosshair.xml";
+        private readonly string xmlConfig = "Config";
+        private readonly string xmlCrosshair = "Crosshair";
+        private readonly string xmlName = "Name";
+        private readonly string xmlAssignedKey = "AssignedKey";
+        private readonly string xmlThickness = "Thickness";
+        private readonly string xmlOpacity = "Opacity";
+        private readonly string xmlGap = "Gap";
+        private readonly string xmlSize = "Size";
+        private readonly string xmlOutlineOpacity = "OutlineOpacity";
+        private readonly string xmlOutline = "Outline";
+        private readonly string xmlCenterDot = "CenterDot";
+        private readonly string xmlOutlineThickness = "OutlineThickness";
+        private readonly string xmlCrosshairShape = "CrosshairShape";
+        private readonly string xmlColor = "Color";
+        private readonly string xmlOutlineColor = "OutlineColor";
+        private readonly string xmlKeyboard = "Keyboard";
+        private readonly string xmlController = "Controller";
+        private readonly string xmlScroll = "Scroll";
         #endregion // Constants
 
-        #region Events
-        public static Action<Key> OnKeyPressed;
-        #endregion // Events
-
         #region Fields
-        private HomePage homePage;
+        private HomeControl homePage;
         private int currentCrosshairIndex = 1;
-        private bool keyboardSwitching = true;
-        private bool controllerSwitching = false;
-        private bool mouseWheelSwitching = false;
         private CrosshairList _crosshairConfig;
         private static Model instance;
-        private Dictionary<string, Frame> pageDict;
+        private Dictionary<string, UserControl> pageDict;
         #endregion // Fields
 
         #region Properties
-        public Parameters ParameterClass { get; set; }
-        public HomePage HomePage { get => homePage; }
+        public Parameters ParameterClass { get; private set; }
+        public HomeControl HomePage { get => HomeControl.Instance; }
         public CrosshairList Crosshairs { get => _crosshairConfig; }
-        public Dictionary<string, Frame> Pages { get => pageDict; }
-        public bool KeyboardSwitch { get => keyboardSwitching; }
-        public bool ControllerSwitch { get => controllerSwitching; }
-        public bool ScrollSwitch { get => mouseWheelSwitching; }
+        public Dictionary<string, UserControl> Pages { get => pageDict; }
+        public bool KeyboardSwitch { get => ParameterClass.KeyboardSwitch; }
+        public bool ControllerSwitch { get => ParameterClass.ControllerSwitch; }
+        public bool ScrollSwitch { get => ParameterClass.MouseSwitch; }
         public static Model Instance
         {
             get
@@ -87,11 +84,11 @@ namespace CrosshairSelector
         {
             ParameterClass = new Parameters();
             _crosshairConfig = new CrosshairList();
-            pageDict = new Dictionary<string, Frame>();
+            pageDict = new Dictionary<string, UserControl>();
             GlobalMouseWheelHook.MouseWheelScrolled += ScrollCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated += SwitchingTypeUpdatedHandler!;
             MainWindow.OnControllerSwitch += ControllerSwitching!;
-            OnKeyPressed = KeyboardSwitching;
+            GlobalKeyboardHook.OnKeyPressed += KeyboardSwitching;
         }
         #endregion // Constructor
 
@@ -101,6 +98,7 @@ namespace CrosshairSelector
             GlobalMouseWheelHook.MouseWheelScrolled -= ScrollCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated -= SwitchingTypeUpdatedHandler!;
             MainWindow.OnControllerSwitch -= ControllerSwitching!;
+            GlobalKeyboardHook.OnKeyPressed -= KeyboardSwitching;
         }
         #endregion // Destructor
 
@@ -113,8 +111,8 @@ namespace CrosshairSelector
         {
             if (_crosshairConfig.Contains(crosshair))
             {
-                _crosshairConfig[_crosshairConfig.IndexOf((Crosshair)crosshair)].ModifyCrossView(crosshair);
-                CrosshairConfigPage.ChangeCrosshair(crosshair);
+                _crosshairConfig[crosshair.Name].ModifyCrossView(crosshair);
+                CrosshairConfigControl.ChangeCrosshair(crosshair);
             }
         }
         public void ChangeShape(ICrosshair crosshair)
@@ -134,43 +132,31 @@ namespace CrosshairSelector
             }
             return res;
         }
-        public void AddCrosshair(ICrosshair crosshair, Frame page)
+        public void AddCrosshair(Crosshair crosshair, UserControl page)
         {
-            _crosshairConfig.Add((Crosshair)crosshair);
+            if (!_crosshairConfig.Contains(crosshair))
+            {
+                _crosshairConfig.Add(crosshair);
+            }
             if (!pageDict.ContainsKey(crosshair.Name))
             {
-                pageDict.Add(crosshair.Name, page);
-            }
-        }
-        public void KeyboardSwitching(Key key)
-        {
-            if (!keyboardSwitching)
-            {
-                return;
-            }
-            for (int i = 0; i < _crosshairConfig.Count; i++)
-            {
-                if (_crosshairConfig[i].AssignedKey == key)
-                {
-                    ModifyCrosshair(_crosshairConfig[i]);
-                }
+                pageDict.Add(_crosshairConfig.Last().Name, page);
             }
         }
         public void SaveCrosshairConfig(Crosshair crosshair = null)
         {
-            string xmlPath = "crosshair.xml";
             if (crosshair != null)
             {
                 _crosshairConfig.Add(crosshair);
             }
-            SaveXml(xmlPath);
+            SaveXml(saveName);
         }
-        public bool LoadCrosshairList(string xmlPath)
+        public bool LoadCrosshairList()
         {
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(xmlPath);
+                xmlDoc.Load(saveName);
                 XmlNode root = xmlDoc.SelectSingleNode(xmlConfig);
                 if (root != null)
                 {
@@ -192,9 +178,9 @@ namespace CrosshairSelector
                         crosshair.OutlineColor = (Color)ColorConverter.ConvertFromString(root.ChildNodes[i].SelectSingleNode(xmlOutlineColor)?.InnerText);
                         _crosshairConfig.Add(crosshair);
                     }
-                    ParameterClass.ControllerSwitch = bool.Parse(root.ChildNodes[root.ChildNodes.Count - 3].SelectSingleNode(xmlController)?.InnerText);
-                    ParameterClass.KeyboardSwitch = bool.Parse(root.ChildNodes[root.ChildNodes.Count - 2].SelectSingleNode(xmlKeyboard)?.InnerText);
-                    ParameterClass.MouseSwitch = bool.Parse(root.ChildNodes[root.ChildNodes.Count - 1].SelectSingleNode(xmlScroll)?.InnerText);
+                    ParameterClass.ControllerSwitch = bool.Parse(root.SelectSingleNode(xmlController)?.InnerText);
+                    ParameterClass.KeyboardSwitch = bool.Parse(root.SelectSingleNode(xmlKeyboard)?.InnerText);
+                    ParameterClass.MouseSwitch = bool.Parse(root.SelectSingleNode(xmlScroll)?.InnerText);
                 }
             }
             catch (Exception e)
@@ -210,9 +196,23 @@ namespace CrosshairSelector
         #endregion // Public methods
 
         #region Eventhandlers
+        private void KeyboardSwitching(Key key)
+        {
+            if (!ParameterClass.KeyboardSwitch)
+            {
+                return;
+            }
+            for (int i = 0; i < _crosshairConfig.Count; i++)
+            {
+                if (_crosshairConfig[i].AssignedKey == key)
+                {
+                    ModifyCrosshair(_crosshairConfig[i]);
+                }
+            }
+        }
         private void ScrollCrosshair(object sender, MouseWheelEventArgs e)
         {
-            if (!mouseWheelSwitching) return;
+            if (!ParameterClass.MouseSwitch) return;
             if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count - 1)
             {
                 if (e.Delta > 0 && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
@@ -232,23 +232,23 @@ namespace CrosshairSelector
             switch (button)
             {
                 case 9:
-                    buttonName = "LB";
+                    buttonName = controllerLb;
                     break;
                 case 10:
-                    buttonName = "RB";
+                    buttonName = controllerRb;
                     break;
 
                 default:
                     break;
             }
-            if (!controllerSwitching) return;
+            if (!ParameterClass.ControllerSwitch) return;
             if (currentCrosshairIndex >= 0 && currentCrosshairIndex <= _crosshairConfig.Count - 1)
             {
-                if (buttonName == "LB" && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
+                if (buttonName == controllerLb && (currentCrosshairIndex + 1 <= _crosshairConfig.Count - 1)) // UP
                 {
                     currentCrosshairIndex++;
                 }
-                if (buttonName == "RB" && (currentCrosshairIndex - 1 >= 0)) // DOWN
+                if (buttonName == controllerRb && (currentCrosshairIndex - 1 >= 0)) // DOWN
                 {
                     currentCrosshairIndex--;
                 }
@@ -257,12 +257,9 @@ namespace CrosshairSelector
         }
         private void SwitchingTypeUpdatedHandler(bool keyboard, bool mousewheel, bool controller)
         {
-            mouseWheelSwitching = mousewheel;
-            controllerSwitching = controller;
-            keyboardSwitching = keyboard;
-            ParameterClass.ControllerSwitch = controllerSwitching;
-            ParameterClass.KeyboardSwitch = keyboardSwitching;
-            ParameterClass.MouseSwitch = mouseWheelSwitching;
+            ParameterClass.ControllerSwitch = controller;
+            ParameterClass.KeyboardSwitch = keyboard;
+            ParameterClass.MouseSwitch = mousewheel;
         }
         #endregion // Eventhandlers
 

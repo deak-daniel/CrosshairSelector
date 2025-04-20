@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CrosshairSelector
+namespace CrosshairSelector.ViewModel
 {
-    public class CrosshairConfigViewModel : NotifyPropertyChanged
+    public class CrosshairConfigViewModel : NotifyPropertyChanged, IViewModelBase
     {
         #region Events
         public static event Action<Crosshair?>? OnTabRequested;

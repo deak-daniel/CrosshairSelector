@@ -1,4 +1,5 @@
-﻿using CrosshairSelector.Windows;
+﻿using CrosshairSelector.ViewModel;
+using CrosshairSelector.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,15 +18,16 @@ using System.Windows.Shapes;
 namespace CrosshairSelector.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for CrosshairConfigPage.xaml
+    /// Interaction logic for CrosshairConfigControl.xaml
     /// </summary>
-    public partial class CrosshairConfigPage : Page
+    public partial class CrosshairConfigControl : UserControl
     {
-        public CrosshairConfigViewModel viewModel = new CrosshairConfigViewModel();
+        public CrosshairConfigViewModel viewModel;
         public static Action<ICrosshair> ChangeCrosshair;
-        public CrosshairConfigPage()
+        public CrosshairConfigControl()
         {
             InitializeComponent();
+            viewModel = new CrosshairConfigViewModel();
             this.DataContext = viewModel;
             ChangeCrosshair = CrosshairWindow.DisplayCrosshair;
         }

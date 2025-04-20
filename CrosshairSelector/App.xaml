@@ -2,9 +2,19 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CrosshairSelector"
+             xmlns:vm="clr-namespace:CrosshairSelector.ViewModel"
+             xmlns:view="clr-namespace:CrosshairSelector.MVVM.View"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
         <ResourceDictionary>
+            <DataTemplate DataType="{x:Type vm:CrosshairConfigViewModel}">
+                <view:CrosshairConfigControl />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
+                <view:HomeControl />
+            </DataTemplate>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/ButtonTheme.xaml"/>
                 <ResourceDictionary Source="Themes/CheckBoxTheme.xaml"/>

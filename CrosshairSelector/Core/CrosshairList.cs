@@ -10,12 +10,16 @@ using System.Xml.Linq;
 
 namespace CrosshairSelector
 {
-    public class CrosshairList : List<Crosshair>
+    public sealed class CrosshairList : List<Crosshair>
     {
         public new void Add(Crosshair item)
         {
             if (base.Count == 0)
             {
+                if(item.Name == "")
+                {
+                    item.Name = "Crosshair1";
+                }
                 base.Add(item);
             }
             else

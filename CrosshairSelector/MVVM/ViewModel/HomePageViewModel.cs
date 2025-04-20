@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CrosshairSelector
+namespace CrosshairSelector.ViewModel
 {
-    public class HomePageViewModel : NotifyPropertyChanged
+    public class HomePageViewModel : NotifyPropertyChanged, IViewModelBase
     {
         #region Events
         public static event Action<Crosshair>? CrosshairDeleted;
@@ -73,6 +73,7 @@ namespace CrosshairSelector
         public HomePageViewModel()
         {
             MainViewModel.OnCrosshairRequested += CrosshairRequestedHandler!;
+            MainViewModel.OnLoadCompleted += SwitchingLoaded;
             crosshairList = new CrosshairList();
             Crosshairs = new ObservableCollection<string>();
         }
@@ -81,7 +82,8 @@ namespace CrosshairSelector
         #region Destructor
         ~HomePageViewModel()
         {
-            MainViewModel.OnCrosshairRequested -= CrosshairRequestedHandler!;
+            MainViewModel.OnCrosshairRequested -= CrosshairRequestedHandler!; 
+            MainViewModel.OnLoadCompleted -= SwitchingLoaded;
         }
         #endregion // Destructor
 
@@ -123,11 +125,18 @@ namespace CrosshairSelector
         private void CrosshairRequestedHandler(List<Crosshair> crosshairs)
         { 
             Crosshairs = new ObservableCollection<string>();
+            crosshairList = new CrosshairList();
             for (int i = 0; i < crosshairs.Count; i++)
             {
                 crosshairList.Add(crosshairs[i]);
                 Crosshairs.Add(crosshairs[i].Name);
             }
+        }
+        private void SwitchingLoaded(bool keyboard, bool mouse, bool controller)
+        {
+            KeyboardSwitch = keyboard;
+            MouseSwitch = mouse;
+            ControllerSwitch = controller;
         }
         #endregion // Eventhandlers
     }
