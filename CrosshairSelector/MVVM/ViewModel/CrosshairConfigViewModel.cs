@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using CrosshairSelector.Model;
+
 namespace CrosshairSelector.ViewModel
 {
     public class CrosshairConfigViewModel : NotifyPropertyChanged, IViewModelBase
@@ -19,7 +21,7 @@ namespace CrosshairSelector.ViewModel
         #endregion // Events
 
         #region Fields
-        private Model model = Model.Instance;
+        private ModelClass model = ModelClass.Instance;
         #endregion // Fields
 
         #region Properties

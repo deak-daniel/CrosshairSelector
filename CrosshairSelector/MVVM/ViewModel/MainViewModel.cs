@@ -1,5 +1,4 @@
-﻿using CrosshairSelector.MVVM.View;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -18,6 +17,9 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
+using CrosshairSelector.Model;
+using CrosshairSelector.MVVM.View;
+
 namespace CrosshairSelector.ViewModel
 {
     public class MainViewModel : NotifyPropertyChanged
@@ -31,7 +33,7 @@ namespace CrosshairSelector.ViewModel
         #endregion // Events
 
         #region Fields
-        private Model model;
+        private ModelClass model;
         #endregion // Fields
 
         #region Properties
@@ -48,7 +50,7 @@ namespace CrosshairSelector.ViewModel
         #region Constructor
         public MainViewModel()
         {
-            model = Model.Instance;
+            model = ModelClass.Instance;
             model.Initialize();
             AddHomePage();
             CrosshairConfigViewModel.OnDeleteCrosshair += CrosshairDeletedHandler;

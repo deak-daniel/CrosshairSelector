@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+using CrosshairSelector.Core;
+using CrosshairSelector.Model;
+
 namespace CrosshairSelector.ViewModel
 {
     public class HomePageViewModel : NotifyPropertyChanged, IViewModelBase
@@ -20,7 +23,7 @@ namespace CrosshairSelector.ViewModel
 
         #region Fields
         private CrosshairList crosshairList;
-        private Model model = Model.Instance;
+        private ModelClass model = ModelClass.Instance;
         #endregion // Fields
 
         #region Properties

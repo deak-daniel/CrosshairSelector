@@ -15,7 +15,7 @@ using System.Xml.Serialization;
 using System.Windows.Input;
 
 
-namespace CrosshairSelector
+namespace CrosshairSelector.Model
 {
     public class Crosshair : ICrosshair, ICloneable
     {

@@ -17,11 +17,12 @@ using System.Windows.Controls;
 using System.Net.Http.Headers;
 using System.Xml.Linq;
 
+using CrosshairSelector.Core;
 using CrosshairSelector.ViewModel;
 
-namespace CrosshairSelector
+namespace CrosshairSelector.Model
 {
-    public class Model
+    public class ModelClass
     {
         #region Constants
         private readonly string controllerLb = "LB";
@@ -51,7 +52,7 @@ namespace CrosshairSelector
         private HomeControl homePage;
         private int currentCrosshairIndex = 1;
         private CrosshairList _crosshairConfig;
-        private static Model instance;
+        private static ModelClass instance;
         private Dictionary<string, UserControl> pageDict;
         #endregion // Fields
 
@@ -63,7 +64,7 @@ namespace CrosshairSelector
         public bool KeyboardSwitch { get => ParameterClass.KeyboardSwitch; }
         public bool ControllerSwitch { get => ParameterClass.ControllerSwitch; }
         public bool ScrollSwitch { get => ParameterClass.MouseSwitch; }
-        public static Model Instance
+        public static ModelClass Instance
         {
             get
             {
@@ -71,7 +72,7 @@ namespace CrosshairSelector
                 {
                     lock (typeof(MainWindow))
                     {
-                        instance = new Model();
+                        instance = new ModelClass();
                     }
                 }
                 return instance;
@@ -80,7 +81,7 @@ namespace CrosshairSelector
         #endregion // Properties
 
         #region Constructor
-        private Model()
+        private ModelClass()
         {
             ParameterClass = new Parameters();
             _crosshairConfig = new CrosshairList();
@@ -93,7 +94,7 @@ namespace CrosshairSelector
         #endregion // Constructor
 
         #region Destructor
-        ~Model()
+        ~ModelClass()
         {
             GlobalMouseWheelHook.MouseWheelScrolled -= ScrollCrosshair!;
             HomePageViewModel.SwitchingTypeUpdated -= SwitchingTypeUpdatedHandler!;

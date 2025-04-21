@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace CrosshairSelector
+using CrosshairSelector.Model;
+
+namespace CrosshairSelector.Core
 {
     public static class CrosshairFactory
     {

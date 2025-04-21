@@ -38,10 +38,10 @@ namespace CrosshairSelector.MVVM.View
             }
         }
         int loaded = 0;
-        Crosshair bottomLeft = new Crosshair();
-        Crosshair topLeft = new Crosshair();
-        Crosshair bottomRight = new Crosshair();
-        Crosshair topRight = new Crosshair();
+        //Crosshair bottomLeft = new Crosshair();
+        //Crosshair topLeft = new Crosshair();
+        //Crosshair bottomRight = new Crosshair();
+        //Crosshair topRight = new Crosshair();
         private HomePageViewModel viewModel;
         public HomePageViewModel ViewModel { get => viewModel; }
         public HomeControl()
@@ -81,52 +81,52 @@ namespace CrosshairSelector.MVVM.View
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Crosshair crosshair = new Crosshair();
-            string name = ((sender as Border)?.Child as Canvas)?.Name ?? "";
-            switch (name)
-            {
-                case "TopLeft":
-                    crosshair = (Crosshair)topLeft.Clone();
-                    crosshair.View.RemoveCrosshairFromCanvas(ref TopLeft);
-                    break;
-                case "TopRight":
-                    crosshair = (Crosshair)topRight.Clone();
-                    crosshair.View.RemoveCrosshairFromCanvas(ref TopRight);
-                    break;
-                case "BottomRight":
-                    crosshair = (Crosshair)bottomRight.Clone();
-                    crosshair.View.RemoveCrosshairFromCanvas(ref BottomRight);
-                    break;
-                case "BottomLeft":
-                    crosshair = (Crosshair)bottomLeft.Clone();
-                    crosshair.View.RemoveCrosshairFromCanvas(ref BottomLeft);
-                    break;
-                default:
-                    break;
-            }
-            if (crosshair != default(Crosshair))
-            {
-                viewModel.AddCrosshair(crosshair);
-            }
+            //Crosshair crosshair = new Crosshair();
+            //string name = ((sender as Border)?.Child as Canvas)?.Name ?? "";
+            //switch (name)
+            //{
+            //    case "TopLeft":
+            //        crosshair = (Crosshair)topLeft.Clone();
+            //        crosshair.View.RemoveCrosshairFromCanvas(ref TopLeft);
+            //        break;
+            //    case "TopRight":
+            //        crosshair = (Crosshair)topRight.Clone();
+            //        crosshair.View.RemoveCrosshairFromCanvas(ref TopRight);
+            //        break;
+            //    case "BottomRight":
+            //        crosshair = (Crosshair)bottomRight.Clone();
+            //        crosshair.View.RemoveCrosshairFromCanvas(ref BottomRight);
+            //        break;
+            //    case "BottomLeft":
+            //        crosshair = (Crosshair)bottomLeft.Clone();
+            //        crosshair.View.RemoveCrosshairFromCanvas(ref BottomLeft);
+            //        break;
+            //    default:
+            //        break;
+            //}
+            //if (crosshair != default(Crosshair))
+            //{
+            //    viewModel.AddCrosshair(crosshair);
+            //}
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             if (loaded == 0)
             {
-                bottomLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 10, 20, true, 255, 10, 255, 1, Colors.White, Colors.Red);
-                bottomLeft.View.PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
+                //bottomLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 10, 20, true, 255, 10, 255, 1, Colors.White, Colors.Red);
+                //bottomLeft.View.PutCrosshairOnCanvas(BottomLeft.ActualWidth, BottomLeft.ActualHeight, ref BottomLeft);
 
-                topLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross2, 10, 20, false, 255, 10, 0, 0, Colors.White, Colors.Red);
-                topLeft.View.PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
+                //topLeft = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross2, 10, 20, false, 255, 10, 0, 0, Colors.White, Colors.Red);
+                //topLeft.View.PutCrosshairOnCanvas(TopLeft.ActualWidth, TopLeft.ActualHeight, ref TopLeft);
 
-                bottomRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Triangle, 10, 20, true, 255, 5, 255, 1, Colors.Violet, Colors.Black);
-                bottomRight.View.PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
+                //bottomRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Triangle, 10, 20, true, 255, 5, 255, 1, Colors.Violet, Colors.Black);
+                //bottomRight.View.PutCrosshairOnCanvas(BottomRight.ActualWidth, BottomRight.ActualHeight, ref BottomRight);
 
-                topRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 1, 6, false, 255, 5, 0, 0, Colors.Yellow, Colors.Black);
-                topRight.View.PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
+                //topRight = CrosshairFactory.CreateCrosshair(CrosshairShape.Cross, 1, 6, false, 255, 5, 0, 0, Colors.Yellow, Colors.Black);
+                //topRight.View.PutCrosshairOnCanvas(TopRight.ActualWidth, TopRight.ActualHeight, ref TopRight);
 
-                loaded++;
+                //loaded++;
             }
         }
     }

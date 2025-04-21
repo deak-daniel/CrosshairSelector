@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace CrosshairSelector
+namespace CrosshairSelector.Model
 {
     public abstract class CrosshairViewBase : ICrosshairView
     {
