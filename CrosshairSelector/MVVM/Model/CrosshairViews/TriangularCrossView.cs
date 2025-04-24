@@ -58,7 +58,7 @@ namespace CrosshairSelector.Model
             canvas.Children.Add(Left);
 
             Right.RenderTransform = new RotateTransform(310);
-            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/2 + 0.4);
+            Canvas.SetLeft(Right, ActualWidth / 2 + Gap / 4 + Thickness/2 + 0.2);
             Canvas.SetTop(Right, ActualHeight / 2 + Gap / 4 + Thickness);
             canvas.Children.Add(Right);
         }

@@ -83,9 +83,8 @@ namespace CrosshairSelector.ViewModel
         }
         private void CrosshairDeletedHandler(Crosshair crosshair)
         {
-            OnCrosshairDeleted?.Invoke(crosshair.Name);
-            model.Pages.Remove(crosshair.Name);
             model.DeleteCrosshair(crosshair);
+            model.Pages.Remove(crosshair.Name);
             if (model.Pages.Count > 0)
             {
                 ChangePage(model.Crosshairs.Last().Name);
@@ -94,6 +93,7 @@ namespace CrosshairSelector.ViewModel
             {
                 ChangePage(HomeControl.Instance);
             }
+            OnCrosshairDeleted?.Invoke(crosshair.Name);
             SendCrosshairs();
         }
         private void EditCrosshair(string crosshairName)
@@ -122,9 +122,9 @@ namespace CrosshairSelector.ViewModel
                     model.Pages.Add(model.Crosshairs[i].Name, control);
                     OnCrosshairAdded?.Invoke(model.Crosshairs[i].Name);
                 }
+                ChangePage(model.Crosshairs.Last().Name);
+                OnLoadCompleted?.Invoke(model.KeyboardSwitch, model.ScrollSwitch, model.ControllerSwitch);
             }
-            ChangePage(model.Crosshairs.Last().Name);
-            OnLoadCompleted?.Invoke(model.KeyboardSwitch, model.ScrollSwitch, model.ControllerSwitch);
         }
         public void ChangePage(HomeControl control)
         {

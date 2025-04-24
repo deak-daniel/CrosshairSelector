@@ -126,7 +126,7 @@ namespace CrosshairSelector.Model
         public bool DeleteCrosshair(ICrosshair crosshair)
         {
             bool res = false;
-            if (_crosshairConfig.Contains(crosshair))
+            if (_crosshairConfig.Count(x => x.Name == crosshair.Name) > 0)
             {
                 _crosshairConfig.Remove((Crosshair)crosshair);
                 res = true;
