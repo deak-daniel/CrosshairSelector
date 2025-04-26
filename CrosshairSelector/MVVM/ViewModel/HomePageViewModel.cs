@@ -22,7 +22,7 @@ namespace CrosshairSelector.ViewModel
         #endregion // Events
 
         #region Fields
-        private CrosshairList crosshairList;
+        private List<Crosshair> crosshairList;
         private ModelClass model = ModelClass.Instance;
         #endregion // Fields
 
@@ -77,7 +77,7 @@ namespace CrosshairSelector.ViewModel
         {
             MainViewModel.OnCrosshairRequested += CrosshairRequestedHandler!;
             MainViewModel.OnLoadCompleted += SwitchingLoaded;
-            crosshairList = new CrosshairList();
+            crosshairList = new List<Crosshair>();
             Crosshairs = new ObservableCollection<string>();
         }
         #endregion // Constructor
@@ -93,7 +93,8 @@ namespace CrosshairSelector.ViewModel
         #region Public methods
         public void DeleteCrosshair(string selectedItem)
         {
-            CrosshairDeleted?.Invoke(crosshairList[selectedItem]);
+            Crosshair item = crosshairList.FirstOrDefault(x => x.Name == selectedItem)!;
+            CrosshairDeleted?.Invoke(item);
         }
         public void SaveConfig()
         {
@@ -128,7 +129,7 @@ namespace CrosshairSelector.ViewModel
         private void CrosshairRequestedHandler(List<Crosshair> crosshairs)
         { 
             Crosshairs = new ObservableCollection<string>();
-            crosshairList = new CrosshairList();
+            crosshairList = new List<Crosshair>();
             for (int i = 0; i < crosshairs.Count; i++)
             {
                 crosshairList.Add(crosshairs[i]);

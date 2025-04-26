@@ -144,6 +144,7 @@ namespace CrosshairSelector
                 {
                     SidePanel.Children.RemoveAt(i);
                     (SidePanel.Children[i - 1] as RadioButton).IsChecked = true;
+                    break;
                 }
             }
         }

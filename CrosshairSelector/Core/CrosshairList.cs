@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,7 +37,7 @@ namespace CrosshairSelector.Core
                 }
                 else
                 {
-                    string name = base[base.Count-1].Name;
+                    string name = this.Last().Name;
                     item.Name = "Crosshair" + (name.GetNumberFromString() + 1);
                     base.Add(item);
                 }

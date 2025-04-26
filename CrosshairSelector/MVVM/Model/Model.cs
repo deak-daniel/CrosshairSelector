@@ -135,12 +135,9 @@ namespace CrosshairSelector.Model
         }
         public void AddCrosshair(Crosshair crosshair, UserControl page)
         {
-            if (!_crosshairConfig.Contains(crosshair))
+            if (!_crosshairConfig.Contains(crosshair) && !pageDict.ContainsKey(crosshair.Name))
             {
                 _crosshairConfig.Add(crosshair);
-            }
-            if (!pageDict.ContainsKey(crosshair.Name))
-            {
                 pageDict.Add(_crosshairConfig.Last().Name, page);
             }
         }
