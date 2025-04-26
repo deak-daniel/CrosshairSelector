@@ -113,7 +113,7 @@ namespace CrosshairSelector.ViewModel
         public void LoadCrosshairConfig()
         {
             bool res = model.LoadCrosshairList();
-            if (res)
+            if (res && model.Crosshairs.Count > 0)
             {
                 for (int i = 0; i < model.Crosshairs.Count; i++)
                 {
