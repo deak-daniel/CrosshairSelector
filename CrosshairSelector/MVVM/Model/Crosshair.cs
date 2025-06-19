@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Shapes;
 using System.Windows.Media;
-using System.Runtime.Serialization;
-using System.ComponentModel.Design;
-using System.IO;
-using System.Xml.Serialization;
 using System.Windows.Input;
 
 
@@ -104,10 +92,38 @@ namespace CrosshairSelector.Model
         #region ICloneable implementation
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return new Crosshair() 
+            {
+                View = this.View,
+                Outline = this.Outline,
+                AssignedKey = this.AssignedKey,
+                OutlineColor = this.OutlineColor,
+                OutlineThickness = this.OutlineThickness,
+                Opacity = this.Opacity,
+                Shape = this.Shape,
+                Size = this.Size,
+                Gap = this.Gap,
+                OutlineOpacity = this.OutlineOpacity,
+                CenterDot = this.CenterDot,
+                Name = this.Name,
+                Thickness = this.Thickness,
+                CrosshairColor = this.CrosshairColor
+            };
         }
         #endregion // ICloneable implementation
 
+        #region Equals implementation
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) return false;
+            if(obj.GetType() == typeof(string))
+            {
+                return this.Name == (string)obj;
+            }
+            if (obj.GetType() != typeof(Crosshair)) return false;
+            return (obj as Crosshair)!.Name == this.Name;
+        }
+        #endregion
     }
 
 }

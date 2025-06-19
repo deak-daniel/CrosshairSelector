@@ -31,7 +31,7 @@ namespace CrosshairSelector
             _globalKeyboardHook = new GlobalKeyboardHook();
             _globalKeyboardHook.SetHook();
             _globalMouseWheelHook = new GlobalMouseWheelHook();
-            _globalMouseWheelHook.Start();
+            //_globalMouseWheelHook.Start();
             MainViewModel.OnCrosshairAdded += OnCrosshairAddedHandler!;
             MainViewModel.OnCrosshairDeleted += OnCrosshairDeletedHandler!;
             MainViewModel.OnCrosshairChanged += OnCrosshairChanged!;

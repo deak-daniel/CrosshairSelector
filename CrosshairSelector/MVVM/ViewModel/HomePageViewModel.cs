@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 using CrosshairSelector.Core;
@@ -79,6 +80,7 @@ namespace CrosshairSelector.ViewModel
             MainViewModel.OnLoadCompleted += SwitchingLoaded;
             crosshairList = new List<Crosshair>();
             Crosshairs = new ObservableCollection<string>();
+            defaultCrosshairs = CrosshairFactory.CreateCrosshairs() ?? new CrosshairList();
         }
         #endregion // Constructor
 
@@ -119,9 +121,23 @@ namespace CrosshairSelector.ViewModel
                 Crosshairs.Add($"Crosshair{number}");
             }
         }
+        public void AddDefaultCrosshair(ref Canvas canvas, string crosshairName)
+        {
+            Crosshair crosshair = defaultCrosshairs.Find(x => x.Name == crosshairName);
+            crosshair?.View.PutCrosshairOnCanvas(canvas.ActualWidth, canvas.ActualHeight,ref canvas);
+        }
+        public void RemoveDefaultCrosshair(ref Canvas canvas, string crosshairName)
+        {
+            Crosshair crosshair = defaultCrosshairs.Find(x => x.Name == crosshairName);
+            crosshair?.View.RemoveCrosshairFromCanvas(ref canvas);
+        }
         public void EditCrosshair(string selectedItem)
         {
             CrosshairEdited?.Invoke(selectedItem);
+        }
+        public Crosshair GetDefaultCrosshair(string name)
+        {
+            return defaultCrosshairs[name];
         }
         #endregion // Public methods
 
@@ -143,5 +159,9 @@ namespace CrosshairSelector.ViewModel
             ControllerSwitch = controller;
         }
         #endregion // Eventhandlers
+
+        #region Fields
+        private CrosshairList defaultCrosshairs;
+        #endregion
     }
 }
