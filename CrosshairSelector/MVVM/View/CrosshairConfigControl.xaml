@@ -15,7 +15,7 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource viewModel}"/>
     </UserControl.DataContext>
-    <Grid Background="#09122C">
+    <Grid Background="#090040">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>

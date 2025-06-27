@@ -7,9 +7,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Crosshair" Height="450" Width="800"
-        Background="#09122C"
+        Background="#090040"
         Loaded="Window_Loaded">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
