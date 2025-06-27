@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="Crosshair" Height="450" Width="800"
-        Background="#090040"
+        Background="{DynamicResource BackgroundColor}"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
