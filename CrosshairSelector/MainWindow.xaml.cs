@@ -148,5 +148,15 @@ namespace CrosshairSelector
                 }
             }
         }
+
+        private void light_click(object sender, RoutedEventArgs e)
+        {
+            AppTheme.ChangeTheme(new Uri("Themes/LightTheme.xaml", UriKind.Relative));
+        }
+
+        private void dark_click(object sender, RoutedEventArgs e)
+        {
+            AppTheme.ChangeTheme(new Uri("Themes/DarkTheme.xaml", UriKind.Relative));
+        }
     }
 }

@@ -18,7 +18,7 @@
                 <ControlTemplate TargetType="{x:Type Slider}">
                     <Border Background="{DynamicResource BackgroundColor}" Height="15">
                         <Grid>
-                            <Border Background="#F4EEFF" Height="5"/>
+                            <Border Background="{DynamicResource FourthColor}" Height="5"/>
                             <Track x:Name="PART_Track" >
                                 <Track.Thumb>
                                     <Thumb>

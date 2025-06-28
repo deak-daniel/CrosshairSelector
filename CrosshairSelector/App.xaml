@@ -7,11 +7,8 @@
              StartupUri="MainWindow.xaml">
 
     <Application.Resources>
+        
         <ResourceDictionary>
-            <SolidColorBrush Color="#F4EEFF" x:Key="FourthColor"/>
-            <SolidColorBrush Color="#DCD6F7" x:Key="ThirdColor"/>
-            <SolidColorBrush Color="#A6B1E1" x:Key="SecondColor"/>
-            <SolidColorBrush Color="#424874" x:Key="BackgroundColor"/>
             <DataTemplate DataType="{x:Type vm:CrosshairConfigViewModel}">
                 <view:CrosshairConfigControl />
             </DataTemplate>
@@ -19,8 +16,11 @@
             <DataTemplate DataType="{x:Type vm:HomePageViewModel}">
                 <view:HomeControl />
             </DataTemplate>
+
             
+
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary x:Name="DefaultTheme" Source="Themes/LightTheme.xaml"/>
                 <ResourceDictionary Source="Themes/ButtonTheme.xaml"/>
                 <ResourceDictionary Source="Themes/CheckBoxTheme.xaml"/>
                 <ResourceDictionary Source="Themes/LabelTheme.xaml"/>

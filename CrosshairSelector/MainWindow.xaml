@@ -9,6 +9,12 @@
         Title="Crosshair" Height="450" Width="800"
         Background="{DynamicResource BackgroundColor}"
         Loaded="Window_Loaded">
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Click="light_click" Header="Light Theme"/>
+            <MenuItem Click="dark_click" Header="Dark theme"/>
+        </ContextMenu>
+    </Window.ContextMenu>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>

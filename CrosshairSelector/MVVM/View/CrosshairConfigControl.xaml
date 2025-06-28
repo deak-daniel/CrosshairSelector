@@ -15,7 +15,7 @@
     <UserControl.DataContext>
         <Binding Source="{StaticResource viewModel}"/>
     </UserControl.DataContext>
-    <Grid Background="#424874">
+    <Grid Background="{DynamicResource BackgroundColor}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
