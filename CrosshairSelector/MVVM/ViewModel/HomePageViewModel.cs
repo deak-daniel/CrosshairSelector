@@ -124,7 +124,12 @@ namespace CrosshairSelector.ViewModel
         public void AddDefaultCrosshair(ref Canvas canvas, string crosshairName)
         {
             Crosshair crosshair = defaultCrosshairs.Find(x => x.Name == crosshairName);
-            crosshair?.View.PutCrosshairOnCanvas(canvas.ActualWidth, canvas.ActualHeight,ref canvas);
+            if (crosshair == null)
+            {
+                throw new Exception("no crosshair");
+            }
+            crosshair.ModifyCrossView(crosshair);
+            crosshair.View.PutCrosshairOnCanvas(canvas.ActualWidth, canvas.ActualHeight,ref canvas);
         }
         public void RemoveDefaultCrosshair(ref Canvas canvas, string crosshairName)
         {

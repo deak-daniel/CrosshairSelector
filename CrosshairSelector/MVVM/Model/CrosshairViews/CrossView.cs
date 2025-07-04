@@ -1,4 +1,5 @@
-﻿using CrosshairSelector.Windows;
+﻿using CrosshairSelector.Core;
+using CrosshairSelector.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace CrosshairSelector.Model
             Canvas.SetLeft(Up, ActualWidth / 2);
             Canvas.SetTop(Up, ActualHeight / 2 - Up.Height - Gap / 4);
             canvas.Children.Add(Up);
-
+            
             Canvas.SetLeft(Down, ActualWidth / 2);
             Canvas.SetTop(Down, ActualHeight / 2 + Left.Height + Gap / 4);
             canvas.Children.Add(Down);
@@ -119,5 +120,28 @@ namespace CrosshairSelector.Model
             Right.Fill = new SolidColorBrush(CrosshairColor);
         }
         #endregion // CrosshairViewBase Implementation
+
+
+        #region ICloneable implementation
+        public override object Clone()
+        {
+            return new CrossView()
+            {
+                Up = new Rectangle() { Width = this.Up.Width, Height = this.Up.Height, Stroke = this.Up.Stroke, Fill = this.Up.Fill },
+                Down = new Rectangle() { Width = this.Down.Width, Height = this.Down.Height, Stroke = this.Down.Stroke, Fill = this.Down.Fill },
+                Left = new Rectangle() { Width = this.Left.Width, Height = this.Left.Height, Stroke = this.Left.Stroke, Fill = this.Left.Fill },
+                Right = new Rectangle() { Width = this.Right.Width, Height = this.Right.Height, Stroke = this.Right.Stroke, Fill = this.Right.Fill },
+                Thickness = this.Thickness,
+                Width = this.Width,
+                Height = this.Height,
+                Size = this.Size,
+                Gap = this.Gap,
+                Outline = this.Outline,
+                CrosshairColor = this.CrosshairColor,
+                OutlineColor = this.OutlineColor,
+                OutlineThickness = this.OutlineThickness
+            };
+        }
+        #endregion
     }
 }

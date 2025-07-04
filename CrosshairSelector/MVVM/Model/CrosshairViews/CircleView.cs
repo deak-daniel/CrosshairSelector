@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosshairSelector.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace CrosshairSelector.Model
         #endregion // Fields
 
         #region Properties
-        public Ellipse Ellipse { get; }
+        public Ellipse Ellipse { get; private set; }
         #endregion // Properties
 
         #region Constructor
@@ -65,5 +66,24 @@ namespace CrosshairSelector.Model
             Ellipse.Fill = new SolidColorBrush(CrosshairColor);
         }
         #endregion // CrosshairViewBase implementation
+
+        #region ICloneable implementation
+        public override object Clone()
+        {
+            return new CircleView()
+            {
+                Ellipse = new Ellipse() { Fill = this.Ellipse.Fill, Stroke = this.Ellipse.Stroke, Height = this.Ellipse.Height, Width = this.Ellipse.Width, StrokeThickness = this.Ellipse.StrokeThickness},
+                Thickness = this.Thickness,
+                Width = this.Width,
+                Height = this.Height,
+                Size = this.Size,
+                Gap = this.Gap,
+                Outline = this.Outline,
+                CrosshairColor = this.CrosshairColor,
+                OutlineColor = this.OutlineColor,
+                OutlineThickness = this.OutlineThickness
+            };
+        }
+        #endregion
     }
 }

@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using CrosshairSelector.Model;
 using CrosshairSelector.ViewModel;
 
 namespace CrosshairSelector.MVVM.View
@@ -22,7 +22,7 @@ namespace CrosshairSelector.MVVM.View
     /// </summary>
     public partial class HomeControl : UserControl
     {
-        private const string crosshair1 = "Crosshair100";
+        private const string crosshair1 = "Crosshair101";
         private const string crosshair2 = "Crosshair102";
         private const string crosshair3 = "Crosshair103";
         private const string crosshair4 = "Crosshair104";
@@ -82,30 +82,27 @@ namespace CrosshairSelector.MVVM.View
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //string name = ((sender as Border)?.Child as Canvas)?.Name ?? "";
-            //string requestedCrosshair = "";
-            //switch (name)
-            //{
-            //    case "TopLeft":
-            //        viewModel.RemoveDefaultCrosshair(ref TopLeft, crosshair3);
-            //        requestedCrosshair = crosshair3;
-            //        break;
-            //    case "TopRight":
-            //        viewModel.RemoveDefaultCrosshair(ref TopRight, crosshair4);
-            //        requestedCrosshair = crosshair4;
-            //        break;
-            //    case "BottomRight":
-            //        viewModel.RemoveDefaultCrosshair(ref BottomRight, crosshair1);
-            //        requestedCrosshair = crosshair1;
-            //        break;
-            //    case "BottomLeft":
-            //        viewModel.RemoveDefaultCrosshair(ref BottomLeft, crosshair2);
-            //        requestedCrosshair = crosshair2;
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //viewModel.AddCrosshair(viewModel.GetDefaultCrosshair(requestedCrosshair));
+            string name = ((sender as Border)?.Child as Canvas)?.Name ?? "";
+            string requestedCrosshair = "";
+            switch (name)
+            {
+                case "TopLeft":
+                    requestedCrosshair = crosshair3;
+                    break;
+                case "TopRight":
+                    requestedCrosshair = crosshair4;
+                    break;
+                case "BottomRight":
+                    requestedCrosshair = crosshair1;
+                    break;
+                case "BottomLeft":
+                    requestedCrosshair = crosshair2;
+                    break;
+                default:
+                    break;
+            }
+            Crosshair c = (Crosshair)viewModel.GetDefaultCrosshair(requestedCrosshair).Clone();
+            viewModel.AddCrosshair(c);
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

@@ -98,7 +98,7 @@
                 Grid.Column="0"
                 Style="{StaticResource Tile}" 
                 MouseLeftButtonDown="Border_MouseLeftButtonDown">
-                <Canvas x:Name="TopLeft">
+                <Canvas x:Name="TopLeft"  Width="10" Height="10">
 
                 </Canvas>
             </Border>
@@ -107,7 +107,7 @@
                 Grid.Column="1"
                 Style="{StaticResource Tile}" 
                 MouseLeftButtonDown="Border_MouseLeftButtonDown">
-                <Canvas x:Name="TopRight">
+                <Canvas x:Name="TopRight"  Width="10" Height="10">
 
                 </Canvas>
             </Border>
@@ -116,7 +116,7 @@
                 Grid.Column="0"
                 Style="{StaticResource Tile}" 
                 MouseLeftButtonDown="Border_MouseLeftButtonDown">
-                <Canvas x:Name="BottomLeft">
+                <Canvas x:Name="BottomLeft"  Width="10" Height="10">
 
                 </Canvas>
             </Border>
@@ -125,7 +125,7 @@
                 Grid.Column="1"
                 Style="{StaticResource Tile}" 
                 MouseLeftButtonDown="Border_MouseLeftButtonDown">
-                <Canvas x:Name="BottomRight">
+                <Canvas x:Name="BottomRight" Width="10" Height="10">
 
                 </Canvas>
             </Border>

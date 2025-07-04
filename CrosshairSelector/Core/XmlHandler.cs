@@ -2,6 +2,7 @@
 using System.Windows.Media;
 using System.IO;
 using System.Xml;
+using System.Reflection;
 
 using CrosshairSelector.Model;
 
@@ -36,6 +37,7 @@ namespace CrosshairSelector.Core
                         crosshair.Shape = (CrosshairShape)Enum.Parse(typeof(CrosshairShape), root.ChildNodes[i].SelectSingleNode(XmlNames.xmlCrosshairShape)?.InnerText);
                         crosshair.CrosshairColor = (Color)ColorConverter.ConvertFromString(root.ChildNodes[i].SelectSingleNode(XmlNames.xmlColor)?.InnerText);
                         crosshair.OutlineColor = (Color)ColorConverter.ConvertFromString(root.ChildNodes[i].SelectSingleNode(XmlNames.xmlOutlineColor)?.InnerText);
+                        //crosshair.View = CrosshairViewBase.CreateInstance()
                         crosshairs.Add((Crosshair)crosshair.Clone());
                     }
                     parameterClass.ControllerSwitch = bool.Parse(root.SelectSingleNode(XmlNames.xmlController)?.InnerText);
@@ -49,6 +51,10 @@ namespace CrosshairSelector.Core
             }
             if (crosshairs != null)
             {
+                foreach (Crosshair item in crosshairs)
+                {
+                    item.ChangeCrosshairShape(item.Shape);
+                }
                 return (crosshairs, parameterClass);
             }
             throw new Exception("Error during the reading of the crosshairlist.");

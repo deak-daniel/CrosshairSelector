@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosshairSelector.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,5 +109,26 @@ namespace CrosshairSelector.Model
             Right.Fill = new SolidColorBrush(CrosshairColor);
         }
         #endregion // CrosshairViewBase implementation
+
+        #region ICloneable implementation
+        public override object Clone()
+        {
+            return new TriangularCrossView()
+            {
+                Up = new Rectangle() { Width = this.Up.Width, Height = this.Up.Height, Stroke = this.Up.Stroke, Fill = this.Up.Fill },
+                Left = new Rectangle() { Width = this.Left.Width, Height = this.Left.Height, Stroke = this.Left.Stroke, Fill = this.Left.Fill },
+                Right = new Rectangle() { Width = this.Right.Width, Height = this.Right.Height, Stroke = this.Right.Stroke, Fill = this.Right.Fill },
+                Thickness = this.Thickness,
+                Width = this.Width,
+                Height = this.Height,
+                Size = this.Size,
+                Gap = this.Gap,
+                Outline = this.Outline,
+                CrosshairColor = this.CrosshairColor,
+                OutlineColor = this.OutlineColor,
+                OutlineThickness = this.OutlineThickness
+            };
+        }
+        #endregion
     }
 }

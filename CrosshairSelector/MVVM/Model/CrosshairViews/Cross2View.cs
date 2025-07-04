@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Media.Media3D;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
+using CrosshairSelector.Core;
 
 namespace CrosshairSelector.Model
 {
@@ -135,5 +131,46 @@ namespace CrosshairSelector.Model
             return Math.Sqrt(first + second);
         }
         #endregion // Private methods
+
+        #region ICloneable implementation
+        public override object Clone()
+        {
+            Polygon up = new Polygon() { Points = new PointCollection(new List<Point> { p1, p2, p3 }) };
+            Polygon down = new Polygon() { Points = new PointCollection(new List<Point> { p1, p2, p3 }) };
+            Polygon left = new Polygon() { Points = new PointCollection(new List<Point> { p1, p2, p3 }) };
+            Polygon right = new Polygon() { Points = new PointCollection(new List<Point> { p1, p2, p3 }) };
+            up.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            up.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            up.Points[2] = new Point(p3.X, p3.X - Gap / 2);
+
+            down.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            down.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            down.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
+
+            left.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            left.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            left.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
+
+            right.Points[0] = new Point(p1.X - Thickness, p1.Y - Size);
+            right.Points[1] = new Point(p2.X + Thickness, p1.Y - Size);
+            right.Points[2] = new Point(p3.X, p3.Y - Gap / 2);
+            return new Cross2View()
+            {
+                Up = up,
+                Down = down,
+                Left = left,
+                Right = right,
+                Thickness = this.Thickness,
+                Width = this.Width,
+                Height = this.Height,
+                Size = this.Size,
+                Gap = this.Gap,
+                Outline = this.Outline,
+                CrosshairColor = this.CrosshairColor,
+                OutlineColor = this.OutlineColor,
+                OutlineThickness = this.OutlineThickness
+            };
+        }
+        #endregion
     }
 }

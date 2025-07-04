@@ -76,10 +76,13 @@ namespace CrosshairSelector.ViewModel
         private void AddTab(Crosshair crosshair)
         {
             CrosshairConfigControl c = new CrosshairConfigControl();
-            model.AddCrosshair(c.viewModel.Crosshair, c);
-            OnCrosshairAdded?.Invoke(model.Crosshairs.Last().Name);
-            ChangePage(model.Crosshairs.Last().Name);
-            SendCrosshairs();
+            c.viewModel.Crosshair = crosshair;
+            if (model.AddCrosshair(c.viewModel.Crosshair, c))
+            {
+                OnCrosshairAdded?.Invoke(model.Crosshairs.Last().Name);
+                ChangePage(model.Crosshairs.Last().Name);
+                SendCrosshairs();
+            }
         }
         private void CrosshairDeletedHandler(Crosshair crosshair)
         {

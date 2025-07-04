@@ -110,13 +110,16 @@ namespace CrosshairSelector.Model
             }
             return res;
         }
-        public void AddCrosshair(Crosshair crosshair, UserControl page)
+        public bool AddCrosshair(Crosshair crosshair, UserControl page)
         {
+            bool res = false;
             if (!crosshairConfig.Contains(crosshair) && !pageDict.ContainsKey(crosshair.Name))
             {
                 crosshairConfig.Add(crosshair);
                 pageDict.Add(crosshairConfig.Last().Name, page);
+                res = true;
             }
+            return res;
         }
         public void SaveCrosshairConfig(Crosshair crosshair = null)
         {

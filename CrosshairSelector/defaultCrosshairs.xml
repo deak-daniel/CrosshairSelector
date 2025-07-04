@@ -1,66 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Config>
 	<Crosshair>
-		<Name>Crosshair100</Name>
-		<AssignedKey>3</AssignedKey>
-		<Thickness>2</Thickness>
+		<Name>Crosshair101</Name>
+		<AssignedKey>
+		</AssignedKey>
+		<Thickness>5</Thickness>
 		<Opacity>255</Opacity>
-		<Gap>20</Gap>
-		<Size>5</Size>
+		<Gap>24</Gap>
+		<Size>30</Size>
 		<OutlineOpacity>255</OutlineOpacity>
 		<CenterDot>False</CenterDot>
-		<Outline>False</Outline>
+		<Outline>True</Outline>
 		<OutlineThickness>1</OutlineThickness>
-		<CrosshairShape>Cross</CrosshairShape>
-		<Color>#FFFF3A61</Color>
+		<CrosshairShape>Cross2</CrosshairShape>
+		<Color>#FF79FFFF</Color>
 		<OutlineColor>#FF000000</OutlineColor>
 	</Crosshair>
 	<Crosshair>
 		<Name>Crosshair102</Name>
-		<AssignedKey>4</AssignedKey>
-		<Thickness>3</Thickness>
+		<AssignedKey>
+		</AssignedKey>
+		<Thickness>6</Thickness>
 		<Opacity>255</Opacity>
-		<Gap>26</Gap>
-		<Size>27</Size>
+		<Gap>30</Gap>
+		<Size>17</Size>
 		<OutlineOpacity>255</OutlineOpacity>
 		<CenterDot>False</CenterDot>
-		<Outline>False</Outline>
+		<Outline>True</Outline>
 		<OutlineThickness>1</OutlineThickness>
-		<CrosshairShape>Cross2</CrosshairShape>
-		<Color>#FFFF3A61</Color>
+		<CrosshairShape>X</CrosshairShape>
+		<Color>#FFFFFF00</Color>
 		<OutlineColor>#FF000000</OutlineColor>
 	</Crosshair>
 	<Crosshair>
 		<Name>Crosshair103</Name>
-		<AssignedKey>5</AssignedKey>
-		<Thickness>2</Thickness>
+		<AssignedKey>
+		</AssignedKey>
+		<Thickness>6</Thickness>
 		<Opacity>255</Opacity>
-		<Gap>20</Gap>
-		<Size>5</Size>
+		<Gap>26</Gap>
+		<Size>17</Size>
 		<OutlineOpacity>255</OutlineOpacity>
 		<CenterDot>False</CenterDot>
-		<Outline>False</Outline>
+		<Outline>True</Outline>
 		<OutlineThickness>1</OutlineThickness>
 		<CrosshairShape>Cross</CrosshairShape>
-		<Color>#FFFF3A61</Color>
+		<Color>#FFFF00FF</Color>
 		<OutlineColor>#FF000000</OutlineColor>
 	</Crosshair>
 	<Crosshair>
 		<Name>Crosshair104</Name>
-		<AssignedKey>5</AssignedKey>
-		<Thickness>2</Thickness>
+		<AssignedKey>
+		</AssignedKey>
+		<Thickness>5</Thickness>
 		<Opacity>255</Opacity>
-		<Gap>20</Gap>
-		<Size>5</Size>
+		<Gap>12</Gap>
+		<Size>14</Size>
 		<OutlineOpacity>255</OutlineOpacity>
 		<CenterDot>False</CenterDot>
-		<Outline>False</Outline>
+		<Outline>True</Outline>
 		<OutlineThickness>1</OutlineThickness>
-		<CrosshairShape>Cross</CrosshairShape>
-		<Color>#FFFF3A61</Color>
+		<CrosshairShape>Triangle</CrosshairShape>
+		<Color>#FFFF99E4</Color>
 		<OutlineColor>#FF000000</OutlineColor>
 	</Crosshair>
-	<Keyboard>True</Keyboard>
+	<Keyboard>False</Keyboard>
 	<Controller>False</Controller>
 	<Scroll>False</Scroll>
 </Config>

@@ -94,7 +94,7 @@ namespace CrosshairSelector.Model
         {
             return new Crosshair() 
             {
-                View = this.View,
+                View = (ICrosshairView)this.View.Clone(),
                 Outline = this.Outline,
                 AssignedKey = this.AssignedKey,
                 OutlineColor = this.OutlineColor,

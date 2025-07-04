@@ -48,5 +48,10 @@ namespace CrosshairSelector.Model
             SetStyle(crosshair.Outline, crosshair.CrosshairColor, crosshair.OutlineColor, crosshair.OutlineThickness);
         }
         #endregion // Virtual methods
+
+
+        #region ICloneable implementation
+        public abstract object Clone();
+        #endregion
     }
 }
